@@ -24,3 +24,14 @@ npm-debug.log*
 # Editor
 .vscode/
 .idea/
+
+# Documentación y presentaciones (solo uso local)
+*.pptx
+*.docx
+*.pdf
+*.svg
+# Schema duplicado en la raíz (el real está en backend/)
+PonteGuapa_schema.sql
+# package.json raíz (no pertenece al back ni al front)
+/package.json
+/package-lock.json
