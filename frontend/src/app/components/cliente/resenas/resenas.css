@@ -1,0 +1,151 @@
+/* === Reseñas: Rose/Blush Liquid Glass === */
+.resenas-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #F5E6E8 0%, #E8D5D0 25%, #D8A7B1 50%, #E8D5D0 75%, #F5E6E8 100%);
+  overflow-x: hidden;
+}
+.bg-circle { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+.circle-1 { width: 420px; height: 420px; background: rgba(216,167,177,0.35); top: -100px; left: -120px; }
+.circle-2 { width: 360px; height: 360px; background: rgba(200,169,106,0.28); bottom: -120px; right: -80px; }
+.circle-3 { width: 320px; height: 320px; background: rgba(183,110,121,0.20); top: 40%; left: 65%; }
+.glass-card {
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(183,110,121,0.10);
+}
+.content-container { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 32px 24px 60px; }
+.top-header { margin-bottom: 28px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #2F2A2A; margin: 0 0 6px; }
+.page-subtitle { font-size: 0.95rem; color: #9B6F75; margin: 0; }
+
+.section-block { margin-bottom: 36px; }
+.section-title { display: flex; align-items: center; gap: 7px; font-size: 1rem; font-weight: 700; color: #2F2A2A; margin: 0 0 14px; }
+.section-title svg { width: 17px; height: 17px; stroke: #B76E79; flex-shrink: 0; }
+
+/* Citas list */
+.citas-list { display: flex; flex-direction: column; gap: 12px; }
+.cita-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; }
+.cita-servicio { font-size: 1rem; font-weight: 700; color: #2F2A2A; margin: 0 0 4px; }
+.cita-fecha { font-size: 0.86rem; color: #9B6F75; margin: 0 0 2px; }
+.cita-estilista { font-size: 0.86rem; color: #7A5A5F; margin: 0; }
+
+.tag-enviada { display: inline-flex; align-items: center; gap: 5px; font-size: 0.82rem; font-weight: 600; color: #2E7D57; background: rgba(72,167,120,0.12); border: 1px solid rgba(72,167,120,0.30); border-radius: 20px; padding: 4px 10px; }
+.tag-enviada svg { width: 13px; height: 13px; stroke: #2E7D57; }
+
+/* Botón dejar reseña — liquid glass rosa */
+.btn-dejar-resena {
+  padding: 9px 18px;
+  background: rgba(183,110,121,0.18);
+  border: 1px solid rgba(183,110,121,0.40);
+  color: #8C3A43;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.88rem; font-weight: 600;
+  border-radius: 12px; cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 2px 8px rgba(183,110,121,0.12);
+  transition: background 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-dejar-resena:hover { background: rgba(183,110,121,0.28); transform: translateY(-1px); }
+
+/* Badge de días restantes */
+.dias-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.78rem; font-weight: 600; color: #A07A00;
+  background: rgba(200,160,60,0.12); border: 1px solid rgba(200,160,60,0.28);
+  border-radius: 20px; padding: 3px 10px;
+}
+.dias-badge svg { width: 12px; height: 12px; stroke: #A07A00; }
+
+/* Public reviews grid */
+.resenas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+.resena-publica-card { padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.resena-cliente { font-size: 0.98rem; font-weight: 700; color: #2F2A2A; margin: 0 0 4px; }
+.service-tag { font-size: 0.78rem; font-weight: 600; color: #B76E79; background: rgba(183,110,121,0.12); border-radius: 20px; padding: 2px 9px; display: inline-block; margin-bottom: 3px; }
+.stylist-sub { font-size: 0.82rem; color: #9B6F75; margin: 0; }
+
+.stars-display { display: flex; gap: 2px; flex-shrink: 0; }
+.stars-display span { font-size: 1.1rem; color: rgba(183,110,121,0.25); }
+.stars-display span.filled { color: #D4A84B; }
+
+.comment-text { font-size: 0.88rem; color: #5C3D42; line-height: 1.55; font-style: italic; margin: 0; }
+.resena-date { font-size: 0.80rem; color: #9B6F75; margin: 0; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(47,42,42,0.35);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-box { width: 100%; max-width: 480px; padding: 32px; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #2F2A2A; margin: 0 0 4px; }
+.modal-servicio { font-size: 0.92rem; color: #9B6F75; margin: 0 0 20px; }
+.modal-body { display: flex; flex-direction: column; gap: 16px; margin-bottom: 22px; }
+.form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: #5C3D42; margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.4px; }
+.star-picker { display: flex; gap: 6px; }
+.star-picker span { font-size: 2rem; color: rgba(183,110,121,0.25); cursor: pointer; transition: color 0.15s, transform 0.15s; line-height: 1; }
+.star-picker span:hover, .star-picker span.active { color: #D4A84B; transform: scale(1.15); }
+.form-group textarea { width: 100%; padding: 12px 14px; border: 1.5px solid rgba(183,110,121,0.25); border-radius: 10px; background: rgba(255,255,255,0.70); font-family: 'Inter', system-ui, sans-serif; font-size: 0.92rem; color: #2F2A2A; resize: vertical; min-height: 90px; box-sizing: border-box; }
+.form-group textarea:focus { outline: none; border-color: #B76E79; box-shadow: 0 0 0 3px rgba(183,110,121,0.15); }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+.btn-modal-cancel { padding: 10px 20px; background: transparent; border: 1.5px solid rgba(183,110,121,0.35); color: #B76E79; border-radius: 10px; font-family: 'Inter', system-ui, sans-serif; font-size: 0.90rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+.btn-modal-cancel:hover { background: rgba(183,110,121,0.08); }
+.btn-modal-send { padding: 10px 22px; background: linear-gradient(135deg, #B76E79, #C48490); color: #fff; border: none; border-radius: 10px; font-family: 'Inter', system-ui, sans-serif; font-size: 0.90rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+.btn-modal-send:hover:not(:disabled) { opacity: 0.88; }
+.btn-modal-send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Reseñas propias */
+.resena-propia-card { padding: 18px 22px; display: flex; flex-direction: column; gap: 8px; border-left: 3px solid rgba(183,110,121,0.40); }
+.resena-servicio { font-size: 0.98rem; font-weight: 700; color: #2F2A2A; margin: 0 0 3px; }
+
+/* Modal extras */
+.modal-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.40); border: 1px solid rgba(255,255,255,0.65); border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s; }
+.modal-close:hover { background: rgba(183,110,121,0.12); }
+.modal-close svg { width: 14px; height: 14px; stroke: #7A5A5F; }
+.modal-box { position: relative; }
+.modal-estilista { display: block; font-size: 0.82rem; color: #9B6F75; margin-top: 2px; }
+.char-count { font-size: 0.75rem; color: #9B6F75; text-align: right; display: block; margin-top: 4px; }
+.modal-error { font-size: 0.85rem; color: #8C3A43; background: rgba(183,110,121,0.10); border: 1px solid rgba(183,110,121,0.30); border-radius: 8px; padding: 8px 12px; }
+
+/* Loading / Empty */
+.loading-state { text-align: center; padding: 32px; color: #9B6F75; font-size: 0.92rem; }
+.empty-state { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 40px 24px; text-align: center; color: #9B6F75; }
+.empty-state svg { width: 40px; height: 40px; stroke: #D8A7B1; }
+.empty-state p { margin: 0; font-size: 0.92rem; }
+
+/* Botones modal — liquid glass */
+.btn-modal-cancel {
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.65);
+  color: #5A4550;
+  border-radius: 12px;
+  font-family: 'Inter', system-ui, sans-serif; font-size: 0.90rem; font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background 0.15s;
+}
+.btn-modal-cancel:hover { background: rgba(255,255,255,0.55); }
+.btn-modal-send {
+  padding: 10px 22px;
+  background: rgba(183,110,121,0.22);
+  border: 1px solid rgba(183,110,121,0.45);
+  color: #8C3A43;
+  border-radius: 12px;
+  font-family: 'Inter', system-ui, sans-serif; font-size: 0.90rem; font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+  transition: background 0.15s;
+}

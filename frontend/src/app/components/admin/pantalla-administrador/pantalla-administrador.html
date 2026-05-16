@@ -1,0 +1,167 @@
+<!-- Panel principal del admin: dashboard liquid glass tono almendra -->
+<div class="admin-page">
+
+  <!-- Circulos decorativos de fondo -->
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-admin-navbar
+    [active]="'inicio'"
+    (navigate)="navegarA($event)"
+    (logout)="cerrarSesion()">
+  </app-admin-navbar>
+
+  <main class="dashboard">
+
+    <!-- Card grande de bienvenida -->
+    <header class="hero-card">
+      <h1 class="hero-title">Panel Administrativo</h1>
+      <p class="hero-sub">Bienvenido, aquí tienes un resumen de la actividad del día</p>
+    </header>
+
+    <!-- Stats: citas hoy + clientes atendidos -->
+    <div class="stats-row">
+      <article class="stat-card">
+        <div class="stat-info">
+          <span class="stat-label">Citas Hoy</span>
+          <span class="stat-value">{{ citasHoyTotal }}</span>
+        </div>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="4" y="5" width="16" height="15" rx="2"/>
+            <path d="M8 3v4M16 3v4M4 9h16"/>
+          </svg>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-info">
+          <span class="stat-label">Completadas esta semana</span>
+          <span class="stat-value">{{ clientesAtendidos }}</span>
+        </div>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="9" cy="8" r="3.5"/>
+            <path d="M3 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M21 20a5 5 0 0 0-4-4.9"/>
+          </svg>
+        </div>
+      </article>
+    </div>
+
+    <!-- Fila inferior: citas de hoy + grafica semanal -->
+    <div class="bottom-row">
+
+      <!-- Columna izq: citas de hoy -->
+      <section class="dash-section citas-hoy-section">
+        <div class="section-header">
+          <h2 class="section-title">Citas de Hoy</h2>
+          <div class="badges">
+            <span class="badge badge-confirmada">{{ confirmadasHoy }} confirmadas</span>
+            <span class="badge badge-pendiente">{{ pendientesHoy }} pendientes</span>
+          </div>
+        </div>
+
+        <!-- Cargando -->
+        <div class="loading-row" *ngIf="cargandoCitas">
+          <svg style="width:18px;height:18px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+          </svg>
+          Cargando citas...
+        </div>
+
+        <div class="citas-list" *ngIf="!cargandoCitas">
+          <article class="cita-card" *ngFor="let cita of citasHoy"
+                   [class.status-completada]="cita.estado === 'completada'"
+                   [class.status-cancelada]="cita.estado === 'cancelada'">
+            <div class="cita-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+              </svg>
+              <span>{{ formatearHora(cita.hora) }}</span>
+            </div>
+
+            <div class="cita-info">
+              <div class="cita-title-row">
+                <h3 class="cita-cliente">{{ cita.cliente_nombre }}</h3>
+                <span class="cita-status"
+                      [class.status-confirmada]="cita.estado === 'confirmada'"
+                      [class.status-pendiente]="cita.estado === 'pendiente'"
+                      [class.status-completada]="cita.estado === 'completada'"
+                      [class.status-cancelada]="cita.estado === 'cancelada'">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" *ngIf="cita.estado === 'confirmada'">
+                    <circle cx="12" cy="12" r="9"/><path d="M8 12l3 3l5-6"/>
+                  </svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" *ngIf="cita.estado === 'pendiente'">
+                    <circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>
+                  </svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" *ngIf="cita.estado === 'completada'">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  {{ cita.estado }}
+                </span>
+              </div>
+              <p class="cita-detail">{{ cita.servicios }} · {{ cita.estilista_nombre }}</p>
+              <p class="cita-precio">Q{{ cita.precio_total | number:'1.2-2' }}</p>
+            </div>
+          </article>
+
+          <!-- Vacío -->
+          <div class="citas-empty" *ngIf="citasHoy.length === 0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="32" height="32" style="opacity:0.4;margin-bottom:8px">
+              <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+            </svg>
+            <p>No hay citas agendadas para hoy.</p>
+          </div>
+        </div>
+
+        <!-- Botón ver todas -->
+        <button class="ver-todas-btn" *ngIf="!cargandoCitas && citasHoy.length > 0"
+                (click)="navegarA('gestion-citas-admin')">
+          Ver todas en Gestión de Citas →
+        </button>
+      </section>
+
+      <!-- Columna der: grafica semanal -->
+      <section class="dash-section semana-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 20h16M7 16V10M12 16V6M17 16v-8"/>
+            </svg>
+            Citas Esta Semana
+          </h2>
+        </div>
+
+        <div class="glass-card semana-card">
+          <div class="total-block">
+            <span class="total-label">Total Semanal</span>
+            <span class="total-value">
+              <svg *ngIf="cargandoSemana" style="width:22px;height:22px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+              </svg>
+              <ng-container *ngIf="!cargandoSemana">{{ totalSemana }}</ng-container>
+            </span>
+          </div>
+
+          <div class="dias-list">
+            <div class="dia-row" *ngFor="let dia of semana" [class.dia-hoy]="dia.esHoy">
+              <span class="dia-name">{{ dia.nombre }}</span>
+              <div class="dia-bar-wrapper">
+                <div class="dia-bar-track">
+                  <div class="dia-bar-fill"
+                       [class.dia-hoy-fill]="dia.esHoy"
+                       [style.width.%]="cargandoSemana ? 0 : porcentajeBarra(dia.citas)">
+                  </div>
+                </div>
+              </div>
+              <span class="dia-count">{{ cargandoSemana ? '…' : dia.citas }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>

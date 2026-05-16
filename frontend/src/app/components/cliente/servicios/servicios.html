@@ -1,0 +1,73 @@
+<div class="servicios-page">
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-client-navbar
+    [active]="'servicios'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <div class="content-container">
+    <div class="top-header">
+      <h1 class="page-title">Nuestros Servicios</h1>
+      <p class="page-subtitle">Descubre todo lo que tenemos para ti</p>
+    </div>
+
+    <div class="loading-state" *ngIf="cargando">
+      <p>Cargando servicios...</p>
+    </div>
+
+    <div class="empty-state glass-card" *ngIf="listaServicios.length === 0 && !cargando">
+      <p>Por el momento no hay servicios disponibles.</p>
+    </div>
+
+    <div class="servicios-grid" *ngIf="!cargando && listaServicios.length > 0">
+      <div class="servicio-card glass-card" *ngFor="let s of listaServicios">
+
+        <div class="servicio-top">
+          <span class="categoria-tag">{{ s.categoria }}</span>
+          <h3 class="servicio-nombre">{{ s.nombre }}</h3>
+          <p class="servicio-desc">{{ s.descripcion }}</p>
+        </div>
+
+        <div class="servicio-bottom">
+          <div class="servicio-meta">
+            <div class="meta-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>{{ s.duracion }} min</span>
+            </div>
+            <span class="precio">Q{{ s.precio }}</span>
+          </div>
+          <button class="btn-reservar" (click)="onReservar(s.nombre)">
+            Reservar Cita
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <section class="info-importante glass-card" *ngIf="!cargando && listaServicios.length > 0">
+      <h3 class="info-title">Información Importante</h3>
+      <div class="info-list">
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <p>Todos los servicios son realizados por profesionales certificados.</p>
+        </div>
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <p>Utilizamos solo productos de marcas reconocidas y de alta calidad.</p>
+        </div>
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <p>Si necesitas cancelar, hazlo con al menos 24 horas de anticipación.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="perfil-page">
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-client-navbar
+    [active]="'perfil'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <div class="content-container">
+    <div class="top-header">
+      <h1 class="page-title">Mi Perfil</h1>
+      <p class="page-subtitle">Administra tu información personal</p>
+    </div>
+
+    <div class="loading-state" *ngIf="cargando">
+      <p>Cargando perfil...</p>
+    </div>
+
+    <div class="profile-card glass-card" *ngIf="!cargando">
+      <div class="profile-header">
+        <div class="avatar-circle">
+          <span>{{ usuario.iniciales }}</span>
+        </div>
+        <div class="profile-info">
+          <h3 class="profile-name">{{ usuario.nombre }} {{ usuario.apellido }}</h3>
+          <p class="profile-sub">Cliente de PonteGuapa</p>
+        </div>
+      </div>
+
+      <div *ngIf="mensaje" class="mensaje-feedback"
+        [class.exito]="tipoMensaje === 'exito'"
+        [class.error]="tipoMensaje === 'error'">
+        {{ mensaje }}
+      </div>
+
+      <form class="profile-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" [(ngModel)]="usuario.nombre" name="nombre"
+              (ngModelChange)="actualizarIniciales()">
+          </div>
+          <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" [(ngModel)]="usuario.apellido" name="apellido"
+              (ngModelChange)="actualizarIniciales()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="usuario.email" name="email" readonly>
+          <small class="field-hint">El email no puede modificarse desde aquí</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Teléfono</label>
+            <div class="telefono-input">
+              <span class="prefijo">+502</span>
+              <input type="text" [(ngModel)]="telefonoNumeros" name="telefono"
+                (keydown)="validarTelefono($event)"
+                placeholder="12345678"
+                maxlength="8">
+            </div>
+            <small class="field-hint">8 dígitos sin espacios</small>
+          </div>
+          <div class="form-group">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" [(ngModel)]="usuario.fecha_nacimiento"
+              name="fecha_nacimiento" max="9999-12-31">
+          </div>
+        </div>
+
+        <button type="button" class="btn-save"
+          (click)="guardarCambios()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Guardar Cambios' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

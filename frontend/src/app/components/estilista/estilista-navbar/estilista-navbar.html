@@ -1,0 +1,92 @@
+<!-- Navbar estilista con badge de notificaciones -->
+<nav class="top-nav">
+  <div class="nav-inner">
+
+    <div class="nav-brand" (click)="goTo('inicio')">
+      <div class="brand-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/>
+          <line x1="8.12" y1="8.12" x2="12" y2="12"/><line x1="12" y1="12" x2="15.88" y2="8.12"/>
+          <line x1="8.12" y1="15.88" x2="12" y2="12"/>
+        </svg>
+      </div>
+      <span class="brand-text">PonteGuapa <em>Estilista</em></span>
+    </div>
+
+    <div class="nav-links">
+
+      <button class="nav-item" type="button" [class.active]="active === 'inicio'" (click)="goTo('inicio')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M3 11l9-8l9 8M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/>
+        </svg>
+        Inicio
+      </button>
+
+      <button class="nav-item" type="button" [class.active]="active === 'agenda'" (click)="goTo('agenda')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="4" y="5" width="16" height="15" rx="2"/>
+          <path d="M8 3v4M16 3v4M4 9h16"/>
+        </svg>
+        Agenda
+      </button>
+
+      <button class="nav-item nav-item-nueva" type="button" [class.active]="active === 'nueva-cita'" (click)="goTo('nueva-cita')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>
+        </svg>
+        Nueva Cita
+      </button>
+
+      <button class="nav-item" type="button" [class.active]="active === 'detalle'" (click)="goTo('detalle')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        Mis Citas
+      </button>
+
+      <button class="nav-item" type="button" [class.active]="active === 'horario'" (click)="goTo('horario')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+        </svg>
+        Horario
+      </button>
+
+      <button class="nav-item" type="button" [class.active]="active === 'resenas'" (click)="goTo('resenas')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        Reseñas
+      </button>
+
+      <!-- Notificaciones con badge -->
+      <button class="nav-item nav-notif" type="button" [class.active]="active === 'notificaciones'" (click)="goTo('notificaciones')">
+        <div class="notif-icon-wrap">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+          </svg>
+          <span class="notif-badge" *ngIf="notifSinLeer > 0">{{ notifSinLeer > 99 ? '99+' : notifSinLeer }}</span>
+        </div>
+        Notificaciones
+      </button>
+
+      <button class="nav-item" type="button" [class.active]="active === 'perfil'" (click)="goTo('perfil')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Perfil
+      </button>
+
+      <button class="nav-item nav-item-logout" type="button" (click)="cerrarSesion()">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l-5-5l5-5M5 12h11"/>
+        </svg>
+        Salir
+      </button>
+
+    </div>
+  </div>
+</nav>

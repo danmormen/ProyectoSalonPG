@@ -1,0 +1,177 @@
+<div class="resenas-page">
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-client-navbar
+    [active]="'resenas'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <div class="content-container">
+    <div class="top-header">
+      <h1 class="page-title">Reseñas</h1>
+      <p class="page-subtitle">Tu opinión nos ayuda a mejorar</p>
+    </div>
+
+    <!-- ══ Citas disponibles para reseñar ══ -->
+    <section class="section-block" *ngIf="!cargando && citasPendientes.length > 0">
+      <h3 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/>
+        </svg>
+        Puedes dejar una reseña
+      </h3>
+      <div class="citas-list">
+        <div class="cita-card glass-card" *ngFor="let cita of citasPendientes">
+          <div class="cita-info">
+            <h4 class="cita-servicio">{{ cita.servicios }}</h4>
+            <p class="cita-estilista">con {{ cita.estilista }}</p>
+            <p class="cita-fecha">{{ formatearFecha(cita.fecha) }}</p>
+          </div>
+          <div class="cita-actions">
+            <span class="dias-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+              </svg>
+              {{ diasRestantes(cita.resena_disponible_hasta) }} día(s) restantes
+            </span>
+            <button class="btn-dejar-resena" (click)="abrirModal(cita)">
+              Dejar Reseña
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Mis reseñas enviadas ══ -->
+    <section class="section-block" *ngIf="misResenas.length > 0">
+      <h3 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Mis reseñas enviadas
+      </h3>
+      <div class="resenas-grid">
+        <div class="resena-propia-card glass-card" *ngFor="let r of misResenas">
+          <div class="card-top">
+            <div class="user-meta">
+              <h4 class="resena-servicio">{{ r.servicios }}</h4>
+              <p class="stylist-sub">Estilista: {{ r.estilista }}</p>
+              <p class="resena-date">{{ formatearFecha(r.fecha) }}</p>
+            </div>
+            <div class="stars-display">
+              <span *ngFor="let s of arregloEstrellas(5)" [class.filled]="s <= r.calificacion">★</span>
+            </div>
+          </div>
+          <p class="comment-text">"{{ r.comentario }}"</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Reseñas públicas de todos los clientes ══ -->
+    <section class="section-block">
+      <h3 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Lo que dicen nuestros clientes
+      </h3>
+
+      <!-- Cargando -->
+      <div class="loading-state" *ngIf="cargandoPublicas">
+        Cargando reseñas...
+      </div>
+
+      <!-- Grid de reseñas -->
+      <div class="resenas-grid" *ngIf="!cargandoPublicas && resenasPublicas.length > 0">
+        <div class="resena-publica-card glass-card" *ngFor="let r of resenasPublicas">
+          <div class="card-top">
+            <div class="user-meta">
+              <h4 class="resena-cliente">{{ r.cliente }}</h4>
+              <p class="service-tag">{{ r.servicios }}</p>
+              <p class="stylist-sub">Estilista: {{ r.estilista }}</p>
+            </div>
+            <div class="stars-display">
+              <span *ngFor="let s of arregloEstrellas(5)" [class.filled]="s <= r.calificacion">★</span>
+            </div>
+          </div>
+          <p class="comment-text">"{{ r.comentario }}"</p>
+          <p class="resena-date">{{ formatearFecha(r.fecha) }}</p>
+        </div>
+      </div>
+
+      <!-- Sin reseñas -->
+      <div class="empty-state glass-card" *ngIf="!cargandoPublicas && resenasPublicas.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M12 3l2.7 5.4l6 .9l-4.3 4.2l1 5.9L12 16.8L6.6 19.4l1-5.9L3.3 9.3l6-.9L12 3Z"/>
+        </svg>
+        <p>Aún no hay reseñas publicadas. ¡Sé el primero!</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══ Modal para dejar reseña ══ -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-box glass-card" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="cerrarModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <h2 class="modal-title">Dejar una Reseña</h2>
+      <p class="modal-servicio" *ngIf="citaSeleccionada">
+        {{ citaSeleccionada.servicios }}
+        <span class="modal-estilista">con {{ citaSeleccionada.estilista }}</span>
+      </p>
+
+      <div class="modal-body">
+
+        <!-- Estrellas -->
+        <div class="form-group">
+          <label>Calificación</label>
+          <div class="star-picker">
+            <span
+              *ngFor="let n of arregloEstrellas(5)"
+              [class.active]="estrellaActiva(n)"
+              (mouseenter)="hoverStar(n)"
+              (mouseleave)="leaveStar()"
+              (click)="seleccionarEstrellas(n)">★</span>
+          </div>
+        </div>
+
+        <!-- Comentario -->
+        <div class="form-group">
+          <label>Comentario</label>
+          <textarea
+            [(ngModel)]="nuevoComentario"
+            placeholder="Cuéntanos cómo fue tu experiencia..."
+            rows="4"
+            maxlength="500">
+          </textarea>
+          <span class="char-count">{{ nuevoComentario.length }}/500</span>
+        </div>
+
+        <!-- Error -->
+        <div class="modal-error" *ngIf="errorModal">{{ errorModal }}</div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" (click)="cerrarModal()" [disabled]="enviando">Cancelar</button>
+        <button class="btn-modal-send"
+                [disabled]="nuevaCalificacion === 0 || !nuevoComentario.trim() || enviando"
+                (click)="enviarResena()">
+          {{ enviando ? 'Enviando...' : 'Enviar Reseña' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

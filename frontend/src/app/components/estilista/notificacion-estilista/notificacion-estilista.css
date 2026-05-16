@@ -1,0 +1,241 @@
+/* ══════════════════════════════════════════════════════════════════
+   NOTIFICACIONES ESTILISTA — Sage Liquid Glass
+   ══════════════════════════════════════════════════════════════════ */
+
+.notif-page {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #A5AE98 0%, #88937B 28%, #6B7560 55%, #7A8570 78%, #A5AE98 100%);
+  overflow-x: hidden;
+}
+
+.notif-page::before {
+  content: '';
+  position: fixed;
+  width: 440px; height: 440px;
+  border-radius: 50%;
+  background: rgba(232, 225, 213, 0.28);
+  filter: blur(90px);
+  top: -120px; left: -140px;
+  pointer-events: none; z-index: 0;
+}
+.notif-page::after {
+  content: '';
+  position: fixed;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: rgba(107, 117, 96, 0.40);
+  filter: blur(80px);
+  bottom: -80px; right: -100px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── NAVBAR ── */
+.nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(232, 225, 213, 0.50);
+  padding: 0;
+  height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2D3328;
+  cursor: pointer;
+  margin: 0;
+}
+.sub-text { font-weight: 400; color: #6B7560; font-family: 'Inter', sans-serif; }
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: #6B7560;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  margin-left: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-btn:hover { background: rgba(136, 147, 123, 0.18); color: #2D3328; }
+
+/* ── MAIN LAYOUT ── */
+.main-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  color: #F5F0EB;
+  font-size: 1.8rem;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(45, 51, 40, 0.18);
+}
+
+.count-badge {
+  background: rgba(107, 117, 96, 0.80);
+  color: #E8E1D5;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.notif-list { display: flex; flex-direction: column; gap: 12px; }
+
+/* ── NOTIFICATION ITEMS ── */
+.notif-item {
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(72, 80, 63, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  transition: box-shadow 0.2s;
+}
+.notif-item.unread {
+  border-left: 4px solid #88937B;
+  background: rgba(255, 255, 255, 0.65);
+}
+.notif-item:hover { box-shadow: 0 6px 20px rgba(72, 80, 63, 0.14); }
+
+/* Notification type icons */
+.notif-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 18px;
+  flex-shrink: 0;
+}
+
+.notif-icon.nueva-cita  { background: rgba(107, 117, 96, 0.20); color: #6B7560; }
+.notif-icon.cancelada   { background: rgba(180, 100, 90, 0.15); color: #9B5E56; }
+.notif-icon.confirmada  { background: rgba(107, 117, 96, 0.25); color: #4A5446; }
+.notif-icon.recordatorio{ background: rgba(200, 180, 130, 0.25); color: #8B7345; }
+.notif-icon.resena      { background: rgba(150, 155, 170, 0.20); color: #6B7082; }
+
+.notif-body { flex: 1; }
+
+.notif-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+.notif-top h3 { margin: 0; font-size: 0.97rem; color: #2D3328; font-weight: 700; }
+
+.new-tag {
+  background: rgba(107, 117, 96, 0.20);
+  color: #4A5446;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.notif-msg { color: #5A6355; font-size: 0.92rem; margin: 3px 0; }
+.notif-time { color: #A5AE98; font-size: 0.83rem; margin: 0; }
+
+.notif-actions { display: flex; align-items: center; gap: 12px; margin-left: 12px; }
+
+.btn-read {
+  color: #6B7560;
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.btn-read:hover { color: #2D3328; }
+
+.btn-close {
+  color: #C0C8B8;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.btn-close:hover { color: #6B7560; }
+
+/* Header con acciones masivas */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn-accion {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 8px; border: 1px solid;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-leer {
+  background: rgba(52,211,153,0.12); color: #065F46;
+  border-color: rgba(52,211,153,0.3);
+}
+.btn-leer:hover { background: rgba(52,211,153,0.22); }
+.btn-borrar {
+  background: rgba(239,68,68,0.08); color: #B91C1C;
+  border-color: rgba(239,68,68,0.2);
+}
+.btn-borrar:hover { background: rgba(239,68,68,0.16); }
+
+.loading-msg {
+  display: flex; align-items: center; gap: 10px;
+  padding: 24px; color: #94a3b8; font-size: 0.9rem;
+}
+.error-msg {
+  padding: 16px; color: #dc2626;
+  background: rgba(239,68,68,0.08); border-radius: 10px; margin: 16px 0;
+}
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 60px 24px; color: #94a3b8; text-align: center;
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

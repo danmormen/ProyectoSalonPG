@@ -1,0 +1,45 @@
+.app-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff7fb, #f7f1f7);
+  }
+  
+  .topbar {
+    background: white;
+    border-bottom: 1px solid #f2e5ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  .topbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .brand {
+    color: #e6007e;
+    font-size: 2rem;
+    font-family: serif;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .logout-btn {
+    border: none;
+    background: transparent;
+    color: #5b6470;
+    font-size: 0.99rem;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    color: #e6007e;
+  }
+  
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 26px 24px 40px;
+  }

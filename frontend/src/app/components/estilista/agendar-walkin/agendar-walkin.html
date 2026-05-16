@@ -1,0 +1,314 @@
+<div class="walkin-page">
+  <app-estilista-navbar
+    [active]="'nueva-cita'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-estilista-navbar>
+
+  <main class="walkin-main">
+
+    <!-- Header -->
+    <header class="walkin-header">
+      <h1 class="walkin-title">Nueva Cita Presencial</h1>
+      <p class="walkin-sub">Registra una cita para un cliente que llega sin cuenta</p>
+    </header>
+
+    <!-- ── ÉXITO ── -->
+    <div class="exito-card" *ngIf="exito">
+      <div class="exito-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+          <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
+        </svg>
+      </div>
+      <h2 class="exito-title">¡Cita registrada!</h2>
+      <p class="exito-sub">
+        <strong>{{ clienteNombre }} {{ clienteApellido }}</strong> — {{ fechaFormateada }} a las {{ formatHora(slotSel) }}<br>
+        {{ serviciosSeleccionados[0]?.nombre }}<span *ngIf="serviciosSeleccionados.length > 1"> + {{ serviciosSeleccionados.length - 1 }} más</span>
+      </p>
+      <div class="exito-actions">
+        <button class="btn-nueva-cita" (click)="nuevaCita()">Agendar otra cita</button>
+        <button class="btn-ir-agenda" (click)="onNavigate('citas-estilista')">Ver agenda</button>
+      </div>
+    </div>
+
+    <!-- ── FLUJO DE 3 PASOS ── -->
+    <ng-container *ngIf="!exito">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step" [class.step-activo]="paso >= 1" [class.step-completo]="paso > 1">
+          <div class="step-circle">
+            <svg *ngIf="paso > 1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M20 6L9 17l-5-5"/></svg>
+            <span *ngIf="paso <= 1">1</span>
+          </div>
+          <span class="step-label">Servicios</span>
+        </div>
+        <div class="step-line" [class.line-completa]="paso > 1"></div>
+        <div class="step" [class.step-activo]="paso >= 2" [class.step-completo]="paso > 2">
+          <div class="step-circle">
+            <svg *ngIf="paso > 2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M20 6L9 17l-5-5"/></svg>
+            <span *ngIf="paso <= 2">2</span>
+          </div>
+          <span class="step-label">Fecha</span>
+        </div>
+        <div class="step-line" [class.line-completa]="paso > 2"></div>
+        <div class="step" [class.step-activo]="paso >= 3">
+          <div class="step-circle">3</div>
+          <span class="step-label">Estilista y Horario</span>
+        </div>
+      </div>
+
+      <!-- ══ PASO 1: Servicios ══════════════════════════════════════ -->
+      <div class="paso-card" *ngIf="paso === 1">
+        <h2 class="paso-titulo">¿Qué servicios incluye la cita?</h2>
+        <p class="paso-sub">Puedes seleccionar uno o varios servicios.</p>
+
+        <div class="loading-row" *ngIf="cargandoServicios">
+          <svg style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+          </svg>
+          Cargando servicios...
+        </div>
+
+        <div class="servicios-grid" *ngIf="!cargandoServicios">
+          <label class="srv-chip"
+                 *ngFor="let s of servicios"
+                 [class.srv-chip-sel]="isSeleccionado(s.id)">
+            <input type="checkbox"
+                   [checked]="isSeleccionado(s.id)"
+                   (change)="toggleServicio(s.id)">
+            <div class="srv-chip-body">
+              <span class="srv-nombre">{{ s.nombre }}</span>
+              <div class="srv-meta">
+                <span class="srv-precio">Q{{ s.precio | number:'1.2-2' }}</span>
+                <span class="srv-dur">{{ s.duracion }} min</span>
+              </div>
+            </div>
+            <div class="srv-check" *ngIf="isSeleccionado(s.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </div>
+          </label>
+        </div>
+
+        <!-- Resumen selección -->
+        <div class="resumen-sel" *ngIf="serviciosSeleccionados.length > 0">
+          <div class="resumen-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+            </svg>
+            {{ duracionFormateada }}
+          </div>
+          <div class="resumen-chip resumen-precio">
+            Q{{ precioTotal | number:'1.2-2' }}
+          </div>
+        </div>
+
+        <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+        <div class="paso-actions">
+          <button class="btn-siguiente" (click)="irPaso2()" [disabled]="serviciosSelIds.length === 0">
+            Siguiente — Elegir fecha
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ PASO 2: Calendario ═════════════════════════════════════ -->
+      <div class="paso-card" *ngIf="paso === 2">
+        <h2 class="paso-titulo">¿Para qué fecha?</h2>
+
+        <!-- Navegador de mes -->
+        <div class="cal-nav">
+          <button class="cal-nav-btn" (click)="mesAnterior()">‹</button>
+          <span class="cal-mes-titulo">{{ tituloMes }}</span>
+          <button class="cal-nav-btn" (click)="mesSiguiente()">›</button>
+        </div>
+
+        <!-- Días de la semana -->
+        <div class="cal-grid cal-header">
+          <span *ngFor="let d of DIAS_SEMANA" class="cal-dia-hdr">{{ d }}</span>
+        </div>
+
+        <!-- Días del mes -->
+        <div class="cal-grid">
+          <div *ngFor="let d of diasMes"
+               class="cal-dia"
+               [class.cal-dia-vacio]="!d.esDelMes"
+               [class.cal-dia-pasado]="d.esDelMes && d.esPasado"
+               [class.cal-dia-cerrado]="d.esDelMes && d.esCerrado"
+               [class.cal-dia-hoy]="d.esHoy"
+               [class.cal-dia-sel]="d.fecha === fechaSel"
+               [class.cal-dia-seleccionable]="d.seleccionable"
+               (click)="seleccionarFecha(d)"
+               [title]="d.motivo">
+            <span *ngIf="d.esDelMes">{{ d.dia }}</span>
+          </div>
+        </div>
+
+        <!-- Fecha seleccionada -->
+        <div class="fecha-sel-pill" *ngIf="fechaSel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+          {{ fechaFormateada }}
+        </div>
+
+        <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+        <div class="paso-actions">
+          <button class="btn-volver" (click)="volverPaso(1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M15 18l-6-6 6-6"/></svg>
+            Volver
+          </button>
+          <button class="btn-siguiente" (click)="irPaso3()" [disabled]="!fechaSel">
+            Siguiente — Ver horarios
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ PASO 3: Estilista + Slots + Datos de cliente ════════════ -->
+      <div class="paso-card" *ngIf="paso === 3">
+        <h2 class="paso-titulo">Estilista, horario y datos del cliente</h2>
+
+        <!-- Resumen arriba -->
+        <div class="resumen-paso3">
+          <span class="r3-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+            </svg>
+            {{ fechaFormateada }}
+          </span>
+          <span class="r3-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+              <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+            </svg>
+            {{ duracionFormateada }}
+          </span>
+          <span class="r3-chip r3-precio">Q{{ precioTotal | number:'1.2-2' }}</span>
+        </div>
+
+        <!-- ── Selector de estilista ── -->
+        <h3 class="slots-titulo">Selecciona el estilista</h3>
+
+        <div class="slots-loading" *ngIf="cargandoEstilistas">
+          <svg style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+          </svg>
+          Buscando estilistas disponibles...
+        </div>
+
+        <div class="slots-empty" *ngIf="!cargandoEstilistas && estilistas.length === 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <p>No hay estilistas disponibles para estos servicios en esta fecha.<br>
+             <button class="link-btn" (click)="volverPaso(2)">Elige otra fecha</button>
+          </p>
+        </div>
+
+        <div class="estilista-chips" *ngIf="!cargandoEstilistas && estilistas.length > 0">
+          <button class="estilista-chip"
+                  *ngFor="let e of estilistas"
+                  type="button"
+                  [class.estilista-chip-sel]="estilistaSelId === e.id"
+                  (click)="seleccionarEstilista(e.id)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            {{ e.nombre }}
+          </button>
+        </div>
+
+        <!-- ── Grilla de slots (solo si hay estilista seleccionado) ── -->
+        <ng-container *ngIf="estilistaSelId">
+          <h3 class="slots-titulo" style="margin-top:20px">Selecciona un horario disponible</h3>
+
+          <div class="slots-loading" *ngIf="cargandoSlots">
+            <svg style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            </svg>
+            Buscando horarios...
+          </div>
+
+          <div class="slots-empty" *ngIf="!cargandoSlots && slots.length === 0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+              <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+            </svg>
+            <p>No hay horarios disponibles para este estilista en esta fecha.<br>
+               <button class="link-btn" (click)="volverPaso(2)">Elige otra fecha</button>
+            </p>
+          </div>
+
+          <div class="slots-grid" *ngIf="!cargandoSlots && slots.length > 0">
+            <button class="slot-btn"
+                    *ngFor="let s of slots"
+                    [class.slot-sel]="slotSel === s"
+                    (click)="slotSel = s; errorMsg = ''">
+              {{ formatHora(s) }}
+            </button>
+          </div>
+
+          <!-- Datos del cliente (solo si hay slot seleccionado) -->
+          <div class="cliente-form" *ngIf="slotSel">
+            <h3 class="slots-titulo" style="margin-top:24px">Datos del cliente</h3>
+
+            <div class="form-row-duo">
+              <div class="form-group">
+                <label class="form-label">Nombre *</label>
+                <input class="form-input" type="text" [(ngModel)]="clienteNombre"
+                       placeholder="Nombre" maxlength="60">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Apellido *</label>
+                <input class="form-input" type="text" [(ngModel)]="clienteApellido"
+                       placeholder="Apellido" maxlength="60">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Teléfono <span class="lbl-opt">(opcional)</span></label>
+              <div class="tel-wrap">
+                <span class="tel-prefix">+502</span>
+                <input class="form-input tel-input" type="tel"
+                       [value]="clienteTelefonoDisplay"
+                       placeholder="0000-0000"
+                       maxlength="9"
+                       (input)="onTelInput($event)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Notas <span class="lbl-opt">(opcional)</span></label>
+              <textarea class="form-input form-textarea" [(ngModel)]="notasExtra"
+                        placeholder="Alergias, preferencias, indicaciones especiales..."
+                        rows="2" maxlength="300"></textarea>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+        <div class="paso-actions">
+          <button class="btn-volver" (click)="volverPaso(2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M15 18l-6-6 6-6"/></svg>
+            Volver
+          </button>
+          <button class="btn-confirmar" (click)="confirmar()"
+                  [disabled]="enviando || !estilistaSelId || !slotSel || !clienteNombre.trim() || !clienteApellido.trim()">
+            <svg *ngIf="enviando" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            </svg>
+            <svg *ngIf="!enviando" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            {{ enviando ? 'Registrando...' : 'Confirmar cita' }}
+          </button>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </main>
+</div>

@@ -1,0 +1,166 @@
+<div class="detalle-container">
+  <app-estilista-navbar
+    [active]="'detalle'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-estilista-navbar>
+
+  <main class="main-layout">
+    <header class="page-info">
+      <h1>Mis Citas</h1>
+    </header>
+
+    <!-- Indicador de fecha (solo hoy) -->
+    <div class="day-navigator today-only">
+      <div class="day-info">
+        <p class="day-label">Hoy</p>
+        <h3 class="day-title">{{ tituloDia }}</h3>
+      </div>
+    </div>
+
+    <!-- Progreso del día -->
+    <div class="progress-bar-card" *ngIf="!cargando && total > 0">
+      <div class="progress-labels">
+        <span>Progreso del día</span>
+        <span class="progress-count">{{ completadas }} / {{ total }} completadas</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="progreso"></div>
+      </div>
+    </div>
+
+    <!-- Cargando -->
+    <div class="loading-msg" *ngIf="cargando">
+      <svg style="width:20px;height:20px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+      Cargando citas...
+    </div>
+
+    <!-- Error -->
+    <p class="error-msg" *ngIf="error">{{ error }}</p>
+
+    <!-- Lista de citas -->
+    <div class="cards-stack" *ngIf="!cargando && !error">
+
+      <article class="appointment-item" *ngFor="let cita of citas"
+               [class.is-completada]="cita.estado === 'completada'"
+               [class.is-cancelada]="cita.estado === 'cancelada'">
+
+        <!-- Franja de hora -->
+        <div class="time-stripe">
+          <span class="time-value">{{ formatearHora(cita.hora) }}</span>
+          <span class="time-label">hora</span>
+        </div>
+
+        <!-- Cuerpo -->
+        <div class="appt-body">
+
+          <!-- Servicio + estado -->
+          <div class="appt-top-row">
+            <span class="appt-service-name">{{ cita.servicios }}</span>
+            <span class="status-pill" [ngClass]="cita.estado">{{ cita.estado }}</span>
+          </div>
+
+          <!-- Precio -->
+          <div class="appt-meta-row">
+            <span class="meta-label">Total</span>
+            <span class="precio-chip">Q{{ cita.precio_total | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="appt-divider"></div>
+
+          <!-- Cliente + botones -->
+          <div class="appt-bottom-row">
+            <div class="client-block">
+              <div class="client-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div>
+                <p class="client-name">{{ cita.cliente_nombre }}</p>
+                <p class="client-phone">{{ cita.cliente_telefono || 'Sin teléfono' }}</p>
+              </div>
+            </div>
+
+            <!-- Botones solo si la cita está activa -->
+            <div class="action-btns" *ngIf="cita.estado !== 'completada' && cita.estado !== 'cancelada'">
+              <button class="btn-completar" (click)="marcarCompletada(cita)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Completar
+              </button>
+              <button class="btn-cancelar-cita"
+                      *ngIf="citaCancelando?.id !== cita.id"
+                      (click)="iniciarCancelacion(cita)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                Cancelar
+              </button>
+            </div>
+
+            <span class="completada-tag" *ngIf="cita.estado === 'completada'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Completada
+            </span>
+          </div>
+
+          <!-- Formulario de cancelación inline -->
+          <div class="cancel-form" *ngIf="citaCancelando?.id === cita.id">
+            <label class="cancel-form-label">Motivo de cancelación</label>
+            <textarea class="cancel-textarea"
+                      [(ngModel)]="motivoCancelacion"
+                      placeholder="Ej: El cliente no se presentó."
+                      rows="2">
+            </textarea>
+            <div class="cancel-form-btns">
+              <button class="cancel-form-confirm"
+                      (click)="confirmarCancelacion()"
+                      [disabled]="!motivoCancelacion.trim() || cancelando">
+                {{ cancelando ? 'Cancelando...' : 'Confirmar cancelación' }}
+              </button>
+              <button class="cancel-form-discard"
+                      (click)="descartarCancelacion()"
+                      [disabled]="cancelando">
+                Volver
+              </button>
+            </div>
+          </div>
+
+          <!-- Notas -->
+          <p class="appt-notas" *ngIf="cita.notas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            {{ cita.notas }}
+          </p>
+
+          <!-- Motivo de cancelación -->
+          <p class="appt-motivo-cancelacion" *ngIf="cita.estado === 'cancelada' && cita.motivo_cancelacion">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            {{ cita.motivo_cancelacion }}
+          </p>
+
+        </div>
+      </article>
+
+      <div class="empty-msg" *ngIf="citas.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="36" height="36" style="margin-bottom:10px">
+          <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+        </svg>
+        <p>No hay citas para este día.</p>
+      </div>
+    </div>
+
+  </main>
+</div>

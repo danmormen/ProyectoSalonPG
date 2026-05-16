@@ -1,0 +1,220 @@
+<div class="admin-page-layout">
+  <app-admin-navbar
+    [active]="'servicios'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-admin-navbar>
+
+  <div class="main-content">
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN SERVICIOS
+    ══════════════════════════════════════════════════════════ -->
+    <header class="page-header">
+      <div class="header-text">
+        <h1 class="page-title">Gestión de Servicios</h1>
+        <p class="subtitle">Administra el catálogo de servicios y precios.</p>
+      </div>
+      <button class="add-btn" (click)="abrirModalNuevo()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="15" height="15">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Agregar Servicio
+      </button>
+    </header>
+
+    <div *ngIf="servicios.length === 0" class="empty-state">
+      <p>No hay servicios registrados.</p>
+    </div>
+
+    <div class="service-grid" *ngIf="servicios.length > 0">
+      <div class="service-card" *ngFor="let s of servicios">
+        <div class="card-top">
+          <div class="info">
+            <h3>{{ s.nombre }}</h3>
+            <span class="esp-tag" *ngIf="s.especialidad_nombre">{{ s.especialidad_nombre }}</span>
+          </div>
+          <span class="status-tag" [class.inactive]="!s.activo">
+            {{ s.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+
+        <div class="card-details">
+          <p class="description">{{ s.descripcion }}</p>
+          <div class="meta-info dual-grid">
+            <div class="price-box">
+              <span class="label">Precio:</span>
+              <span class="value main-color">Q{{ s.precio }}</span>
+            </div>
+            <div class="duration-box">
+              <span class="label">Duración:</span>
+              <span class="value">{{ s.duracion }} min</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="action-btn edit" (click)="abrirModalEditar(s)">Editar</button>
+          <button class="action-btn delete" (click)="eliminarServicio(s.id)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN ESPECIALIDADES
+    ══════════════════════════════════════════════════════════ -->
+    <div class="esp-section">
+      <div class="esp-section-header">
+        <div>
+          <h2 class="esp-section-title">Especialidades</h2>
+          <p class="esp-section-sub">Categorías que definen qué servicios puede realizar cada estilista.</p>
+        </div>
+        <button class="add-btn-sm" (click)="abrirModalNuevaEsp()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nueva
+        </button>
+      </div>
+
+      <div class="esp-list" *ngIf="especialidades.length > 0">
+        <div class="esp-row" *ngFor="let esp of especialidades">
+          <div class="esp-row-left">
+            <span class="esp-dot" [class.inactiva]="!esp.activa"></span>
+            <span class="esp-nombre">{{ esp.nombre }}</span>
+            <span class="esp-pill" [class.inactiva]="!esp.activa">
+              {{ esp.activa ? 'Activa' : 'Inactiva' }}
+            </span>
+          </div>
+          <div class="esp-row-actions">
+            <button class="esp-btn-edit" (click)="abrirModalEditarEsp(esp)" title="Editar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/>
+              </svg>
+              Editar
+            </button>
+            <button class="esp-btn-del" (click)="eliminarEspecialidad(esp)" title="Desactivar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                <circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>
+              </svg>
+              Desactivar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="esp-empty" *ngIf="especialidades.length === 0">
+        No hay especialidades. Agrega la primera.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAL — SERVICIO
+  ══════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" *ngIf="mostrarModal" (click)="mostrarModal = false">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ editando ? 'Editar Servicio' : 'Nuevo Servicio' }}</h2>
+
+      <div class="form-container">
+        <div class="input-field full-width">
+          <label>Nombre del Servicio *</label>
+          <input type="text" [(ngModel)]="servicioForm.nombre" placeholder="Ej. Corte de Dama">
+        </div>
+
+        <div class="input-field full-width">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="servicioForm.descripcion" rows="2" placeholder="Describe brevemente el servicio..."></textarea>
+        </div>
+
+        <div class="input-row">
+          <div class="input-field">
+            <label>Precio (Q) *</label>
+            <input type="number" [(ngModel)]="servicioForm.precio" min="0" step="0.01">
+          </div>
+          <div class="input-field">
+            <label>Duración (min) *</label>
+            <input type="number" [(ngModel)]="servicioForm.duracion" min="1" step="1">
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-field">
+            <label>Categoría</label>
+            <select [(ngModel)]="servicioForm.categoria">
+              <option value="cabello">Cabello</option>
+              <option value="uñas">Uñas</option>
+              <option value="maquillaje">Maquillaje</option>
+              <option value="tratamientos">Tratamientos</option>
+              <option value="otros">Otros</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label>Especialidad</label>
+            <select [(ngModel)]="servicioForm.especialidad_id">
+              <option [ngValue]="null">Sin especialidad</option>
+              <option *ngFor="let esp of especialidades" [ngValue]="esp.id">{{ esp.nombre }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-field full-width">
+          <label>URL de la Imagen (Opcional)</label>
+          <input type="text" [(ngModel)]="servicioForm.imagen" placeholder="https://ejemplo.com/foto.jpg">
+        </div>
+
+        <!-- Toggle activo -->
+        <div class="activo-toggle-row">
+          <span class="activo-label">Estado del servicio</span>
+          <button type="button" class="activo-toggle" [class.on]="servicioForm.activo"
+                  (click)="servicioForm.activo = servicioForm.activo ? 0 : 1">
+            <span class="toggle-knob"></span>
+          </button>
+          <span class="activo-value">{{ servicioForm.activo ? 'Activo' : 'Inactivo' }}</span>
+        </div>
+      </div>
+
+      <div class="modal-btns">
+        <button class="cancel-btn" (click)="mostrarModal = false">Cancelar</button>
+        <button class="save-btn" (click)="guardarServicio()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAL — ESPECIALIDAD
+  ══════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" *ngIf="mostrarModalEsp" (click)="cerrarModalEsp()">
+    <div class="modal-window modal-esp" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ editandoEsp ? 'Editar Especialidad' : 'Nueva Especialidad' }}</h2>
+
+      <div class="form-container">
+        <p class="field-error" *ngIf="errorEsp">{{ errorEsp }}</p>
+
+        <div class="input-field full-width">
+          <label>Nombre *</label>
+          <input type="text" [(ngModel)]="espForm.nombre" placeholder="Ej. Uñas Acrílicas">
+        </div>
+
+        <div class="activo-toggle-row">
+          <span class="activo-label">Estado</span>
+          <button type="button" class="activo-toggle" [class.on]="espForm.activa"
+                  (click)="espForm.activa = espForm.activa ? 0 : 1">
+            <span class="toggle-knob"></span>
+          </button>
+          <span class="activo-value">{{ espForm.activa ? 'Activa' : 'Inactiva' }}</span>
+        </div>
+      </div>
+
+      <div class="modal-btns">
+        <button class="cancel-btn" (click)="cerrarModalEsp()" [disabled]="guardandoEsp">Cancelar</button>
+        <button class="save-btn" (click)="guardarEspecialidad()" [disabled]="guardandoEsp">
+          {{ guardandoEsp ? 'Guardando...' : (editandoEsp ? 'Actualizar' : 'Crear') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

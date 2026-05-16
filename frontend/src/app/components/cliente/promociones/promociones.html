@@ -1,0 +1,78 @@
+<div class="promociones-page">
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-client-navbar
+    [active]="'promociones'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <div class="content-container">
+    <div class="top-header">
+      <h1 class="page-title">Promociones Especiales</h1>
+      <p class="page-subtitle">Aprovecha nuestras ofertas exclusivas</p>
+    </div>
+
+    <div class="loading-state" *ngIf="cargando">
+      <p>Cargando promociones...</p>
+    </div>
+
+    <div class="empty-state glass-card" *ngIf="!cargando && promociones.length === 0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      <p>No hay promociones disponibles en este momento.</p>
+    </div>
+
+    <div class="promo-grid" *ngIf="!cargando && promociones.length > 0">
+      <div class="promo-card glass-card" *ngFor="let p of promociones">
+
+        <!-- Encabezado: nombre de la promo en lugar del precio -->
+        <div class="promo-discount-badge">
+          <span class="promo-nombre-header">{{ p.titulo }}</span>
+        </div>
+
+        <div class="promo-body">
+          <p class="promo-desc">{{ p.descripcion }}</p>
+
+          <!-- Precio especial destacado, entre descripción y validez -->
+          <div class="promo-precio-especial">
+            <span class="precio-label">Precio especial</span>
+            <span class="precio-valor">Q{{ p.precio_especial | number:'1.2-2' }}</span>
+          </div>
+
+          <!-- Servicio incluido en la promo -->
+          <div class="promo-codigo" *ngIf="p.servicio_nombre">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+            <span>Servicio: <strong>{{ p.servicio_nombre }}</strong></span>
+          </div>
+
+          <!-- Disponibilidad de usos -->
+          <div class="promo-codigo" style="margin-top:6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span *ngIf="p.limite_usos === null || p.limite_usos === undefined">Usos ilimitados</span>
+            <span *ngIf="p.limite_usos !== null && p.limite_usos !== undefined">
+              Válida {{ p.limite_usos }} {{ p.limite_usos === 1 ? 'vez' : 'veces' }}
+              ({{ p.limite_usos - (p.usos_actuales ?? 0) }} disponibles)
+            </span>
+          </div>
+
+          <div class="promo-vigencia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>{{ p.fecha_inicio | date:'d/M/yyyy' }} — {{ p.fecha_fin | date:'d/M/yyyy' }}</span>
+          </div>
+
+          <button class="btn-reservar-promo" (click)="irAReservar(p)">
+            Reservar Ahora
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

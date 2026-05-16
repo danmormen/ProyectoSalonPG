@@ -1,0 +1,132 @@
+<div class="est-page">
+  <app-estilista-navbar
+    [active]="'horario'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-estilista-navbar>
+
+  <main class="main-layout">
+
+    <!-- ── Cabecera ── -->
+    <header class="page-header">
+      <h1 class="page-title">Mi Horario</h1>
+      <p class="page-sub">Haz clic en una semana del calendario para ver su resumen</p>
+    </header>
+
+    <!-- ── Loading ── -->
+    <div class="loading-state" *ngIf="cargando">
+      <div class="spinner"></div>
+      <p>Cargando tu horario…</p>
+    </div>
+
+    <!-- ── Error / sin semanas ── -->
+    <div class="error-card" *ngIf="!cargando && mensajeError">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+        <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p>{{ mensajeError }}</p>
+      <button class="btn-reintentar" (click)="cargarMiHorario()">Reintentar</button>
+    </div>
+
+    <!-- ── Con datos ── -->
+    <ng-container *ngIf="!cargando && !mensajeError && semanas.length > 0">
+
+      <!-- Resumen de la semana seleccionada -->
+      <div class="resumen-card" *ngIf="semanaSel">
+        <div class="resumen-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+            <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+          </svg>
+          <div>
+            <p class="resumen-titulo">Semana seleccionada</p>
+            <p class="resumen-rango">{{ labelRangoSemana }}</p>
+          </div>
+        </div>
+        <div class="resumen-stats">
+          <div class="stat-item">
+            <span class="stat-num">{{ diasLaborables }}</span>
+            <span class="stat-label">Días laborables</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-item">
+            <span class="stat-num">{{ horasSemanalesTotal }}h</span>
+            <span class="stat-label">Horas en semana</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-item">
+            <span class="stat-num">{{ diasDescansoCount }}</span>
+            <span class="stat-label">Días de descanso</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Calendario bimensual ── -->
+      <div class="calendario-section">
+
+        <div class="cal-top">
+          <div>
+            <h2 class="cal-titulo">Calendario de horarios</h2>
+          </div>
+          <div class="cal-nav">
+            <button class="cal-nav-btn" (click)="mesAnterior()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <span class="cal-periodo">{{ tituloPeriodo }}</span>
+            <button class="cal-nav-btn" (click)="mesSiguiente()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+            <button class="cal-hoy-btn" *ngIf="!esMesActual" (click)="volverMesActual()">Hoy</button>
+          </div>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="cal-leyenda">
+          <span class="ley-item"><span class="ley-dot trabajo"></span>Laboral</span>
+          <span class="ley-item"><span class="ley-dot descanso-dot"></span>Descanso</span>
+          <span class="ley-item"><span class="ley-dot hoy-dot"></span>Hoy</span>
+          <span class="ley-item"><span class="ley-dot sel-dot"></span>Semana seleccionada</span>
+        </div>
+
+        <!-- Dos meses -->
+        <div class="dos-meses">
+          <div class="mes-bloque" *ngFor="let semanas of meses; let i = index">
+            <h3 class="mes-titulo">{{ titulosMeses[i] }}</h3>
+
+            <div class="cal-grid cal-cabecera">
+              <div class="cal-head" *ngFor="let d of CABECERA">{{ d }}</div>
+            </div>
+
+            <!-- Fila de semana clickeable -->
+            <div
+              class="cal-semana semana-row"
+              *ngFor="let semana of semanas"
+              [class.semana-sel]="semana[0].esSelSemana"
+              [class.semana-tiene]="semana[0].tieneHorario"
+              (click)="seleccionarSemana(semana[0].semanaISO, semana[0].esDelMes)"
+              [title]="semana[0].tieneHorario ? 'Ver semana' : ''">
+
+              <div
+                class="cal-dia"
+                *ngFor="let dia of semana"
+                [class.otro-mes]="!dia.esDelMes"
+                [class.hoy]="dia.esHoy"
+                [class.trabajo]="dia.esTrabajo"
+                [class.descanso]="dia.esDelMes && !dia.esTrabajo"
+                [title]="dia.esTrabajo ? (dia.inicio + ' – ' + dia.fin) : (dia.esDelMes ? 'Descanso' : '')">
+                <span class="dia-num">{{ dia.esDelMes ? dia.dia : '' }}</span>
+                <span class="dia-horas" *ngIf="dia.esTrabajo">{{ dia.inicio }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+  </main>
+</div>

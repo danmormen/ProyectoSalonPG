@@ -1,0 +1,93 @@
+<div class="recompensas-page">
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-client-navbar
+    [active]="'recompensas'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <div class="content-container">
+    <div class="top-header">
+      <h1 class="page-title">Mis Recompensas</h1>
+      <p class="page-subtitle">Canjea tus puntos por beneficios exclusivos</p>
+    </div>
+
+    <!-- Puntos banner -->
+    <div class="points-banner glass-card">
+      <div class="points-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      </div>
+      <div class="points-info">
+        <p class="points-label">Puntos Disponibles</p>
+        <h1 class="points-value">{{ puntosDisponibles }}</h1>
+      </div>
+    </div>
+
+    <div class="main-grid">
+
+      <!-- Recompensas disponibles -->
+      <section class="recompensas-section">
+        <h3 class="section-title">Recompensas Disponibles</h3>
+
+        <div class="loading-state" *ngIf="cargando">
+          <p>Cargando recompensas...</p>
+        </div>
+
+        <div class="recompensa-card glass-card"
+             *ngFor="let r of recompensas"
+             [class.disabled]="puntosDisponibles < r.puntos_requeridos">
+          <div class="recompensa-info">
+            <h4 class="recompensa-nombre">{{ r.nombre }}</h4>
+            <p class="recompensa-desc">{{ r.descripcion }}</p>
+            <div class="tag-puntos">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span>{{ r.puntos_requeridos }} puntos</span>
+            </div>
+          </div>
+          <button class="btn-canjear"
+                  [disabled]="puntosDisponibles < r.puntos_requeridos"
+                  (click)="canjear(r)">
+            Canjear
+          </button>
+        </div>
+
+        <div class="empty-state" *ngIf="!cargando && recompensas.length === 0">
+          <p>No hay recompensas disponibles.</p>
+        </div>
+      </section>
+
+      <!-- Panel lateral -->
+      <aside class="side-section">
+
+        <div class="historial-card glass-card">
+          <h3 class="section-title">Historial de Puntos</h3>
+          <div class="historial-item" *ngFor="let item of historial">
+            <div class="historial-info">
+              <p class="actividad">{{ item.actividad }}</p>
+              <p class="fecha">{{ item.fecha }}</p>
+            </div>
+            <p class="puntos-change" [class.suma]="item.tipo === 'suma'">
+              {{ item.tipo === 'suma' ? '+' : '-' }}{{ item.puntos }}
+            </p>
+          </div>
+          <div class="historial-empty" *ngIf="historial.length === 0">
+            <p>Sin movimientos aún</p>
+          </div>
+        </div>
+
+        <div class="info-card glass-card">
+          <h3 class="info-title">¿Cómo ganar puntos?</h3>
+          <p class="info-rule">Por cada Q1 gastado: <strong>1 punto</strong></p>
+          <hr class="divider">
+          <p class="info-nota">
+            <strong>Importante:</strong> Los cupones son válidos únicamente al canjear en el salón.
+          </p>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</div>

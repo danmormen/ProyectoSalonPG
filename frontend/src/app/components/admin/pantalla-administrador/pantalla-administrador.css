@@ -1,0 +1,406 @@
+/* === Panel Administrativo: dashboard liquid glass tono toasted almond === */
+
+.admin-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #F5EBE0 0%,
+    #E8DCC8 25%,
+    #CEB59E 50%,
+    #E8DCC8 75%,
+    #F5EBE0 100%
+  );
+  overflow-x: hidden;
+}
+
+/* Circulos difuminados de fondo en tonos almendra */
+.bg-circle {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.circle-1 { width: 420px; height: 420px; background: rgba(206, 181, 158, 0.45); top: -100px; left: -120px; }
+.circle-2 { width: 360px; height: 360px; background: rgba(168, 149, 111, 0.30); bottom: -120px; right: -80px; }
+.circle-3 { width: 320px; height: 320px; background: rgba(139, 115, 85, 0.20); top: 40%; left: 65%; }
+
+/* === Dashboard layout === */
+.dashboard {
+  position: relative;
+  z-index: 1;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* === Hero card "Panel Administrativo" === */
+.hero-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 22px;
+  padding: 36px 40px;
+  box-shadow: 0 4px 24px rgba(139, 115, 85, 0.12);
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin: 0 0 8px 0;
+}
+
+.hero-sub {
+  margin: 0;
+  color: #7A6F6F;
+  font-size: 1rem;
+}
+
+/* === Stats row === */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 22px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  box-shadow: 0 4px 24px rgba(139, 115, 85, 0.10);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #7A6F6F;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  line-height: 1;
+}
+
+.stat-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(206, 181, 158, 0.40);
+  display: flex; align-items: center; justify-content: center;
+  color: #8B6F4D;
+  flex-shrink: 0;
+}
+.stat-icon svg { width: 26px; height: 26px; }
+
+/* === Bottom row: citas hoy + grafica semanal === */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.dash-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-icon {
+  width: 22px; height: 22px;
+  color: #8B6F4D;
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-confirmada {
+  background: rgba(184, 217, 188, 0.55);
+  color: #4F7B5A;
+}
+
+.badge-pendiente {
+  background: rgba(245, 220, 180, 0.7);
+  color: #A07527;
+}
+
+/* === Lista de citas de hoy === */
+.citas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cita-card {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 2px 14px rgba(139, 115, 85, 0.08);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cita-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(139, 115, 85, 0.14);
+}
+
+/* Bloque de hora a la izquierda */
+.cita-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(206, 181, 158, 0.35);
+  padding: 12px;
+  border-radius: 14px;
+  color: #8B6F4D;
+  min-width: 70px;
+}
+.cita-time svg { width: 18px; height: 18px; }
+.cita-time span {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #8B6F4D;
+}
+
+.cita-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cita-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cita-cliente {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin: 0;
+}
+
+.cita-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+.cita-status svg { width: 12px; height: 12px; }
+
+.status-confirmada {
+  background: rgba(184, 217, 188, 0.55);
+  color: #4F7B5A;
+}
+.status-pendiente {
+  background: rgba(245, 220, 180, 0.7);
+  color: #A07527;
+}
+
+.cita-detail {
+  margin: 0;
+  color: #7A6F6F;
+  font-size: 0.85rem;
+}
+
+/* === Grafica semanal === */
+.semana-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 22px;
+  padding: 24px 26px;
+  box-shadow: 0 4px 24px rgba(139, 115, 85, 0.10);
+}
+
+.total-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(206, 181, 158, 0.4);
+}
+
+.total-label {
+  font-size: 0.82rem;
+  color: #7A6F6F;
+  font-weight: 500;
+}
+
+.total-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #8B6F4D;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.dias-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dia-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  align-items: center;
+  gap: 12px;
+}
+
+.dia-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2F2A2A;
+}
+
+.dia-bar-wrapper { width: 100%; }
+
+.dia-bar-track {
+  height: 8px;
+  background: rgba(206, 181, 158, 0.30);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dia-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #CEB59E, #8B7355);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.dia-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  text-align: right;
+}
+
+/* === Responsive === */
+@media (max-width: 1100px) {
+  .bottom-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .dashboard { padding: 18px; gap: 18px; }
+  .stats-row { grid-template-columns: 1fr; }
+  .hero-title { font-size: 1.6rem; }
+  .stat-value { font-size: 1.8rem; }
+  .cita-time { min-width: 60px; padding: 8px; }
+  .total-value { font-size: 2rem; }
+}
+
+/* Estados reales */
+.status-confirmada { background: rgba(52,211,153,0.15);  color: #065F46; }
+.status-pendiente  { background: rgba(251,191,36,0.15);  color: #92400E; }
+.status-completada { background: rgba(99,102,241,0.15);  color: #3730A3; }
+.status-cancelada  { background: rgba(239,68,68,0.12);   color: #B91C1C; }
+
+.cita-card.status-completada { opacity: 0.65; }
+.cita-card.status-cancelada  { opacity: 0.4; }
+
+.cita-precio {
+  font-size: 0.78rem; font-weight: 700;
+  color: #6b7c5a; margin: 2px 0 0;
+}
+
+/* Día actual resaltado en la gráfica */
+.dia-row.dia-hoy .dia-name { font-weight: 700; color: #5a6e45; }
+.dia-row.dia-hoy .dia-count { font-weight: 700; color: #5a6e45; }
+.dia-bar-fill.dia-hoy-fill  { background: linear-gradient(90deg, #7a9c6a, #5a6e45); }
+
+/* Loading y vacío */
+.loading-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 20px 4px; color: #94a3b8; font-size: 0.88rem;
+}
+.citas-empty {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 32px 16px; color: #94a3b8; font-size: 0.88rem; text-align: center;
+}
+
+/* Botón ver todas */
+.ver-todas-btn {
+  width: 100%; margin-top: 12px; padding: 10px;
+  background: transparent; border: 1px solid rgba(148,163,184,0.3);
+  border-radius: 8px; color: #64748b; font-size: 0.82rem;
+  font-weight: 600; cursor: pointer; transition: background 0.2s;
+  font-family: inherit;
+}
+.ver-todas-btn:hover { background: rgba(255,255,255,0.5); color: #334155; }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

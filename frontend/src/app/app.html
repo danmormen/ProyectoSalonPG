@@ -1,0 +1,204 @@
+<div class="app-container">
+
+  <app-login 
+    *ngIf="vistaActual === 'login'" 
+    (onLogin)="onNavigate('home')"
+    (onAdminLogin)="onNavigate('admin')"
+    (onEstilistaLogin)="onNavigate('estilista')"
+    (onRequirePasswordChange)="irACambioPasswordObligatorio()"
+    (onOlvidePassword)="onNavigate('recuperar-password')"
+    (onNavigate)="onNavigate($event)">
+  </app-login>
+
+  <app-registro 
+    *ngIf="vistaActual === 'registro'" 
+    (onNavigate)="onNavigate($event)">
+  </app-registro>
+
+  <app-cambio-contrasena
+    *ngIf="vistaActual === 'cambio-password'"
+    (onPasswordChanged)="completarCambioPassword()"
+    (onCancel)="goToLogin()">
+  </app-cambio-contrasena>
+
+  <app-recuperar-contrasena
+    *ngIf="vistaActual === 'recuperar-password'"
+    (onSuccess)="goToLogin()"
+    (onCancel)="goToLogin()">
+  </app-recuperar-contrasena>
+
+
+  <app-home 
+    *ngIf="vistaActual === 'home'" 
+    (navigate)="onNavigate($event)" 
+    (logout)="onLogout()">
+  </app-home>
+
+  <app-perfil
+    *ngIf="vistaActual === 'perfil'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-perfil>
+
+  <app-servicios
+    *ngIf="vistaActual === 'servicios'"
+    (navigate)="onNavigate($event)"
+    (reservar)="onServiceSelected($event, false)"
+    (logout)="onLogout()">
+  </app-servicios>
+
+  <app-promociones
+    *ngIf="vistaActual === 'promociones'"
+    (seleccionarPromo)="onPromoSelected($event)"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-promociones>
+
+  <app-ver-cita
+    *ngIf="vistaActual === 'ver-cita'"
+    (navigate)="onNavigate($event)"
+    (modificar)="onModificarCita($event)"
+    (logout)="onLogout()">
+  </app-ver-cita>
+
+  <app-reservar
+    *ngIf="vistaActual === 'reservar'"
+    [servicioFijo]="servicioPreseleccionado"
+    [esPromo]="esPromocion"
+    [datosEdicion]="citaAEditar"
+    [promoActiva]="promoActiva"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-reservar>
+
+  <app-recompensas
+    *ngIf="vistaActual === 'recompensas'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-recompensas>
+
+  <app-resenas
+    *ngIf="vistaActual === 'resenas'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-resenas>
+
+  <!-- Blog deshabilitado -->
+  <!--
+  <app-blog
+    *ngIf="vistaActual === 'blog'"
+    (backToHome)="onNavigate('home')">
+  </app-blog>
+  -->
+
+
+  <app-pantalla-admin 
+    *ngIf="vistaActual === 'admin'" 
+    (logout)="onLogout()"
+    (navigate)="onNavigate($event)">
+  </app-pantalla-admin>
+
+  <app-empleados-admin
+    *ngIf="vistaActual === 'empleados-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-empleados-admin>
+
+  <app-servicios-admin
+    *ngIf="vistaActual === 'servicios-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-servicios-admin>
+
+  <app-gestion-citas-admin
+    *ngIf="vistaActual === 'gestion-citas-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-gestion-citas-admin>
+
+  <app-promociones-admin
+    *ngIf="vistaActual === 'promociones-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-promociones-admin>
+
+  <app-reportes-admin
+    *ngIf="vistaActual === 'blog-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-reportes-admin>
+
+  <app-notificaciones-admin
+    *ngIf="vistaActual === 'notificaciones-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-notificaciones-admin>
+
+  <app-horarios-administrador
+    *ngIf="vistaActual === 'horarios-administrador'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-horarios-administrador>
+
+  <app-recompensa-admin
+    *ngIf="vistaActual === 'recompensa-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-recompensa-admin>
+
+  <app-dias-especiales-admin
+    *ngIf="vistaActual === 'dias-especiales-admin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-dias-especiales-admin>
+
+
+  <app-pantalla-estilista 
+    *ngIf="vistaActual === 'estilista'" 
+    (logout)="onLogout()"
+    (navigate)="onNavigate($event)">
+  </app-pantalla-estilista>
+
+  <app-citas-estilista 
+    *ngIf="vistaActual === 'citas-estilista'" 
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-citas-estilista>
+
+  <app-detalle-citas 
+    *ngIf="vistaActual === 'detalle-citas'" 
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-detalle-citas>
+
+  <app-resenas-estilista 
+    *ngIf="vistaActual === 'resenas-estilista'" 
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-resenas-estilista>
+
+  <app-notificacion-estilista
+    *ngIf="vistaActual === 'notificacion-estilista'" 
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()"> 
+  </app-notificacion-estilista>
+
+  <app-perfil-estilista 
+    *ngIf="vistaActual === 'perfil-estilista'" 
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-perfil-estilista>
+
+  <app-estilista-horario
+    *ngIf="vistaActual === 'horario-estilista'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-estilista-horario>
+
+  <app-agendar-walkin
+    *ngIf="vistaActual === 'agendar-walkin'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-agendar-walkin>
+
+</div>

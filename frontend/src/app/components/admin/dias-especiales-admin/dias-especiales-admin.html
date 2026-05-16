@@ -1,0 +1,249 @@
+<div class="dias-container">
+  <app-admin-navbar
+    [active]="'dias-especiales'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-admin-navbar>
+
+  <main class="main-layout">
+    <header class="page-header">
+      <div class="header-text">
+        <h1>Días Especiales</h1>
+        <p class="header-sub">Haz clic en cualquier día del calendario para bloquearlo o configurar un horario especial.</p>
+      </div>
+      <button class="btn-nuevo" (click)="abrirNuevo()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Agregar día
+      </button>
+    </header>
+
+    <!-- Error -->
+    <div class="error-card" *ngIf="!cargando && error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28">
+        <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p>{{ error }}</p>
+      <button class="btn-reintentar" (click)="cargar()">Reintentar</button>
+    </div>
+
+    <!-- Cargando -->
+    <div class="loading-msg" *ngIf="cargando">
+      <svg style="width:20px;height:20px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+      Cargando...
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         CALENDARIO INTERACTIVO
+    ══════════════════════════════════════════════════════════════════ -->
+    <div class="cal-section" *ngIf="!cargando && !error">
+
+      <!-- Navegación + leyenda -->
+      <div class="cal-top">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" (click)="mesAnterior()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <span class="cal-periodo">{{ tituloPeriodo }}</span>
+          <button class="cal-nav-btn" (click)="mesSiguiente()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+          <button class="cal-hoy-btn" *ngIf="!esMesActual" (click)="volverHoy()">Hoy</button>
+        </div>
+
+        <div class="cal-leyenda">
+          <span class="ley-item"><span class="ley-dot cerrado-dot"></span>Cerrado</span>
+          <span class="ley-item"><span class="ley-dot especial-dot"></span>Horario especial</span>
+          <span class="ley-item ley-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+              <path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/>
+            </svg>
+            Clic en un día para bloquearlo
+          </span>
+        </div>
+      </div>
+
+      <!-- Dos meses lado a lado -->
+      <div class="dos-meses">
+        <div class="mes-bloque" *ngFor="let semanas of meses; let i = index">
+          <h3 class="mes-titulo">{{ titulosMeses[i] }}</h3>
+
+          <div class="cal-grid cal-cabecera">
+            <div class="cal-head" *ngFor="let d of CABECERA">{{ d }}</div>
+          </div>
+
+          <div class="cal-fila" *ngFor="let semana of semanas">
+            <div
+              class="cal-dia"
+              *ngFor="let dia of semana"
+              [class.otro-mes]="!dia.esDelMes"
+              [class.hoy]="dia.esHoy"
+              [class.pasado]="dia.esPasado"
+              [class.cerrado]="dia.esDelMes && dia.tipo === 'cerrado'"
+              [class.especial]="dia.esDelMes && dia.tipo === 'horario_especial'"
+              [class.clickable]="dia.esDelMes"
+              (click)="clickDia(dia)"
+              [title]="dia.esDelMes ? (dia.bloqueado ? labelTipo(dia.tipo) + (dia.bloqueado.motivo ? ' — ' + dia.bloqueado.motivo : '') : 'Clic para bloquear este día') : ''">
+
+              <span class="dia-num">{{ dia.esDelMes ? dia.dia : '' }}</span>
+
+              <span class="dia-badge" *ngIf="dia.esDelMes && dia.tipo === 'cerrado'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="9" height="9">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <span class="dia-badge especial-badge" *ngIf="dia.esDelMes && dia.tipo === 'horario_especial'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="9" height="9">
+                  <circle cx="12" cy="12" r="9"/><path d="M12 7v5l2 2"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         TABLA DE REFERENCIA
+    ══════════════════════════════════════════════════════════════════ -->
+    <div class="table-card" *ngIf="!cargando && !error">
+
+      <div class="table-header-row">
+        <h2 class="table-title">Días bloqueados</h2>
+        <span class="table-count">{{ dias.length }} {{ dias.length === 1 ? 'día' : 'días' }}</span>
+      </div>
+
+      <div class="empty-msg" *ngIf="dias.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="32" height="32">
+          <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+        </svg>
+        <p>Ningún día bloqueado aún. Haz clic en el calendario para agregar.</p>
+      </div>
+
+      <table class="dias-table" *ngIf="dias.length > 0">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Horario</th>
+            <th>Motivo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dia of dias">
+            <td class="td-fecha">{{ formatFecha(dia.fecha) }}</td>
+            <td>
+              <span class="tipo-pill" [class.cerrado]="dia.tipo === 'cerrado'" [class.especial]="dia.tipo === 'horario_especial'">
+                {{ labelTipo(dia.tipo) }}
+              </span>
+            </td>
+            <td class="td-horario">
+              <span *ngIf="dia.tipo === 'horario_especial' && dia.hora_inicio">
+                {{ dia.hora_inicio?.substring(0,5) }} – {{ dia.hora_fin?.substring(0,5) }}
+              </span>
+              <span *ngIf="dia.tipo === 'cerrado'" class="muted">—</span>
+            </td>
+            <td class="td-motivo">{{ dia.motivo || '—' }}</td>
+            <td class="td-acciones">
+              <button class="btn-editar" (click)="abrirEditar(dia)" title="Editar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/>
+                </svg>
+                Editar
+              </button>
+              <button class="btn-eliminar" (click)="eliminar(dia)" title="Quitar bloqueo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                  <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+                  <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+                </svg>
+                Quitar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MODAL
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <h2>{{ editando ? 'Editar día especial' : 'Bloquear día' }}</h2>
+        <button class="modal-close" (click)="cerrarModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <p class="field-error" *ngIf="errorModal">{{ errorModal }}</p>
+
+        <div class="form-group">
+          <label>Fecha *</label>
+          <input type="date" [(ngModel)]="form.fecha" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label>Tipo *</label>
+          <div class="tipo-selector">
+            <button type="button" class="tipo-btn" [class.active]="form.tipo === 'cerrado'" (click)="form.tipo = 'cerrado'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              Cerrado todo el día
+            </button>
+            <button type="button" class="tipo-btn" [class.active]="form.tipo === 'horario_especial'" (click)="form.tipo = 'horario_especial'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+              </svg>
+              Horario especial
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row" *ngIf="form.tipo === 'horario_especial'">
+          <div class="form-group">
+            <label>Hora inicio *</label>
+            <input type="time" [(ngModel)]="form.hora_inicio" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>Hora fin *</label>
+            <input type="time" [(ngModel)]="form.hora_fin" class="form-input" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Motivo (opcional)</label>
+          <input type="text" [(ngModel)]="form.motivo" class="form-input"
+                 placeholder="Ej: Día de la Independencia" />
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button *ngIf="editando" class="btn-eliminar-modal" (click)="eliminar(editando)" [disabled]="guardando">
+          Quitar bloqueo
+        </button>
+        <button class="btn-cancelar-modal" (click)="cerrarModal()" [disabled]="guardando">Cancelar</button>
+        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : (editando ? 'Guardar cambios' : 'Bloquear día') }}
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>

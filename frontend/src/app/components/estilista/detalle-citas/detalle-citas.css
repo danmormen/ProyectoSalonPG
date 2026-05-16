@@ -1,0 +1,459 @@
+/* ══════════════════════════════════════════════════════════════════
+   MIS CITAS DE HOY — Sage Liquid Glass
+   ══════════════════════════════════════════════════════════════════ */
+
+.detalle-container {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #A5AE98 0%, #88937B 28%, #6B7560 55%, #7A8570 78%, #A5AE98 100%);
+  overflow-x: hidden;
+}
+
+.detalle-container::before {
+  content: '';
+  position: fixed;
+  width: 440px; height: 440px;
+  border-radius: 50%;
+  background: rgba(232, 225, 213, 0.28);
+  filter: blur(90px);
+  top: -120px; left: -140px;
+  pointer-events: none; z-index: 0;
+}
+.detalle-container::after {
+  content: '';
+  position: fixed;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: rgba(107, 117, 96, 0.40);
+  filter: blur(80px);
+  bottom: -80px; right: -100px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── MAIN LAYOUT ── */
+.main-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 24px 48px;
+}
+
+.page-info h1 {
+  font-family: 'Playfair Display', serif;
+  color: #F5F0EB;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-shadow: 0 1px 4px rgba(45, 51, 40, 0.18);
+}
+
+.day-subtitle {
+  color: rgba(245, 240, 235, 0.70);
+  font-size: 0.92rem;
+  margin: 0 0 24px;
+}
+
+/* ── BARRA DE PROGRESO ── */
+.progress-bar-card {
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 16px;
+  padding: 16px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 14px rgba(72, 80, 63, 0.10);
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6B7560;
+}
+
+.progress-count {
+  font-weight: 700;
+  color: #4A5446;
+}
+
+.progress-track {
+  height: 6px;
+  background: rgba(136, 147, 123, 0.20);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #88937B, #6B7560);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* ── APPOINTMENT CARDS (mismo sistema que agenda) ── */
+.cards-stack { display: flex; flex-direction: column; gap: 14px; }
+
+.appointment-item {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 22px;
+  box-shadow: 0 2px 14px rgba(72, 80, 63, 0.10);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s, opacity 0.2s;
+}
+.appointment-item:hover {
+  box-shadow: 0 6px 24px rgba(72, 80, 63, 0.18);
+  transform: translateY(-2px);
+}
+.appointment-item.is-completada {
+  opacity: 0.65;
+}
+.appointment-item.is-completada .time-stripe {
+  background: rgba(165, 174, 152, 0.50);
+}
+
+/* ── TIME STRIPE ── */
+.time-stripe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: rgba(107, 117, 96, 0.68);
+  color: #E8E1D5;
+  padding: 0 22px;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.time-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.time-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  opacity: 0.70;
+}
+
+/* ── CUERPO ── */
+.appt-body {
+  flex: 1;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.appt-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.appt-service-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2D3328;
+}
+
+/* Status pills */
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.70rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+.confirmada { background: rgba(107, 117, 96, 0.20); color: #4A5446; }
+.pendiente  { background: rgba(200, 175, 120, 0.25); color: #6B5B40; }
+.completada { background: rgba(165, 174, 152, 0.25); color: #88937B; }
+
+/* Duración */
+.appt-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.meta-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #A5AE98;
+}
+
+.duration-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6B7560;
+}
+
+/* Divider */
+.appt-divider {
+  height: 1px;
+  background: rgba(136, 147, 123, 0.15);
+  margin-bottom: 14px;
+}
+
+/* Cliente + acción */
+.appt-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.client-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-avatar {
+  width: 34px; height: 34px;
+  background: rgba(165, 174, 152, 0.30);
+  color: #6B7560;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.client-name  { margin: 0; font-size: 0.93rem; font-weight: 700; color: #2D3328; }
+.client-phone { margin: 1px 0 0; font-size: 0.80rem; color: #88937B; }
+
+.appt-actions { display: flex; align-items: center; }
+
+.complete-btn {
+  background: rgba(107, 117, 96, 0.88);
+  color: #E8E1D5;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.complete-btn:hover {
+  background: rgba(72, 80, 63, 0.92);
+  box-shadow: 0 4px 14px rgba(72, 80, 63, 0.28);
+}
+
+.finished-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #88937B;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Notas */
+.notes-box {
+  background: rgba(232, 225, 213, 0.30);
+  border-left: 3px solid rgba(136, 147, 123, 0.50);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 12px;
+}
+.notes-box p { margin: 0; color: #5A6355; font-size: 0.85rem; line-height: 1.5; }
+
+/* ── Navegador de día ─────────────────────────────────────────── */
+.day-navigator {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.20); border-radius: 14px;
+  padding: 14px 18px; margin-bottom: 16px; text-align: center;
+}
+.day-nav-btn {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  color: #E8E1D5; font-size: 1.4rem; width: 36px; height: 36px;
+  border-radius: 50%; cursor: pointer; transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.day-nav-btn:hover { background: rgba(255,255,255,0.28); }
+.day-info { flex: 1; }
+.day-label { font-size: 0.72rem; color: rgba(232,225,213,0.70); text-transform: uppercase; letter-spacing: 0.06em; margin: 0; }
+.day-title { font-size: 0.95rem; font-weight: 700; color: #E8E1D5; margin: 2px 0 4px; }
+.day-today-btn {
+  font-size: 0.75rem; color: #A5AE98; background: none; border: none;
+  cursor: pointer; text-decoration: underline; padding: 0;
+}
+
+/* ── Carga / error / vacío ────────────────────────────────────── */
+.loading-msg {
+  display: flex; align-items: center; gap: 10px;
+  padding: 24px; color: #94a3b8; font-size: 0.9rem;
+}
+.error-msg {
+  padding: 16px; color: #dc2626;
+  background: rgba(239,68,68,0.08); border-radius: 10px; margin: 16px 0;
+}
+.empty-msg {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 48px 24px; color: rgba(232,225,213,0.60); font-size: 0.9rem; text-align: center;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Estado cancelada ─────────────────────────────────────────── */
+.appointment-item.is-cancelada { opacity: 0.6; }
+
+/* ── Botones de acción ────────────────────────────────────────── */
+.action-btns { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.btn-completar {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 8px; border: none;
+  background: rgba(52,211,153,0.15); color: #065F46;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-completar:hover { background: rgba(52,211,153,0.28); }
+
+.btn-cancelar-cita {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 12px; border-radius: 8px; border: none;
+  background: rgba(239,68,68,0.10); color: #991b1b;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar-cita:hover { background: rgba(239,68,68,0.20); }
+
+.completada-tag {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.8rem; font-weight: 600; color: #3730A3;
+}
+
+/* ── Formulario inline de cancelación ────────────────────────── */
+.cancel-form {
+  margin-top: 12px; padding: 12px 14px;
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.18); border-radius: 10px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cancel-form-label { font-size: 0.8rem; font-weight: 600; color: #991b1b; }
+.cancel-textarea {
+  width: 100%; resize: none; border-radius: 7px;
+  border: 1px solid rgba(239,68,68,0.25);
+  background: rgba(255,255,255,0.7);
+  padding: 8px 10px; font-size: 0.84rem; color: #2F2A2A;
+  font-family: 'Inter', system-ui, sans-serif;
+  outline: none; box-sizing: border-box;
+}
+.cancel-textarea:focus { border-color: rgba(239,68,68,0.50); }
+.cancel-form-btns { display: flex; gap: 8px; }
+.cancel-form-confirm {
+  flex: 1; padding: 8px 0; border-radius: 8px; border: none;
+  background: rgba(239,68,68,0.80); color: #fff;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+}
+.cancel-form-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+.cancel-form-confirm:not(:disabled):hover { background: rgba(239,68,68,1); }
+.cancel-form-discard {
+  padding: 8px 16px; border-radius: 8px;
+  border: 1px solid rgba(100,116,139,0.3); background: transparent;
+  color: #64748b; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: background 0.2s;
+}
+.cancel-form-discard:hover { background: rgba(100,116,139,0.08); }
+
+/* ── Notas y motivo ───────────────────────────────────────────── */
+.appt-notas {
+  display: flex; align-items: flex-start; gap: 5px;
+  font-size: 0.8rem; color: #6b7280; margin: 6px 0 0; font-style: italic;
+}
+.appt-notas svg { flex-shrink: 0; margin-top: 1px; stroke: #9ca3af; }
+
+.appt-motivo-cancelacion {
+  display: flex; align-items: flex-start; gap: 5px;
+  font-size: 0.8rem; color: #991b1b; margin: 6px 0 0; font-style: italic;
+}
+.appt-motivo-cancelacion svg { flex-shrink: 0; margin-top: 1px; stroke: #ef4444; }
+
+/* ── Chips de precio ──────────────────────────────────────────── */
+.precio-chip {
+  background: rgba(107,117,96,0.15); color: #4a5240;
+  font-size: 0.82rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+}
+
+/* ── Today-only day header (no navigation arrows) ── */
+.day-navigator.today-only {
+  justify-content: center;
+}
+.day-navigator.today-only .day-info {
+  text-align: center;
+}
+
+/* ── Liquid glass action buttons ──────────────────────────────── */
+.btn-completar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 12px;
+  background: rgba(52,211,153,0.15);
+  border: 1px solid rgba(52,211,153,0.38);
+  color: #065F46;
+  font-size: 0.83rem; font-weight: 600; cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 2px 8px rgba(52,211,153,0.10);
+  transition: background 0.15s, transform 0.15s;
+}
+.btn-completar:hover {
+  background: rgba(52,211,153,0.26);
+  transform: translateY(-1px);
+}
+
+.btn-cancelar-cita {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 12px;
+  background: rgba(239,68,68,0.10);
+  border: 1px solid rgba(239,68,68,0.30);
+  color: #991b1b;
+  font-size: 0.83rem; font-weight: 600; cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 2px 8px rgba(239,68,68,0.08);
+  transition: background 0.15s, transform 0.15s;
+}
+.btn-cancelar-cita:hover {
+  background: rgba(239,68,68,0.18);
+  transform: translateY(-1px);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .appointment-item { flex-direction: column; }
+  .time-stripe {
+    flex-direction: row;
+    gap: 8px;
+    padding: 14px 20px;
+    justify-content: flex-start;
+  }
+  .time-value { font-size: 1.2rem; }
+  .appt-bottom-row { flex-direction: column; align-items: flex-start; }
+}

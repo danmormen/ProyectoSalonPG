@@ -1,0 +1,161 @@
+/* === Mis Citas: Rose/Blush Liquid Glass === */
+.ver-cita-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #F5E6E8 0%, #E8D5D0 25%, #D8A7B1 50%, #E8D5D0 75%, #F5E6E8 100%);
+  overflow-x: hidden;
+}
+.bg-circle { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+.circle-1 { width: 420px; height: 420px; background: rgba(216,167,177,0.35); top: -100px; left: -120px; }
+.circle-2 { width: 360px; height: 360px; background: rgba(200,169,106,0.28); bottom: -120px; right: -80px; }
+.circle-3 { width: 320px; height: 320px; background: rgba(183,110,121,0.20); top: 40%; left: 65%; }
+.glass-card {
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(183,110,121,0.10);
+}
+.content-container { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 32px 24px 60px; }
+.top-header { margin-bottom: 28px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #2F2A2A; margin: 0 0 6px; }
+.page-subtitle { font-size: 0.95rem; color: #9B6F75; margin: 0; }
+
+.citas-wrapper { display: flex; flex-direction: column; gap: 16px; }
+
+.cita-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+}
+
+.cita-left { flex: 1; }
+
+.status-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.tag-green  { background: rgba(72,167,120,0.15); color: #2E7D57; border: 1px solid rgba(72,167,120,0.35); }
+.tag-yellow { background: rgba(200,160,60,0.15); color: #8A6A00; border: 1px solid rgba(200,160,60,0.35); }
+.tag-blue   { background: rgba(72,120,167,0.15); color: #2E5C7D; border: 1px solid rgba(72,120,167,0.35); }
+.tag-red    { background: rgba(183,110,121,0.15); color: #8C3A43; border: 1px solid rgba(183,110,121,0.35); }
+
+.cita-servicio { font-size: 1.1rem; font-weight: 700; color: #2F2A2A; margin: 0 0 12px; }
+
+.cita-meta { display: flex; flex-direction: column; gap: 6px; }
+.meta-item { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #5C3D42; }
+.meta-item svg { width: 15px; height: 15px; flex-shrink: 0; stroke: #B76E79; }
+
+.actions-section { display: flex; flex-direction: column; gap: 8px; align-items: stretch; min-width: 130px; }
+
+/* ── Botones de acción — liquid glass ─────────────────────────── */
+.btn-action {
+  padding: 9px 16px;
+  border-radius: 12px;
+  font-size: 0.87rem;
+  font-weight: 600;
+  font-family: 'Inter', system-ui, sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  text-align: center;
+  white-space: nowrap;
+}
+.btn-action:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.10); }
+.btn-action:active { transform: translateY(0); }
+
+/* Confirmar — azul cristal */
+.btn-confirmar {
+  background: rgba(91,163,217,0.20);
+  border: 1px solid rgba(91,163,217,0.45);
+  color: #1E6FA8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 2px 8px rgba(91,163,217,0.12);
+}
+.btn-confirmar:hover { background: rgba(91,163,217,0.32); }
+
+/* Modificar — blanco cristal neutro */
+.btn-outline {
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.65);
+  color: #5A4550;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.70), 0 2px 8px rgba(183,110,121,0.06);
+}
+.btn-outline:hover { background: rgba(255,255,255,0.52); }
+
+/* Cancelar — rosa cristal */
+.btn-outline-red {
+  background: rgba(183,110,121,0.12);
+  border: 1px solid rgba(183,110,121,0.35);
+  color: #8C3A43;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.50), 0 2px 8px rgba(183,110,121,0.10);
+}
+.btn-outline-red:hover { background: rgba(183,110,121,0.22); }
+
+.btn-green { background: rgba(72,167,120,0.18); border: 1px solid rgba(72,167,120,0.38); color: #1D6B43; }
+.btn-blush { background: rgba(183,110,121,0.18); border: 1px solid rgba(183,110,121,0.38); color: #8C3A43; }
+
+/* ─────────────────────────────────────────────────────────────── */
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 60px 24px; text-align: center; color: #9B6F75;
+}
+.empty-state svg { width: 52px; height: 52px; stroke: #D8A7B1; }
+.empty-state p { font-size: 1rem; margin: 0; }
+
+@media (max-width: 600px) {
+  .cita-card { flex-direction: column; }
+  .actions-section { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* Loading */
+.loading-state { text-align: center; padding: 60px 24px; color: #9B6F75; }
+
+.alert-error {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(183,110,121,0.12); border: 1px solid rgba(183,110,121,0.35);
+  color: #8C3A43; border-radius: 10px; padding: 14px 16px;
+  font-size: 0.90rem; margin-bottom: 16px;
+}
+.alert-error svg { width: 18px; height: 18px; flex-shrink: 0; stroke: #B76E79; margin-top: 1px; }
+
+/* Tarjetas desvanecidas para estados finales */
+.cita-card.cancelada  { opacity: 0.65; }
+.cita-card.completada { opacity: 0.80; }
+
+/* Badge estado final (cancelada/completada) */
+.estado-final {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: #9B6F75; font-size: 0.80rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.4px; min-width: 80px;
+}
+.estado-final svg { width: 22px; height: 22px; stroke: #C4A0A5; }
+.completada-badge { color: #2E7D57; }
+.completada-badge svg { stroke: #48A778; }
+
+.btn-reservar-empty {
+  padding: 11px 24px;
+  background: rgba(183,110,121,0.18);
+  border: 1px solid rgba(183,110,121,0.38);
+  color: #8C3A43;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.90rem; font-weight: 600;
+  border-radius: 12px; cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.50);
+  transition: background 0.15s, transform 0.15s;
+}
+.btn-reservar-empty:hover { background: rgba(183,110,121,0.28); transform: translateY(-1px); }

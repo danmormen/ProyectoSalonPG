@@ -1,0 +1,144 @@
+<div class="admin-page-layout">
+  <app-admin-navbar
+    [active]="'promociones'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-admin-navbar>
+  
+    <div class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Gestión de Promociones</h1>
+        <button class="add-btn" (click)="abrirModalNuevo()">+ Agregar Promoción</button>
+      </header>
+  
+      <!-- Estado de carga -->
+      <div *ngIf="cargando" class="loading-state">
+        <p>Cargando promociones...</p>
+      </div>
+  
+      <!-- Grid de promociones -->
+      <div class="promo-grid" *ngIf="!cargando">
+  
+        <!-- Mensaje si no hay promos -->
+        <div class="empty-state" *ngIf="promociones.length === 0">
+          <p>No hay promociones registradas. ¡Agrega la primera!</p>
+        </div>
+  
+        <div class="promo-card" *ngFor="let p of promociones">
+          <!-- Banner: título de la promo (como en la vista de clientes) -->
+          <div class="promo-banner" [class.inactive-banner]="!p.activo">
+            <span class="discount-val">{{ p.titulo }}</span>
+          </div>
+
+          <div class="card-body">
+            <div class="body-header">
+              <div class="status-toggle" [class.on]="p.activo">
+                <div class="toggle-circle"></div>
+              </div>
+            </div>
+
+            <p class="description">{{ p.descripcion }}</p>
+
+            <!-- Precio especial destacado (como en vista cliente) -->
+            <div class="precio-especial-box">
+              <span class="precio-label">Precio especial</span>
+              <span class="precio-valor">Q{{ p.precio_especial | number:'1.2-2' }}</span>
+            </div>
+
+            <!-- Servicio al que aplica la promo -->
+            <div class="price-offer main-color" *ngIf="p.servicio_nombre">
+              Servicio: {{ p.servicio_nombre }}
+            </div>
+
+            <!-- Contador de usos -->
+            <div class="price-offer" style="margin-top:4px; font-size:0.82rem; color:#888;">
+              Usos: {{ textoUsos(p) }}
+            </div>
+
+            <div class="validity-box">
+              <span class="label">Vigencia:</span>
+              <span class="value">{{ p.fecha_inicio | date:'d/M/yyyy' }} - {{ p.fecha_fin | date:'d/M/yyyy' }}</span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button class="action-btn edit" (click)="abrirModalEditar(p)">Editar</button>
+            <button class="action-btn delete" (click)="eliminarPromo(p.id)">Eliminar</button>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  
+    <!-- Modal -->
+    <div class="modal-backdrop" *ngIf="mostrarModal">
+      <div class="modal-window">
+        <h2 class="modal-title">{{ editando ? 'Editar Promoción' : 'Nueva Promoción' }}</h2>
+  
+        <div class="form-container">
+          <div class="input-field full-width">
+            <label>Título de la Promoción</label>
+            <input type="text" [(ngModel)]="promoForm.titulo" placeholder="Ej. 2 uñas por el precio de 1">
+          </div>
+
+          <!-- Servicio al que aplica la promo -->
+          <div class="input-field full-width">
+            <label>Servicio incluido</label>
+            <select [(ngModel)]="promoForm.servicio_id">
+              <option [ngValue]="null" disabled selected>Selecciona un servicio...</option>
+              <option *ngFor="let s of servicios" [ngValue]="s.id">
+                {{ s.nombre }} (precio regular: Q{{ s.precio }})
+              </option>
+            </select>
+          </div>
+
+          <div class="input-field full-width">
+            <label>Descripción</label>
+            <textarea [(ngModel)]="promoForm.descripcion" rows="2"
+              placeholder="Ej. Válido para uñas acrílicas y de gel"></textarea>
+          </div>
+
+          <div class="input-row">
+            <!-- Precio especial que el admin fija libremente (no es un porcentaje) -->
+            <div class="input-field">
+              <label>Precio Especial (Q)</label>
+              <input type="number" [(ngModel)]="promoForm.precio_especial" min="0" step="0.01">
+            </div>
+            <!-- null = sin límite; un número = máximo de veces que se puede usar esta promo -->
+            <div class="input-field">
+              <label>Límite de Usos (vacío = ilimitado)</label>
+              <input type="number" [(ngModel)]="promoForm.limite_usos" min="1" placeholder="Sin límite">
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="input-field">
+              <label>Fecha Inicio</label>
+              <input type="date" [(ngModel)]="promoForm.fecha_inicio">
+            </div>
+            <div class="input-field">
+              <label>Fecha Fin</label>
+              <input type="date" [(ngModel)]="promoForm.fecha_fin">
+            </div>
+          </div>
+
+          <div class="input-field full-width">
+            <label>Estado de la Promoción</label>
+            <select [(ngModel)]="promoForm.activo">
+              <option [ngValue]="1">Activa</option>
+              <option [ngValue]="0">Inactiva</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="modal-btns">
+          <button class="cancel-btn" (click)="mostrarModal = false" [disabled]="guardando">Cancelar</button>
+          <button class="save-btn" (click)="guardarPromo()" [disabled]="guardando">
+            {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Guardar') }}
+          </button>
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>

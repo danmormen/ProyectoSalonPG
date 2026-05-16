@@ -1,0 +1,91 @@
+/* === Recompensas: Rose/Blush Liquid Glass === */
+.recompensas-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #F5E6E8 0%, #E8D5D0 25%, #D8A7B1 50%, #E8D5D0 75%, #F5E6E8 100%);
+  overflow-x: hidden;
+}
+.bg-circle { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+.circle-1 { width: 420px; height: 420px; background: rgba(216,167,177,0.35); top: -100px; left: -120px; }
+.circle-2 { width: 360px; height: 360px; background: rgba(200,169,106,0.28); bottom: -120px; right: -80px; }
+.circle-3 { width: 320px; height: 320px; background: rgba(183,110,121,0.20); top: 40%; left: 65%; }
+.glass-card {
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(183,110,121,0.10);
+}
+.content-container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 32px 24px 60px; }
+.top-header { margin-bottom: 24px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #2F2A2A; margin: 0 0 6px; }
+.page-subtitle { font-size: 0.95rem; color: #9B6F75; margin: 0; }
+
+/* Points banner */
+.points-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 28px;
+  margin-bottom: 28px;
+  background: linear-gradient(135deg, rgba(183,110,121,0.18), rgba(216,167,177,0.28));
+  border: 1px solid rgba(183,110,121,0.30);
+}
+.points-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #B76E79, #D8A7B1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.points-icon svg { width: 22px; height: 22px; stroke: #fff; }
+.points-label { font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9B6F75; margin: 0 0 3px; }
+.points-value { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: #B76E79; margin: 0; line-height: 1; }
+
+/* Main grid */
+.main-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start; }
+
+.section-title { font-size: 1rem; font-weight: 700; color: #2F2A2A; margin: 0 0 14px; }
+
+/* Recompensas list */
+.recompensas-section { display: flex; flex-direction: column; gap: 14px; }
+
+.recompensa-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  transition: transform 0.2s;
+}
+.recompensa-card:hover:not(.disabled) { transform: translateY(-2px); }
+.recompensa-card.disabled { opacity: 0.55; filter: grayscale(0.4); }
+
+.recompensa-nombre { font-size: 1rem; font-weight: 700; color: #2F2A2A; margin: 0 0 5px; }
+.recompensa-desc { font-size: 0.86rem; color: #7A5A5F; margin: 0 0 10px; }
+.tag-puntos { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; font-weight: 600; color: #B76E79; }
+.tag-puntos svg { width: 13px; height: 13px; stroke: #B76E79; }
+
+.btn-canjear { padding: 10px 20px; background: linear-gradient(135deg, #B76E79, #C48490); color: #fff; font-family: 'Inter', system-ui, sans-serif; font-size: 0.88rem; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
+.btn-canjear:hover:not(:disabled) { opacity: 0.88; }
+.btn-canjear:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.empty-state { text-align: center; padding: 40px 24px; color: #9B6F75; font-size: 0.92rem; }
+.loading-state { text-align: center; padding: 40px 24px; color: #9B6F75; }
+
+/* Side section */
+.side-section { display: flex; flex-direction: column; gap: 14px; }
+
+.historial-card { padding: 20px 22px; }
+.historial-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(183,110,121,0.10); }
+.historial-item:last-child { border-bottom: none; }
+.actividad { font-size: 0.88rem; font-weight: 600; color: #2F2A2A; margin: 0 0 3px; }
+.fecha { font-size: 0.80rem; color: #9B6F75; margin: 0; }
+.puntos-change { font-size: 0.95rem; font-weight: 700; color: #B76E79; white-space: nowrap; }
+.puntos-change.suma { color: #2E7D57; }
+.historial-empty { text-align: center; font-size: 0.88rem; color: #9B6F75; padding: 12px 0; }
+
+.info-card { padding: 20px 22px; }
+.info-title { font-size: 0.95rem; font-weight: 700; color: #2F2A2A; margin: 0 0 10px; }
+.info-rule { font-size: 0.90rem; color: #5C3D42; margin: 0 0 12px; }
+.divider { border: none; border-top: 1px solid rgba(183,110,121,0.20); margin: 0 0 12px; }
+.info-nota { font-size: 0.85rem; color: #7A5A5F; margin: 0; line-height: 1.5; }
+
+@media (max-width: 860px) { .main-grid { grid-template-columns: 1fr; } }

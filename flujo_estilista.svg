@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 2000 1125" width="2000" height="1125">
+<defs>
+  <marker id="ah" viewBox="0 0 10 7" refX="9" refY="3.5"
+          markerWidth="7" markerHeight="7" orient="auto">
+    <polygon points="0,0 10,3.5 0,7" fill="#B8A890"/>
+  </marker>
+  <marker id="ah2" viewBox="0 0 10 7" refX="9" refY="3.5"
+          markerWidth="7" markerHeight="7" orient="auto">
+    <polygon points="0,0 10,3.5 0,7" fill="#B8A890"/>
+  </marker>
+</defs>
+<rect x="0" y="0" width="2000" height="1125" fill="#F8F3EC"/>
+<rect x="0" y="0" width="1999.5" height="93.0" fill="#2C2318" stroke="none" rx="0" ry="0"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="20" font-weight="bold" fill="#FEFEFE" text-anchor="start"><tspan x="60.5" y="50.5">Flujo — Estilista</tspan></text>
+<line x1="585.0" y1="108.0" x2="585.0" y2="1098.0" stroke="#CEBEAA" stroke-width="1"/>
+<rect x="592.5" y="112.5" width="1395.0" height="148.5" fill="#EEE5D8" stroke="none" rx="9" ry="9"/>
+<rect x="592.5" y="276.9" width="1395.0" height="148.5" fill="#FFFDF9" stroke="none" rx="9" ry="9"/>
+<rect x="592.5" y="441.3" width="1395.0" height="148.5" fill="#EEE5D8" stroke="none" rx="9" ry="9"/>
+<rect x="592.5" y="605.7" width="1395.0" height="148.5" fill="#FFFDF9" stroke="none" rx="9" ry="9"/>
+<rect x="592.5" y="770.1" width="1395.0" height="148.5" fill="#EEE5D8" stroke="none" rx="9" ry="9"/>
+<rect x="592.5" y="934.5" width="1395.0" height="148.5" fill="#FFFDF9" stroke="none" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="7" font-weight="bold" fill="#9E9082" text-anchor="start"><tspan x="50.0" y="128.9">ACCESO</tspan></text>
+<rect x="93.0" y="129.0" width="165.0" height="60.0" fill="#3A2F24" stroke="none" rx="30" ry="30"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="175.5" y="161.0">LOGIN</tspan></text>
+<line x1="258.0" y1="159.0" x2="342.0" y2="159.0" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="342.0" y="117.0" width="228.0" height="150.0" fill="#C4956A" stroke="none" rx="12" ry="12"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="456.0" y="160.6">Agenda Semanal</tspan></text>
+<text x="456.0" y="236.2" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" fill="#F0DEC5" text-anchor="middle">Vista Lun–Dom · Citas por día</text>
+<line x1="570.0" y1="192.0" x2="595.5" y2="192.0" stroke="#B8A890" stroke-width="1.8"  />
+<line x1="595.5" y1="186.7" x2="595.5" y2="1008.8" stroke="#B8A890" stroke-width="1.8"  />
+<line x1="595.5" y1="186.7" x2="612.0" y2="186.7" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<line x1="595.5" y1="351.1" x2="612.0" y2="351.1" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<line x1="595.5" y1="515.5" x2="612.0" y2="515.5" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<line x1="595.5" y1="680.0" x2="612.0" y2="680.0" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<line x1="595.5" y1="844.4" x2="612.0" y2="844.4" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<line x1="595.5" y1="1008.8" x2="612.0" y2="1008.8" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="7" font-weight="bold" fill="#9E9082" text-anchor="start"><tspan x="620.0" y="128.9">MÓDULOS DEL ESTILISTA</tspan></text>
+<rect x="612.0" y="123.0" width="183.0" height="127.5" fill="#E8DDD0" stroke="#C0B09A" stroke-width="1.2" rx="9" ry="9"/>
+<rect x="612.0" y="123.0" width="10.5" height="127.5" fill="#C4956A" stroke="none" rx="0" ry="0"/>
+<circle cx="646.5" cy="186.8" r="19.5" fill="#3A2F24"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="646.5" y="188.4">1</tspan></text>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="start"><tspan x="683.0" y="188.8">Citas del Día</tspan></text>
+<line x1="795.0" y1="186.7" x2="810.0" y2="186.7" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="810.0" y="123.0" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="903.0" y="153.6">Seleccionar</tspan><tspan x="903.0" dy="13.0">día</tspan></text>
+<text x="903.0" y="224.6" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">lunes a domingo</text>
+<line x1="996.0" y1="186.7" x2="1014.0" y2="186.7" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1014.0" y="123.0" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1107.0" y="153.6">Ver citas</tspan><tspan x="1107.0" dy="13.0">del día</tspan></text>
+<text x="1107.0" y="224.6" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">hora · cliente · servicio</text>
+<line x1="1200.0" y1="186.7" x2="1218.0" y2="186.7" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1218.0" y="123.0" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1311.0" y="153.6">Ver detalle</tspan><tspan x="1311.0" dy="13.0">de cita</tspan></text>
+<text x="1311.0" y="224.6" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">estado actual</text>
+<line x1="1404.0" y1="186.7" x2="1422.0" y2="186.7" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1422.0" y="123.0" width="186.0" height="127.5" fill="#3A2F24" stroke="none" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="1515.0" y="160.1">Cancelar cita</tspan></text>
+<text x="1515.0" y="224.6" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">ingresar motivo</text>
+<rect x="612.0" y="287.4" width="183.0" height="127.5" fill="#E8DDD0" stroke="#C0B09A" stroke-width="1.2" rx="9" ry="9"/>
+<rect x="612.0" y="287.4" width="10.5" height="127.5" fill="#C4956A" stroke="none" rx="0" ry="0"/>
+<circle cx="646.5" cy="351.1" r="19.5" fill="#3A2F24"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="646.5" y="352.8">2</tspan></text>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="start"><tspan x="683.0" y="353.1">Walk-In</tspan></text>
+<line x1="795.0" y1="351.1" x2="810.0" y2="351.1" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="810.0" y="287.4" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="903.0" y="318.0">Agregar cliente</tspan><tspan x="903.0" dy="13.0">presencial</tspan></text>
+<text x="903.0" y="389.0" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">sin cuenta</text>
+<line x1="996.0" y1="351.1" x2="1014.0" y2="351.1" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1014.0" y="287.4" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1107.0" y="318.0">Nombre y</tspan><tspan x="1107.0" dy="13.0">teléfono</tspan></text>
+<text x="1107.0" y="389.0" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">datos del cliente</text>
+<line x1="1200.0" y1="351.1" x2="1218.0" y2="351.1" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1218.0" y="287.4" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1311.0" y="318.0">Hora y</tspan><tspan x="1311.0" dy="13.0">servicios</tspan></text>
+<text x="1311.0" y="389.0" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">seleccionar ítems</text>
+<line x1="1404.0" y1="351.1" x2="1422.0" y2="351.1" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1422.0" y="287.4" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1515.0" y="318.0">Verificar</tspan><tspan x="1515.0" dy="13.0">disponibilidad</tspan></text>
+<text x="1515.0" y="389.0" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">slot libre</text>
+<line x1="1608.0" y1="351.1" x2="1626.0" y2="351.1" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1626.0" y="287.4" width="186.0" height="127.5" fill="#3A2F24" stroke="none" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="1719.0" y="346.6">Cita</tspan><tspan x="1719.0" dy="13.0">Registrada</tspan></text>
+<rect x="612.0" y="451.8" width="183.0" height="127.5" fill="#E8DDD0" stroke="#C0B09A" stroke-width="1.2" rx="9" ry="9"/>
+<rect x="612.0" y="451.8" width="10.5" height="127.5" fill="#C4956A" stroke="none" rx="0" ry="0"/>
+<circle cx="646.5" cy="515.5" r="19.5" fill="#3A2F24"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="646.5" y="517.3">3</tspan></text>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="start"><tspan x="683.0" y="517.5">Mi Horario</tspan></text>
+<line x1="795.0" y1="515.5" x2="810.0" y2="515.5" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="810.0" y="451.8" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="903.0" y="482.4">Ver horario</tspan><tspan x="903.0" dy="13.0">asignado</tspan></text>
+<text x="903.0" y="553.4" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">vista 2 meses</text>
+<line x1="996.0" y1="515.5" x2="1014.0" y2="515.5" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1014.0" y="451.8" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1107.0" y="482.4">Ver semana</tspan><tspan x="1107.0" dy="13.0">actual</tspan></text>
+<text x="1107.0" y="553.4" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">días y horarios</text>
+<line x1="1200.0" y1="515.5" x2="1218.0" y2="515.5" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1218.0" y="451.8" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1311.0" y="482.4">Días de</tspan><tspan x="1311.0" dy="13.0">descanso</tspan></text>
+<text x="1311.0" y="553.4" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">asignados por admin</text>
+<rect x="612.0" y="616.2" width="183.0" height="127.5" fill="#E8DDD0" stroke="#C0B09A" stroke-width="1.2" rx="9" ry="9"/>
+<rect x="612.0" y="616.2" width="10.5" height="127.5" fill="#C4956A" stroke="none" rx="0" ry="0"/>
+<circle cx="646.5" cy="680.0" r="19.5" fill="#3A2F24"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="646.5" y="681.7">4</tspan></text>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="start"><tspan x="683.0" y="682.0">Mis Reseñas</tspan></text>
+<line x1="795.0" y1="680.0" x2="810.0" y2="680.0" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="810.0" y="616.2" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="903.0" y="646.8">Ver</tspan><tspan x="903.0" dy="13.0">calificaciones</tspan></text>
+<text x="903.0" y="717.8" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">recibidas de clientes</text>
+<line x1="996.0" y1="680.0" x2="1014.0" y2="680.0" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1014.0" y="616.2" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1107.0" y="653.3">Ver promedio</tspan></text>
+<text x="1107.0" y="717.8" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">histórico general</text>
+<line x1="1200.0" y1="680.0" x2="1218.0" y2="680.0" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1218.0" y="616.2" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1311.0" y="653.3">Ver comentarios</tspan></text>
+<text x="1311.0" y="717.8" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">por cita</text>
+<rect x="612.0" y="780.6" width="183.0" height="127.5" fill="#E8DDD0" stroke="#C0B09A" stroke-width="1.2" rx="9" ry="9"/>
+<rect x="612.0" y="780.6" width="10.5" height="127.5" fill="#C4956A" stroke="none" rx="0" ry="0"/>
+<circle cx="646.5" cy="844.4" r="19.5" fill="#3A2F24"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="646.5" y="846.1">5</tspan></text>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="start"><tspan x="683.0" y="846.4">Notificaciones</tspan></text>
+<line x1="795.0" y1="844.4" x2="810.0" y2="844.4" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="810.0" y="780.6" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="903.0" y="817.7">Ver alertas</tspan></text>
+<text x="903.0" y="882.2" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">nuevas citas</text>
+<line x1="996.0" y1="844.4" x2="1014.0" y2="844.4" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1014.0" y="780.6" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1107.0" y="811.2">Recordatorio</tspan><tspan x="1107.0" dy="13.0">de cita</tspan></text>
+<text x="1107.0" y="882.2" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">24 h antes automático</text>
+<line x1="1200.0" y1="844.4" x2="1218.0" y2="844.4" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1218.0" y="780.6" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1311.0" y="811.2">Cita</tspan><tspan x="1311.0" dy="13.0">cancelada</tspan></text>
+<text x="1311.0" y="882.2" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">aviso al estilista</text>
+<rect x="612.0" y="945.0" width="183.0" height="127.5" fill="#E8DDD0" stroke="#C0B09A" stroke-width="1.2" rx="9" ry="9"/>
+<rect x="612.0" y="945.0" width="10.5" height="127.5" fill="#C4956A" stroke="none" rx="0" ry="0"/>
+<circle cx="646.5" cy="1008.8" r="19.5" fill="#3A2F24"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8.5" font-weight="bold" fill="#FEFEFE" text-anchor="middle"><tspan x="646.5" y="1010.5">6</tspan></text>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="start"><tspan x="683.0" y="1010.8">Mi Perfil</tspan></text>
+<line x1="795.0" y1="1008.8" x2="810.0" y2="1008.8" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="810.0" y="945.0" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="903.0" y="975.6">Ver datos</tspan><tspan x="903.0" dy="13.0">personales</tspan></text>
+<text x="903.0" y="1046.6" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">nombre · especialidad</text>
+<line x1="996.0" y1="1008.8" x2="1014.0" y2="1008.8" stroke="#B8A890" stroke-width="1.8"  marker-end="url(#ah)"/>
+<rect x="1014.0" y="945.0" width="186.0" height="127.5" fill="#FFFDF9" stroke="#CEBEAA" stroke-width="1.2" rx="9" ry="9"/>
+<text font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="10" font-weight="bold" fill="#28201A" text-anchor="middle"><tspan x="1107.0" y="975.6">Resumen de</tspan><tspan x="1107.0" dy="13.0">rendimiento</tspan></text>
+<text x="1107.0" y="1046.6" font-family="Inter,-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="8" fill="#9E9082" text-anchor="middle">citas y reseñas</text>
+</svg>

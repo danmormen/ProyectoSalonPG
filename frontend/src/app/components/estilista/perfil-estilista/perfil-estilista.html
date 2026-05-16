@@ -1,0 +1,155 @@
+<div class="perfil-container">
+  <app-estilista-navbar
+    [active]="'perfil'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-estilista-navbar>
+  
+    <main class="main-layout">
+      <header class="page-info">
+        <h1>Mi Perfil</h1>
+      </header>
+  
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="avatar-large">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="header-text">
+            <h2>{{estilista.nombre}}</h2>
+            <p>{{estilista.puesto}}</p>
+          </div>
+        </div>
+  
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-value" style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              {{estilista.calificacion}}
+            </span>
+            <span class="stat-label">Calificación</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              {{estilista.citasCompletadas}}
+            </span>
+            <span class="stat-label">Citas Completadas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              {{estilista.resenas}}
+            </span>
+            <span class="stat-label">Reseñas</span>
+          </div>
+        </div>
+  
+        <div class="profile-details">
+          <div class="detail-row">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+            <div class="info">
+              <label>Email</label>
+              <p>{{estilista.email}}</p>
+            </div>
+          </div>
+  
+          <div class="detail-row">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </span>
+            <div class="info">
+              <label>Teléfono</label>
+              <div class="edit-group" *ngIf="!editandoTelefono">
+                <p>{{estilista.telefono}}</p>
+                <button class="btn-edit" (click)="activarEdicion()" title="Editar">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="edit-group" *ngIf="editandoTelefono">
+                <input type="text" [(ngModel)]="nuevoTelefono" class="input-edit">
+                <button class="btn-save" (click)="guardarTelefono()" title="Guardar">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          <div class="detail-row">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </span>
+            <div class="info">
+              <label>Especialidades</label>
+              <div class="tags-container">
+                <span class="tag" *ngFor="let esp of estilista.especialidades">{{esp}}</span>
+              </div>
+              <p class="admin-note">Las especialidades son gestionadas por el administrador</p>
+            </div>
+          </div>
+  
+          <div class="detail-row">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="8" width="18" height="14" rx="2" ry="2"></rect>
+                <line x1="12" y1="8" x2="12" y2="22"></line>
+                <path d="M19 3a2 2 0 0 1 0 4h-7V3h7z"></path>
+                <path d="M5 3a2 2 0 0 0 0 4h7V3H5z"></path>
+              </svg>
+            </span>
+            <div class="info">
+              <label>Fecha de Cumpleaños</label>
+              <p>{{estilista.fechaCumpleanos}}</p>
+            </div>
+          </div>
+  
+          <div class="detail-row">
+            <span class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </span>
+            <div class="info">
+              <label>Fecha de Ingreso</label>
+              <p>{{estilista.fechaIngreso}}</p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </main>
+  </div>

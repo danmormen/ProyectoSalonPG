@@ -1,0 +1,327 @@
+<div class="reservar-container">
+  <app-client-navbar
+    [active]="'reservar'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <main class="reservar-main">
+
+    <!-- ── Error global ── -->
+    <p class="error-global" *ngIf="errorGlobal">{{ errorGlobal }}</p>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         STEPPER
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="stepper">
+      <div class="step" [class.active]="paso >= 1" [class.done]="paso > 1">
+        <div class="step-dot">
+          <svg *ngIf="paso > 1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span *ngIf="paso <= 1">1</span>
+        </div>
+        <span class="step-label">Servicio</span>
+      </div>
+      <div class="step-line" [class.done]="paso > 1"></div>
+      <div class="step" [class.active]="paso >= 2" [class.done]="paso > 2">
+        <div class="step-dot">
+          <svg *ngIf="paso > 2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span *ngIf="paso <= 2">2</span>
+        </div>
+        <span class="step-label">Fecha</span>
+      </div>
+      <div class="step-line" [class.done]="paso > 2"></div>
+      <div class="step" [class.active]="paso >= 3" [class.done]="paso > 3">
+        <div class="step-dot">
+          <svg *ngIf="paso > 3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span *ngIf="paso <= 3">3</span>
+        </div>
+        <span class="step-label">Estilista</span>
+      </div>
+      <div class="step-line" [class.done]="paso > 3"></div>
+      <div class="step" [class.active]="paso >= 4">
+        <div class="step-dot"><span>4</span></div>
+        <span class="step-label">Confirmar</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         BANNER PROMO
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="promo-banner" *ngIf="promoActiva">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+        <path d="M20.6 12.6L12.6 4.6A2 2 0 0 0 11.2 4H5a1 1 0 0 0-1 1v6.2a2 2 0 0 0 .6 1.4l8 8a2 2 0 0 0 2.8 0l5.2-5.2a2 2 0 0 0 0-2.8Z"/>
+        <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/>
+      </svg>
+      <div>
+        <strong>{{ promoActiva.titulo }}</strong>
+        <span>{{ promoActiva.servicio_nombre }} — precio especial: Q{{ promoActiva.precio_especial | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PASO 1 — Elegir servicio
+    ══════════════════════════════════════════════════════════════ -->
+    <section class="paso-section" *ngIf="paso === 1">
+      <h2 class="paso-titulo">¿Qué servicio deseas?</h2>
+
+      <div class="loading-msg" *ngIf="cargandoServicios">
+        <svg style="width:20px;height:20px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        Cargando servicios...
+      </div>
+
+      <div class="servicios-grid" *ngIf="!cargandoServicios">
+        <button class="srv-card" *ngFor="let srv of servicios" (click)="elegirServicio(srv)">
+          <div class="srv-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="26" height="26">
+              <path d="M12 3l1.6 5L19 9l-5.4 2L12 16l-1.6-5L5 9l5.4-2L12 3Z"/>
+            </svg>
+          </div>
+          <div class="srv-info">
+            <span class="srv-nombre">{{ srv.nombre }}</span>
+            <span class="srv-desc" *ngIf="srv.descripcion">{{ srv.descripcion }}</span>
+          </div>
+          <div class="srv-meta">
+            <span class="srv-precio">Q{{ srv.precio | number:'1.2-2' }}</span>
+            <span class="srv-duracion">{{ srv.duracion }} min</span>
+          </div>
+          <svg class="srv-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PASO 2 — Calendario
+    ══════════════════════════════════════════════════════════════ -->
+    <section class="paso-section" *ngIf="paso === 2">
+      <div class="paso-header">
+        <button class="btn-volver" (click)="volverPaso(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          Volver
+        </button>
+        <h2 class="paso-titulo">Elige una fecha</h2>
+      </div>
+
+      <div class="sel-badge" *ngIf="servicioSel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14">
+          <path d="M12 3l1.6 5L19 9l-5.4 2L12 16l-1.6-5L5 9l5.4-2L12 3Z"/>
+        </svg>
+        {{ servicioSel.nombre }} · {{ servicioSel.duracion }} min
+      </div>
+
+      <div class="loading-msg" *ngIf="cargandoCalendario">
+        <svg style="width:20px;height:20px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        Cargando calendario...
+      </div>
+
+      <div class="calendario-card" *ngIf="!cargandoCalendario">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" (click)="mesAnterior()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <span class="cal-mes-titulo">{{ tituloMes }}</span>
+          <button class="cal-nav-btn" (click)="mesSiguiente()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="cal-grid cal-headers">
+          <div class="cal-head" *ngFor="let d of DIAS_SEMANA">{{ d }}</div>
+        </div>
+
+        <div class="cal-grid">
+          <button
+            *ngFor="let dia of diasMes"
+            class="cal-dia"
+            [class.otro-mes]="!dia.esDelMes"
+            [class.pasado]="dia.esPasado && dia.esDelMes"
+            [class.hoy]="dia.esHoy"
+            [class.cerrado]="dia.esCerrado && dia.esDelMes"
+            [class.especial]="dia.esEspecial && dia.esDelMes"
+            [class.seleccionado]="dia.fecha === fechaSel"
+            [disabled]="!dia.seleccionable"
+            (click)="elegirFecha(dia)"
+            [title]="dia.motivo"
+          >
+            <span class="cal-dia-num">{{ dia.esDelMes ? dia.dia : '' }}</span>
+            <span class="cal-especial-dot" *ngIf="dia.esEspecial && dia.esDelMes"></span>
+          </button>
+        </div>
+
+        <div class="cal-leyenda">
+          <span class="leyenda-item"><span class="leyenda-dot hoy"></span>Hoy</span>
+          <span class="leyenda-item"><span class="leyenda-dot cerrado"></span>Cerrado</span>
+          <span class="leyenda-item"><span class="leyenda-dot especial"></span>Horario especial</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PASO 3 — Estilistas + Slots
+    ══════════════════════════════════════════════════════════════ -->
+    <section class="paso-section" *ngIf="paso === 3">
+      <div class="paso-header">
+        <button class="btn-volver" (click)="volverPaso(2)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          Volver
+        </button>
+        <h2 class="paso-titulo">Elige estilista y horario</h2>
+      </div>
+
+      <div class="sel-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14">
+          <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+        </svg>
+        {{ resumenFecha }}
+      </div>
+
+      <div class="loading-msg" *ngIf="cargandoEstilistas">
+        <svg style="width:20px;height:20px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        Buscando disponibilidad...
+      </div>
+
+      <p class="aviso-msg" *ngIf="!cargandoEstilistas && errorEstilistas">{{ errorEstilistas }}</p>
+
+      <div class="estilistas-lista" *ngIf="!cargandoEstilistas && estilistas.length > 0">
+        <div class="estilista-card" *ngFor="let est of estilistas">
+          <div class="est-info-row">
+            <div class="est-avatar">
+              <img *ngIf="est.foto" [src]="est.foto" [alt]="est.nombre" />
+              <svg *ngIf="!est.foto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="26" height="26">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <p class="est-nombre">{{ est.nombre }}</p>
+              <p class="est-esp">{{ est.especialidades || 'Estilista' }}</p>
+            </div>
+          </div>
+
+          <div class="slots-grid">
+            <button
+              *ngFor="let slot of est.slots"
+              class="slot-chip"
+              [class.activo]="esSlotActivo(est, slot)"
+              (click)="elegirSlot(est, slot)"
+            >{{ formatSlot(slot) }}</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PASO 4 — Confirmación
+    ══════════════════════════════════════════════════════════════ -->
+    <section class="paso-section" *ngIf="paso === 4">
+      <div class="paso-header">
+        <button class="btn-volver" (click)="volverPaso(3)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          Volver
+        </button>
+        <h2 class="paso-titulo">Confirma tu cita</h2>
+      </div>
+
+      <div class="resumen-card">
+        <div class="resumen-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+            <path d="M12 3l1.6 5L19 9l-5.4 2L12 16l-1.6-5L5 9l5.4-2L12 3Z"/>
+          </svg>
+          <div>
+            <span class="res-label">Servicio</span>
+            <span class="res-valor">{{ servicioSel?.nombre }}</span>
+          </div>
+        </div>
+
+        <div class="resumen-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+            <circle cx="9" cy="8" r="3.5"/>
+            <path d="M3 20a6 6 0 0 1 12 0"/>
+          </svg>
+          <div>
+            <span class="res-label">Estilista</span>
+            <span class="res-valor">{{ estilistaSeleccionado?.nombre }}</span>
+          </div>
+        </div>
+
+        <div class="resumen-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+            <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+          </svg>
+          <div>
+            <span class="res-label">Fecha y hora</span>
+            <span class="res-valor">{{ resumenFecha }} · {{ slotSelFormateado }}</span>
+          </div>
+        </div>
+
+        <div class="resumen-row" *ngIf="precioFinal !== null">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+            <circle cx="12" cy="12" r="9"/><path d="M9 10h6M9 14h6"/>
+          </svg>
+          <div>
+            <span class="res-label">Total</span>
+            <span class="res-valor precio">Q{{ precioFinal | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="resumen-promo" *ngIf="promoActiva">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13">
+            <path d="M20.6 12.6L12.6 4.6A2 2 0 0 0 11.2 4H5a1 1 0 0 0-1 1v6.2a2 2 0 0 0 .6 1.4l8 8a2 2 0 0 0 2.8 0l5.2-5.2a2 2 0 0 0 0-2.8Z"/>
+            <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/>
+          </svg>
+          Precio especial: {{ promoActiva.titulo }}
+        </div>
+      </div>
+
+      <div class="notas-group">
+        <label class="notas-label">Notas adicionales <span class="optional">(opcional)</span></label>
+        <textarea
+          class="notas-input"
+          [(ngModel)]="notasReserva"
+          placeholder="Ej: Alergia a ciertos productos, preferencia de estilo..."
+          rows="3">
+        </textarea>
+      </div>
+
+      <p class="error-confirm" *ngIf="errorConfirm">{{ errorConfirm }}</p>
+
+      <button class="btn-confirmar" (click)="confirmarReserva()" [disabled]="enviando">
+        <svg *ngIf="!enviando" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <svg *ngIf="enviando" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        {{ enviando ? 'Agendando...' : 'Confirmar cita' }}
+      </button>
+    </section>
+
+  </main>
+</div>

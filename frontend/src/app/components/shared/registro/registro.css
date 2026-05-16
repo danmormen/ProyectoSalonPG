@@ -1,0 +1,288 @@
+/* === Pantalla auth (registro) === */
+/* Mismo sistema que login: dos cards sobre fondo gradiente con circulos */
+
+.auth-page {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh; /* dvh respeta la barra de Safari en iPhone */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #F5E6E8 0%,
+    #E8D5D0 25%,
+    #D8A7B1 50%,
+    #E8D5D0 75%,
+    #F5E6E8 100%
+  );
+  padding: 24px 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+.circle-1 { width: 380px; height: 380px; background: rgba(216, 167, 177, 0.4); top: -80px; left: -80px; }
+.circle-2 { width: 320px; height: 320px; background: rgba(200, 169, 106, 0.4); bottom: -100px; right: -60px; }
+.circle-3 { width: 260px; height: 260px; background: rgba(183, 110, 121, 0.3); top: 50%; left: 60%; transform: translateY(-50%); }
+
+.auth-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
+  max-width: 880px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* === Brand card (igual que login) === */
+.brand-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #FEFEFE;
+  box-shadow: 0 8px 32px rgba(183, 110, 121, 0.15);
+}
+
+.brand-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+  color: #FEFEFE;
+}
+.brand-icon svg { width: 38px; height: 38px; }
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 2.4rem;
+  margin: 0 0 14px 0;
+  color: #FEFEFE;
+  letter-spacing: 0.5px;
+}
+
+.brand-tagline {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(254, 254, 254, 0.9);
+  margin: 0;
+  font-weight: 300;
+}
+
+/* === Form card === */
+.form-card {
+  flex: 1.1; /* un pelin mas ancho que el brand porque tiene mas campos */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 213, 208, 0.5);
+  border-radius: 24px;
+  padding: 44px 38px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(183, 110, 121, 0.12);
+}
+
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin: 0 0 6px 0;
+}
+
+.form-subtitle {
+  font-size: 0.9rem;
+  color: #7A6F6F;
+  margin: 0 0 22px 0;
+}
+
+/* Fila de dos columnas (nombre / apellido) */
+.form-row {
+  display: flex;
+  gap: 14px;
+}
+.form-row .input-field { flex: 1; }
+
+/* Inputs */
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.input-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin-bottom: 6px;
+}
+
+.input-field input {
+  padding: 11px 14px;
+  border: 1px solid #E5D5D0;
+  border-radius: 10px;
+  background: #FEFEFE;
+  font-size: 0.95rem;
+  color: #2F2A2A;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.input-field input::placeholder { color: #b8a8a8; }
+
+.input-field input:focus {
+  border-color: #B76E79;
+  box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.12);
+}
+
+/* Toggle de ojo en password */
+.phone-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(183,110,121,0.25);
+  border-radius: 12px;
+  padding: 0 14px;
+}
+.phone-wrapper input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-size: 0.95rem;
+  color: #2F2A2A;
+}
+.phone-prefix {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #7A6F6F;
+  white-space: nowrap;
+  border-right: 1px solid rgba(183,110,121,0.2);
+  padding-right: 10px;
+}
+
+.password-wrapper { position: relative; }
+.password-wrapper input { padding-right: 42px; }
+.toggle-pass {
+  position: absolute;
+  right: 10px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  cursor: pointer;
+  color: #7A6F6F;
+  padding: 4px;
+  display: flex;
+}
+.toggle-pass svg { width: 20px; height: 20px; }
+.toggle-pass:hover { color: #B76E79; }
+
+/* Input de fecha (estilo letterspacing distintivo) */
+.date-input-field {
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+
+.helper-text {
+  font-size: 0.75rem;
+  color: #7A6F6F;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Boton principal (mismo que login) */
+.primary-btn {
+  width: 100%;
+  padding: 13px;
+  background: #B76E79;
+  color: #FEFEFE;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  font-family: inherit;
+  margin-top: 6px;
+}
+.primary-btn:hover { background: #A05E69; }
+.primary-btn:active { transform: scale(0.99); }
+
+.divider { height: 1px; background: #E5D5D0; margin: 22px 0 16px 0; }
+
+.footer-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7A6F6F;
+  margin: 0;
+}
+
+.link-pink {
+  color: #B76E79;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.link-pink:hover { color: #A05E69; text-decoration: underline; }
+.link-pink.bold { font-weight: 700; }
+
+/* Spinner de carga en botón */
+.btn-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.spinner {
+  width: 18px;
+  height: 18px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.primary-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Responsive: cards apiladas */
+@media (max-width: 760px) {
+  .auth-wrapper {
+    flex-direction: column;
+    max-width: 460px;
+  }
+  .brand-card { padding: 30px 24px; }
+  .brand-icon { width: 60px; height: 60px; margin-bottom: 12px; }
+  .brand-icon svg { width: 28px; height: 28px; }
+  .brand-name { font-size: 1.8rem; }
+  .form-card { padding: 30px 24px; }
+  .form-row { flex-direction: column; gap: 0; }
+}

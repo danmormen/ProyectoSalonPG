@@ -1,0 +1,261 @@
+<div class="admin-page">
+  <app-admin-navbar
+    [active]="'horarios'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-admin-navbar>
+
+  <main class="main-layout">
+
+    <!-- ── Cabecera ── -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">Gestión de Horarios</h1>
+        <p class="page-sub">Selecciona un estilista y edita su horario semana a semana</p>
+      </div>
+      <button class="btn-nuevo" (click)="abrirModalNuevo()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="15" height="15">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Asignar semana
+      </button>
+    </header>
+
+    <!-- ── Cards de estilistas ── -->
+    <div class="estilistas-grid">
+      <button
+        class="est-card"
+        *ngFor="let est of listaEstilistas"
+        [class.activo]="estilistaActivo?.id === est.id"
+        (click)="seleccionarEstilista(est)">
+
+        <div class="est-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="22" height="22">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+
+        <div class="est-info">
+          <span class="est-nombre">{{ est.nombre }}</span>
+          <span class="est-resumen">{{ est.resumen }}</span>
+        </div>
+
+        <div class="est-actions" (click)="$event.stopPropagation()">
+          <button class="est-btn-edit" (click)="abrirModalParaEstilista(est, $event)" title="Asignar / editar semana">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/>
+            </svg>
+            Asignar
+          </button>
+          <button class="est-btn-del" (click)="eliminarTodoEstilista(est, $event)" title="Eliminar todos los horarios">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </div>
+      </button>
+    </div>
+
+    <!-- Sin estilistas -->
+    <div class="empty-estilistas" *ngIf="listaEstilistas.length === 0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="38" height="38">
+        <circle cx="9" cy="8" r="3.5"/>
+        <path d="M3 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M21 20a5 5 0 0 0-4-4.9"/>
+      </svg>
+      <p>No hay semanas asignadas aún.</p>
+      <button class="btn-nuevo" (click)="abrirModalNuevo()">Asignar primera semana</button>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="cal-placeholder" *ngIf="listaEstilistas.length > 0 && !estilistaActivo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" width="40" height="40">
+        <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+      </svg>
+      <p>Selecciona un estilista para ver y editar su calendario semanal</p>
+    </div>
+
+    <!-- ── Calendario bimensual ── -->
+    <div class="calendario-section" *ngIf="estilistaActivo">
+
+      <div class="cal-top">
+        <div>
+          <h2 class="cal-titulo">{{ estilistaActivo.nombre }}</h2>
+          <p class="cal-sub">Haz clic en cualquier semana para editar ese horario</p>
+        </div>
+        <div class="cal-nav">
+          <button class="cal-nav-btn" (click)="mesAnterior()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <span class="cal-periodo">{{ tituloPeriodo }}</span>
+          <button class="cal-nav-btn" (click)="mesSiguiente()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+          <button class="cal-hoy-btn" *ngIf="!esMesActual" (click)="volverMesActual()">Hoy</button>
+        </div>
+        <button class="btn-add-semana" (click)="nuevaSemanaParaActivo()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nueva semana
+        </button>
+      </div>
+
+      <!-- Leyenda -->
+      <div class="cal-leyenda">
+        <span class="ley-item"><span class="ley-dot trabajo"></span>Laboral</span>
+        <span class="ley-item"><span class="ley-dot descanso-dot"></span>Descanso</span>
+        <span class="ley-item"><span class="ley-dot hoy-dot"></span>Hoy</span>
+        <span class="ley-item ley-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/>
+          </svg>
+          Clic en semana = editar
+        </span>
+      </div>
+
+      <!-- Dos meses lado a lado -->
+      <div class="dos-meses">
+        <div class="mes-bloque" *ngFor="let semanas of meses; let i = index">
+          <h3 class="mes-titulo">{{ titulosMeses[i] }}</h3>
+
+          <div class="cal-grid cal-cabecera">
+            <div class="cal-head" *ngFor="let d of CABECERA">{{ d }}</div>
+          </div>
+
+          <!-- Cada fila de semana es clickeable -->
+          <div
+            class="cal-semana semana-clickable"
+            *ngFor="let semana of semanas"
+            [class.semana-asignada]="semana[0].tieneHorario"
+            (click)="editarSemana(semana[0].semanaISO)"
+            [title]="'Editar semana ' + labelSemana(semana[0].semanaISO)">
+
+            <div
+              class="cal-dia"
+              *ngFor="let dia of semana"
+              [class.otro-mes]="!dia.esDelMes"
+              [class.hoy]="dia.esHoy"
+              [class.trabajo]="dia.esTrabajo"
+              [class.descanso]="dia.esDelMes && !dia.esTrabajo"
+              [title]="dia.esTrabajo ? (dia.inicio + ' – ' + dia.fin) : (dia.esDelMes ? 'Descanso' : '')">
+              <span class="dia-num">{{ dia.esDelMes ? dia.dia : '' }}</span>
+              <span class="dia-horas" *ngIf="dia.esTrabajo">{{ dia.inicio }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MODAL — Asignar / Editar horario semanal
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+      <header class="modal-header">
+        <div class="modal-header-text">
+          <h2>{{ modoNuevo ? 'Asignar horario semanal' : 'Editar — ' + seleccionado?.nombre }}</h2>
+          <p class="modal-semana-label" *ngIf="semanaSelLabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+            </svg>
+            {{ semanaSelLabel }}
+          </p>
+        </div>
+        <button class="modal-close" (click)="cerrarModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+
+        <!-- ── Selector de empleado como cards (solo modo nuevo) ── -->
+        <div class="modal-emp-section" *ngIf="modoNuevo">
+          <label class="modal-label">Empleado *</label>
+          <div class="emp-cards-modal">
+            <button
+              type="button"
+              class="emp-card-modal"
+              *ngFor="let emp of listaEmpleadosSinSemana"
+              [class.emp-activo]="seleccionado?.id === emp.id"
+              (click)="seleccionarEmpleadoModal(emp)">
+              <div class="emp-modal-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="17" height="17">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div class="emp-modal-info">
+                <span class="emp-modal-nombre">{{ emp.nombre }}</span>
+                <span class="emp-modal-rol">{{ emp.rol }}</span>
+              </div>
+              <svg *ngIf="seleccionado?.id === emp.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" width="14" height="14" class="emp-modal-check">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Navegador de semana (se muestra siempre que haya empleado seleccionado) -->
+        <div class="week-nav-wrap" *ngIf="seleccionado?.id">
+          <label class="modal-label">Semana</label>
+          <div class="week-nav-row">
+            <button type="button" class="week-nav-btn" (click)="semanaAnteriorModal()" title="Semana anterior">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <span class="week-nav-label">{{ semanaSelLabel }}</span>
+            <button type="button" class="week-nav-btn" (click)="semanaSiguienteModal()" title="Semana siguiente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fila por día (solo si hay empleado seleccionado) -->
+        <div class="dia-fila" *ngFor="let dia of (seleccionado?.id ? (seleccionado?.horarios || []) : [])">
+          <span class="dia-nombre">{{ dia.dia }}</span>
+
+          <div class="toggle-tipo">
+            <button type="button" class="tipo-btn" [class.laboral]="!dia.descanso"
+                    (click)="dia.descanso = false; toggleDescanso(dia)">Laboral</button>
+            <button type="button" class="tipo-btn" [class.desc]="dia.descanso"
+                    (click)="dia.descanso = true; toggleDescanso(dia)">Descanso</button>
+          </div>
+
+          <div class="horas-inputs" [class.oculto]="dia.descanso">
+            <div class="hora-grp">
+              <label>Inicio</label>
+              <input type="time" [(ngModel)]="dia.inicio" [disabled]="dia.descanso" />
+            </div>
+            <div class="hora-grp">
+              <label>Fin</label>
+              <input type="time" [(ngModel)]="dia.fin"    [disabled]="dia.descanso" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button class="btn-cancelar" (click)="cerrarModal()" [disabled]="guardando">Cancelar</button>
+        <button class="btn-guardar"  (click)="guardarCambios()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Guardar semana' }}
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>

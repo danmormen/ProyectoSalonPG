@@ -1,0 +1,88 @@
+/* === Promociones: Rose/Blush Liquid Glass === */
+.promociones-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #F5E6E8 0%, #E8D5D0 25%, #D8A7B1 50%, #E8D5D0 75%, #F5E6E8 100%);
+  overflow-x: hidden;
+}
+.bg-circle { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+.circle-1 { width: 420px; height: 420px; background: rgba(216,167,177,0.35); top: -100px; left: -120px; }
+.circle-2 { width: 360px; height: 360px; background: rgba(200,169,106,0.28); bottom: -120px; right: -80px; }
+.circle-3 { width: 320px; height: 320px; background: rgba(183,110,121,0.20); top: 40%; left: 65%; }
+.glass-card {
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(183,110,121,0.10);
+}
+.content-container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 32px 24px 60px; }
+.top-header { margin-bottom: 28px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #2F2A2A; margin: 0 0 6px; }
+.page-subtitle { font-size: 0.95rem; color: #9B6F75; margin: 0; }
+
+.loading-state { text-align: center; padding: 60px 24px; color: #9B6F75; }
+
+.empty-state { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 60px 24px; text-align: center; color: #9B6F75; }
+.empty-state svg { width: 48px; height: 48px; stroke: #D8A7B1; }
+
+.promo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+
+.promo-card { display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+.promo-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(183,110,121,0.16); }
+
+.promo-discount-badge {
+  background: linear-gradient(135deg, #B76E79, #D8A7B1);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+}
+/* Nombre de la promo en el encabezado: tamaño moderado, negrita, sin ser enorme */
+.promo-nombre-header {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.promo-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.promo-desc { font-size: 0.88rem; color: #7A5A5F; line-height: 1.5; margin: 0; flex: 1; }
+
+/* Bloque de precio especial: entre descripción y la sección de validez */
+.promo-precio-especial {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(183,110,121,0.15);
+  border-bottom: 1px solid rgba(183,110,121,0.15);
+}
+.precio-label { font-size: 0.78rem; color: #9B6F75; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+.precio-valor { font-size: 1.15rem; font-weight: 700; color: #B76E79; }
+
+.promo-codigo { display: flex; align-items: center; gap: 7px; font-size: 0.88rem; color: #5C3D42; }
+.promo-codigo svg { width: 14px; height: 14px; stroke: #B76E79; }
+.promo-codigo strong { color: #B76E79; }
+
+.promo-vigencia { display: flex; align-items: center; gap: 7px; font-size: 0.83rem; color: #9B6F75; }
+.promo-vigencia svg { width: 13px; height: 13px; stroke: #C48490; }
+
+.btn-reservar-promo {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(135deg, #B76E79, #C48490);
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-reservar-promo:hover { opacity: 0.90; transform: translateY(-1px); }

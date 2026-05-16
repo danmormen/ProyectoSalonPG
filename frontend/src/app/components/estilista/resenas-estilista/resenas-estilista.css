@@ -1,0 +1,219 @@
+/* ══════════════════════════════════════════════════════════════════
+   RESEÑAS ESTILISTA — Sage Liquid Glass
+   ══════════════════════════════════════════════════════════════════ */
+
+.resenas-container {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #A5AE98 0%, #88937B 28%, #6B7560 55%, #7A8570 78%, #A5AE98 100%);
+  overflow-x: hidden;
+}
+
+.resenas-container::before {
+  content: '';
+  position: fixed;
+  width: 440px; height: 440px;
+  border-radius: 50%;
+  background: rgba(232, 225, 213, 0.28);
+  filter: blur(90px);
+  top: -120px; left: -140px;
+  pointer-events: none; z-index: 0;
+}
+.resenas-container::after {
+  content: '';
+  position: fixed;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: rgba(107, 117, 96, 0.40);
+  filter: blur(80px);
+  bottom: -80px; right: -100px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── NAVBAR ── */
+.nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(232, 225, 213, 0.50);
+  padding: 0;
+  height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2D3328;
+  margin: 0;
+  cursor: pointer;
+}
+.sub-text { font-weight: 400; color: #6B7560; font-family: 'Inter', sans-serif; }
+
+.nav-actions { display: flex; gap: 8px; }
+.nav-btn {
+  background: none;
+  border: none;
+  color: #6B7560;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-btn:hover { background: rgba(136, 147, 123, 0.18); color: #2D3328; }
+.logout:hover { background: rgba(220, 80, 80, 0.10); color: #c0392b; }
+
+/* ── MAIN LAYOUT ── */
+.main-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+
+.page-info h1 {
+  font-family: 'Playfair Display', serif;
+  color: #F5F0EB;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  text-shadow: 0 1px 4px rgba(45, 51, 40, 0.18);
+}
+
+/* ── SUMMARY CARD ── */
+.summary-card {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 22px;
+  box-shadow: 0 4px 20px rgba(72, 80, 63, 0.12);
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  margin-bottom: 28px;
+}
+
+.rating-overall {
+  text-align: center;
+  border-right: 1px solid rgba(136, 147, 123, 0.20);
+  padding-right: 20px;
+}
+
+.big-number {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #6B7560;
+  display: block;
+  line-height: 1;
+}
+.stars-row { color: #D4C5A9; font-size: 1.4rem; margin: 8px 0; }
+.total-count { color: #88937B; font-size: 0.9rem; }
+
+.rating-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+.bar-row { display: flex; align-items: center; gap: 12px; }
+.star-label { font-size: 0.85rem; color: #6B7560; min-width: 25px; }
+.progress-bg { flex: 1; background: rgba(136, 147, 123, 0.20); height: 7px; border-radius: 10px; overflow: hidden; }
+.progress-fill { background: #88937B; height: 100%; border-radius: 10px; }
+.count-label { font-size: 0.83rem; color: #A5AE98; min-width: 15px; }
+
+/* ── REVIEW ITEMS ── */
+.review-item {
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(72, 80, 63, 0.08);
+  padding: 24px;
+  margin-bottom: 14px;
+  transition: box-shadow 0.2s;
+}
+.review-item:hover { box-shadow: 0 6px 22px rgba(72, 80, 63, 0.14); }
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.user-info { display: flex; gap: 14px; align-items: center; }
+
+.avatar-icon {
+  width: 46px; height: 46px;
+  background: rgba(107, 117, 96, 0.70);
+  color: #E8E1D5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.review-date-icon {
+  display: inline-flex;
+  align-items: center;
+  color: #A5AE98;
+}
+
+.user-info h3 { margin: 0; font-size: 1.05rem; color: #2D3328; font-weight: 700; }
+.service-tag { margin: 2px 0 0; color: #88937B; font-size: 0.85rem; font-weight: 600; }
+
+.stars-rating { color: rgba(136, 147, 123, 0.35); font-size: 1.2rem; }
+.stars-rating .star.filled { color: #D4C5A9; }
+
+.comment-text { color: #5A6355; line-height: 1.6; margin-bottom: 14px; font-size: 0.93rem; }
+.review-footer { font-size: 0.83rem; color: #A5AE98; display: flex; align-items: center; gap: 6px; }
+
+/* ── Loading / Error / Empty ── */
+.loading-msg {
+  display: flex; align-items: center; gap: 10px;
+  padding: 28px; color: #E8E1D5; font-size: 0.92rem;
+}
+.error-msg {
+  padding: 16px; color: #dc2626;
+  background: rgba(239,68,68,0.08); border-radius: 12px; margin: 0 0 20px;
+}
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 48px 24px; text-align: center;
+  background: rgba(255,255,255,0.50);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.65);
+  border-radius: 18px;
+}
+.empty-state svg { stroke: #A5AE98; }
+.empty-state p { margin: 0; font-size: 0.92rem; color: #88937B; line-height: 1.6; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .summary-card { grid-template-columns: 1fr; }
+  .rating-overall { border-right: none; border-bottom: 1px solid rgba(136, 147, 123, 0.20); padding-bottom: 20px; }
+}

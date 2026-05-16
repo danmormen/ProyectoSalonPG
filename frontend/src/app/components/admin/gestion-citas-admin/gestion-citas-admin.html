@@ -1,0 +1,305 @@
+<div class="admin-page-layout">
+  <app-admin-navbar
+    [active]="'citas'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-admin-navbar>
+
+  <div class="main-content">
+
+    <!-- ── Cabecera ──────────────────────────────────────────── -->
+    <header class="page-header">
+      <h1 class="page-title">Citas</h1>
+    </header>
+
+    <!-- ── Navegador de semana ───────────────────────────────── -->
+    <div class="date-nav-card">
+      <div class="date-nav-top">
+        <button class="nav-arrow" (click)="semanaAnterior()" title="Semana anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+
+        <div class="days-strip">
+          <button
+            class="day-btn"
+            *ngFor="let d of diasSemana"
+            [class.day-today]="d.esHoy"
+            [class.day-sel]="filtroFecha === d.fecha"
+            (click)="seleccionarDia(d.fecha)">
+            <span class="day-lbl">{{ d.label }}</span>
+            <span class="day-num">{{ d.num }}</span>
+          </button>
+        </div>
+
+        <button class="nav-arrow" (click)="semanaSiguiente()" title="Semana siguiente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+
+        <button class="btn-hoy" (click)="irHoy()">Hoy</button>
+      </div>
+
+      <!-- Título dinámico de la fecha seleccionada -->
+      <div class="fecha-titulo-row">
+        <span class="fecha-titulo">{{ tituloFecha }}</span>
+        <button class="btn-ver-todos"
+                *ngIf="filtroFecha"
+                (click)="seleccionarDia(filtroFecha)">
+          Ver todos los días
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Búsqueda ──────────────────────────────────────────── -->
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" class="search-icon">
+        <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input class="search-input" type="text" [(ngModel)]="filtroBusqueda"
+             placeholder="Buscar por cliente, servicio o estilista...">
+      <button class="btn-clear-search" *ngIf="filtroBusqueda" (click)="limpiarBusqueda()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- ── Cargando ──────────────────────────────────────────── -->
+    <div class="loading-state" *ngIf="cargando">
+      <svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+      Cargando…
+    </div>
+
+    <!-- ── Error ─────────────────────────────────────────────── -->
+    <div class="error-state" *ngIf="error">{{ error }}</div>
+
+    <ng-container *ngIf="!cargando && !error">
+
+      <!-- ── Tabs ──────────────────────────────────────────────── -->
+      <div class="tab-bar">
+        <button class="tab-btn" [class.tab-active]="tabActivo === 'atender'" (click)="irATab('atender')">
+          Por atender
+          <span class="tab-badge badge-atender" *ngIf="resumen.atender > 0">{{ resumen.atender }}</span>
+        </button>
+        <button class="tab-btn" [class.tab-active]="tabActivo === 'completadas'" (click)="irATab('completadas')">
+          Completadas
+          <span class="tab-badge badge-completada" *ngIf="resumen.completadas > 0">{{ resumen.completadas }}</span>
+        </button>
+        <button class="tab-btn" [class.tab-active]="tabActivo === 'canceladas'" (click)="irATab('canceladas')">
+          Canceladas
+          <span class="tab-badge badge-cancelada" *ngIf="resumen.canceladas > 0">{{ resumen.canceladas }}</span>
+        </button>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- TAB: Por atender                                        -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div *ngIf="tabActivo === 'atender'">
+
+        <div class="empty-state" *ngIf="citasPorAtender.length === 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="36" height="36">
+            <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+          </svg>
+          <p>No hay citas pendientes para {{ filtroFecha ? tituloFecha.toLowerCase() : 'los próximos días' }}.</p>
+        </div>
+
+        <!-- Con filtro de fecha: lista plana (sin agrupación, con hora al frente) -->
+        <ng-container *ngIf="filtroFecha">
+          <article class="cita-card" *ngFor="let cita of citasPorAtender" [ngClass]="'card-' + cita.estado">
+
+            <!-- Hora -->
+            <div class="card-hora-col">
+              <span class="card-hora">{{ formatearHora(cita.hora) }}</span>
+            </div>
+
+            <div class="card-vdivider"></div>
+
+            <!-- Info principal -->
+            <div class="card-main">
+              <div class="card-top">
+                <div class="card-client-info">
+                  <span class="card-client-name">{{ cita.cliente_nombre }}</span>
+                  <span class="card-client-phone" *ngIf="cita.cliente_telefono">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="11" height="11"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.57a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+                    {{ cita.cliente_telefono }}
+                  </span>
+                </div>
+                <div class="card-badges">
+                  <span class="badge-walkin" *ngIf="cita.es_walk_in">Presencial</span>
+                  <span class="status-pill" [ngClass]="'pill-' + cita.estado">{{ cita.estado }}</span>
+                </div>
+              </div>
+              <div class="card-services">{{ cita.servicios }}</div>
+              <div class="card-footer">
+                <span class="card-stylist">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="12" height="12">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  {{ cita.estilista_nombre }}
+                </span>
+                <span class="card-price">Q{{ cita.precio_total | number:'1.2-2' }}</span>
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="card-actions">
+              <button class="btn-confirmar"
+                      *ngIf="cita.estado === 'pendiente'"
+                      (click)="confirmarCita(cita)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M20 6L9 17l-5-5"/></svg>
+                Confirmar
+              </button>
+              <span class="tag-confirmada" *ngIf="cita.estado === 'confirmada'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><path d="M20 6L9 17l-5-5"/></svg>
+                Confirmada
+              </span>
+              <button class="btn-cancelar" (click)="cancelarCita(cita)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                Cancelar
+              </button>
+            </div>
+
+          </article>
+        </ng-container>
+
+        <!-- Sin filtro de fecha: agrupado por día -->
+        <ng-container *ngIf="!filtroFecha">
+          <div class="fecha-grupo" *ngFor="let grupo of citasAgrupadasPorFecha">
+            <div class="fecha-header">
+              <span class="fecha-label">{{ grupo.label }}</span>
+              <span class="fecha-pill">{{ grupo.citas.length }} cita{{ grupo.citas.length !== 1 ? 's' : '' }}</span>
+            </div>
+
+            <article class="cita-card" *ngFor="let cita of grupo.citas" [ngClass]="'card-' + cita.estado">
+
+              <div class="card-hora-col">
+                <span class="card-hora">{{ formatearHora(cita.hora) }}</span>
+              </div>
+
+              <div class="card-vdivider"></div>
+
+              <div class="card-main">
+                <div class="card-top">
+                  <div class="card-client-info">
+                    <span class="card-client-name">{{ cita.cliente_nombre }}</span>
+                    <span class="card-client-phone" *ngIf="cita.cliente_telefono">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="11" height="11"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.57a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+                      {{ cita.cliente_telefono }}
+                    </span>
+                  </div>
+                  <div class="card-badges">
+                    <span class="badge-walkin" *ngIf="cita.es_walk_in">Presencial</span>
+                    <span class="status-pill" [ngClass]="'pill-' + cita.estado">{{ cita.estado }}</span>
+                  </div>
+                </div>
+                <div class="card-services">{{ cita.servicios }}</div>
+                <div class="card-footer">
+                  <span class="card-stylist">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="12" height="12">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ cita.estilista_nombre }}
+                  </span>
+                  <span class="card-price">Q{{ cita.precio_total | number:'1.2-2' }}</span>
+                </div>
+              </div>
+
+              <div class="card-actions">
+                <button class="btn-confirmar"
+                        *ngIf="cita.estado === 'pendiente'"
+                        (click)="confirmarCita(cita)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><path d="M20 6L9 17l-5-5"/></svg>
+                  Confirmar
+                </button>
+                <span class="tag-confirmada" *ngIf="cita.estado === 'confirmada'">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><path d="M20 6L9 17l-5-5"/></svg>
+                  Confirmada
+                </span>
+                <button class="btn-cancelar" (click)="cancelarCita(cita)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  Cancelar
+                </button>
+              </div>
+
+            </article>
+          </div>
+        </ng-container>
+
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- TAB: Completadas / Canceladas                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div *ngIf="tabActivo !== 'atender'">
+
+        <div class="empty-state" *ngIf="tabActivo === 'completadas' && citasCompletadas.length === 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="36" height="36">
+            <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
+          </svg>
+          <p>No hay citas completadas{{ filtroBusqueda || filtroFecha ? ' con este filtro' : '' }}.</p>
+        </div>
+
+        <div class="empty-state" *ngIf="tabActivo === 'canceladas' && citasCanceladas.length === 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="36" height="36">
+            <circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/>
+          </svg>
+          <p>No hay citas canceladas{{ filtroBusqueda || filtroFecha ? ' con este filtro' : '' }}.</p>
+        </div>
+
+        <article class="cita-card" *ngFor="let cita of citasActuales" [ngClass]="'card-' + cita.estado">
+
+          <!-- Fecha + hora -->
+          <div class="card-hora-col">
+            <span class="card-mini-fecha">{{ getFechaParts(cita.fecha).dia }} {{ getFechaParts(cita.fecha).num }}</span>
+            <span class="card-hora">{{ formatearHora(cita.hora) }}</span>
+          </div>
+
+          <div class="card-vdivider"></div>
+
+          <div class="card-main">
+            <div class="card-top">
+              <div class="card-client-info">
+                <span class="card-client-name">{{ cita.cliente_nombre }}</span>
+                <span class="card-client-phone" *ngIf="cita.cliente_telefono">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="11" height="11"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.57a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+                  {{ cita.cliente_telefono }}
+                </span>
+              </div>
+              <div class="card-badges">
+                <span class="badge-walkin" *ngIf="cita.es_walk_in">Presencial</span>
+                <span class="status-pill" [ngClass]="'pill-' + cita.estado">{{ cita.estado }}</span>
+              </div>
+            </div>
+            <div class="card-services">{{ cita.servicios }}</div>
+            <div class="card-footer">
+              <span class="card-stylist">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="12" height="12">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                {{ cita.estilista_nombre }}
+              </span>
+              <span class="card-price">Q{{ cita.precio_total | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <!-- Corrección de estado -->
+          <div class="card-actions card-actions-select">
+            <label class="select-label">Corregir</label>
+            <select class="estado-select"
+                    [value]="cita.estado"
+                    (change)="cambiarEstado(cita, $any($event.target).value)">
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="completada">Completada</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </div>
+
+        </article>
+      </div>
+
+    </ng-container>
+  </div>
+</div>

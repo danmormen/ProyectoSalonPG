@@ -1,0 +1,151 @@
+/* ══════════════════════════════════════════════════════════════════
+   ESTILISTA NAVBAR — Sage Liquid Glass
+   ══════════════════════════════════════════════════════════════════ */
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(136, 147, 123, 0.30);
+  padding: 14px 0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.nav-inner {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ── BRAND ── */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.brand-badge {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #A5AE98, #88937B);
+  display: flex; align-items: center; justify-content: center;
+  color: #E8E1D5;
+}
+.brand-badge svg { width: 18px; height: 18px; }
+
+.brand-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  letter-spacing: 0.2px;
+}
+.brand-text em {
+  font-style: normal;
+  color: #88937B;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* ── NAV LINKS ── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: #6B7560;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+.nav-item:hover {
+  background: rgba(136, 147, 123, 0.18);
+  color: #4A5446;
+}
+
+/* Active state — sage highlight */
+.nav-item.active {
+  background: rgba(136, 147, 123, 0.22);
+  color: #4A5446;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px rgba(107, 117, 96, 0.40);
+}
+
+/* Logout button — subtle separator */
+.nav-item-logout {
+  margin-left: 8px;
+  color: #8A8080;
+  border-left: 1px solid rgba(136, 147, 123, 0.25);
+  padding-left: 20px;
+}
+.nav-item-logout:hover {
+  background: rgba(200, 80, 70, 0.08);
+  color: #b03a2e;
+}
+
+.nav-icon {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .nav-links { gap: 2px; }
+  .nav-item { padding: 8px 10px; font-size: 0.82rem; }
+}
+
+@media (max-width: 900px) {
+  .nav-inner { flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 18px; }
+  .nav-links { width: 100%; overflow-x: auto; flex-wrap: nowrap; }
+  .nav-item-logout { margin-left: 0; border-left: none; padding-left: 14px; }
+}
+
+/* Badge de notificaciones */
+.notif-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notif-badge {
+  position: absolute;
+  top: -7px;
+  right: -8px;
+  background: #e11d48;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  line-height: 1;
+  border: 1.5px solid white;
+}
+.nav-notif { gap: 7px; }

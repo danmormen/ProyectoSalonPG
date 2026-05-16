@@ -1,0 +1,197 @@
+/* ══════════════════════════════════════════════════════════════════
+   PERFIL ESTILISTA — Sage Liquid Glass
+   ══════════════════════════════════════════════════════════════════ */
+
+.perfil-container {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #A5AE98 0%, #88937B 28%, #6B7560 55%, #7A8570 78%, #A5AE98 100%);
+  overflow-x: hidden;
+}
+
+.perfil-container::before {
+  content: '';
+  position: fixed;
+  width: 440px; height: 440px;
+  border-radius: 50%;
+  background: rgba(232, 225, 213, 0.28);
+  filter: blur(90px);
+  top: -120px; left: -140px;
+  pointer-events: none; z-index: 0;
+}
+.perfil-container::after {
+  content: '';
+  position: fixed;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: rgba(107, 117, 96, 0.40);
+  filter: blur(80px);
+  bottom: -80px; right: -100px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── NAVBAR ── */
+.nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(232, 225, 213, 0.50);
+  padding: 0;
+  height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2D3328;
+  margin: 0;
+  cursor: pointer;
+}
+.nav-btn {
+  background: none;
+  border: none;
+  color: #6B7560;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  margin-left: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-btn:hover { background: rgba(136, 147, 123, 0.18); color: #2D3328; }
+
+/* ── MAIN LAYOUT ── */
+.main-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+
+.page-info h1 {
+  font-family: 'Playfair Display', serif;
+  color: #F5F0EB;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  text-shadow: 0 1px 4px rgba(45, 51, 40, 0.18);
+}
+
+/* ── PROFILE CARD ── */
+.profile-card {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 24px;
+  box-shadow: 0 6px 28px rgba(72, 80, 63, 0.14);
+  overflow: hidden;
+}
+
+/* Profile header — sage gradient banner */
+.profile-header {
+  background: linear-gradient(135deg, #88937B 0%, #6B7560 100%);
+  padding: 36px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: #F5F0EB;
+}
+
+.avatar-large {
+  width: 88px; height: 88px;
+  background: rgba(232, 225, 213, 0.25);
+  border: 2px solid rgba(232, 225, 213, 0.50);
+  color: #E8E1D5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  flex-shrink: 0;
+}
+
+.header-text h2 { margin: 0; font-size: 1.75rem; font-weight: 700; color: #F5F0EB; }
+.header-text p  { margin: 5px 0 0; opacity: 0.85; font-size: 1.05rem; color: #E8E1D5; }
+
+/* Stats bar */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 22px 28px;
+  border-bottom: 1px solid rgba(136, 147, 123, 0.15);
+  text-align: center;
+}
+
+.stat-value { display: block; font-size: 1.25rem; font-weight: 800; color: #2D3328; }
+.stat-label { font-size: 0.83rem; color: #88937B; margin-top: 3px; display: block; }
+
+/* Details section */
+.profile-details { padding: 28px 36px; }
+
+.detail-row { display: flex; gap: 18px; margin-bottom: 22px; }
+.detail-row .icon { font-size: 1.25rem; color: #88937B; padding-top: 4px; }
+
+.info label {
+  display: block;
+  font-size: 0.78rem;
+  color: #A5AE98;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.info p { margin: 0; color: #2D3328; font-size: 1.02rem; font-weight: 500; }
+
+.tags-container { display: flex; gap: 8px; margin: 6px 0; flex-wrap: wrap; }
+.tag {
+  background: rgba(107, 117, 96, 0.18);
+  color: #4A5446;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+.admin-note { font-size: 0.75rem; color: #A5AE98; font-style: italic; margin-top: 4px; }
+
+/* Phone edit */
+.edit-group { display: flex; align-items: center; gap: 10px; }
+.btn-edit, .btn-save {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  color: #88937B;
+  transition: color 0.2s;
+}
+.btn-edit:hover, .btn-save:hover { color: #6B7560; }
+.input-edit {
+  border: 1px solid #88937B;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #2D3328;
+  background: rgba(255,255,255,0.80);
+  outline: none;
+}
+.input-edit:focus { box-shadow: 0 0 0 3px rgba(136,147,123,0.15); }

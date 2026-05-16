@@ -1,0 +1,250 @@
+/* === Pantalla auth (login) === */
+/* Layout de dos cards sobre fondo con gradiente rosa y circulos difuminados */
+
+/* Wrapper general: fondo gradiente fijo a toda la pantalla */
+.auth-page {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #F5E6E8 0%,
+    #E8D5D0 25%,
+    #D8A7B1 50%,
+    #E8D5D0 75%,
+    #F5E6E8 100%
+  );
+  overflow-x: hidden;
+}
+
+/* Circulos decorativos difuminados de fondo */
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+.circle-1 {
+  width: 380px; height: 380px;
+  background: rgba(216, 167, 177, 0.4); /* dusty rose */
+  top: -80px; left: -80px;
+}
+.circle-2 {
+  width: 320px; height: 320px;
+  background: rgba(200, 169, 106, 0.4); /* dorado */
+  bottom: -100px; right: -60px;
+}
+.circle-3 {
+  width: 260px; height: 260px;
+  background: rgba(183, 110, 121, 0.3); /* rosado principal */
+  top: 50%; left: 60%;
+  transform: translateY(-50%);
+}
+
+/* Contenedor de las dos cards */
+.auth-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
+  max-width: 880px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* === Card izquierda: branding (glassmorphism mas transparente) === */
+.brand-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #FEFEFE;
+  box-shadow: 0 8px 32px rgba(183, 110, 121, 0.15);
+}
+
+.brand-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  color: #FEFEFE;
+}
+.brand-icon svg { width: 38px; height: 38px; }
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 2.4rem;
+  margin: 0 0 14px 0;
+  color: #FEFEFE;
+  letter-spacing: 0.5px;
+}
+
+.brand-tagline {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(254, 254, 254, 0.9);
+  margin: 0;
+  font-weight: 300;
+}
+
+/* === Card derecha: formulario (glassmorphism mas opaco) === */
+.form-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 213, 208, 0.5);
+  border-radius: 24px;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(183, 110, 121, 0.12);
+}
+
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin: 0 0 6px 0;
+}
+
+.form-subtitle {
+  font-size: 0.9rem;
+  color: #7A6F6F;
+  margin: 0 0 28px 0;
+}
+
+/* Inputs */
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.input-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #2F2A2A;
+  margin-bottom: 6px;
+}
+
+.input-field input {
+  padding: 12px 14px;
+  border: 1px solid #E5D5D0;
+  border-radius: 10px;
+  background: #FEFEFE;
+  font-size: 0.95rem;
+  color: #2F2A2A;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.input-field input::placeholder { color: #b8a8a8; }
+
+.input-field input:focus {
+  border-color: #B76E79;
+  box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.12);
+}
+
+/* Toggle de mostrar contraseña */
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper input { width: 100%; box-sizing: border-box; padding-right: 42px; }
+.toggle-pass {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #7A6F6F;
+  padding: 4px;
+  display: flex;
+}
+.toggle-pass svg { width: 20px; height: 20px; }
+.toggle-pass:hover { color: #B76E79; }
+
+/* Link rosa (olvidaste / registrate) */
+.extra-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: -4px 0 22px 0;
+}
+
+.link-pink {
+  color: #B76E79;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.link-pink:hover { color: #A05E69; text-decoration: underline; }
+.link-pink.bold { font-weight: 700; }
+
+/* Boton principal */
+.primary-btn {
+  width: 100%;
+  padding: 13px;
+  background: #B76E79;
+  color: #FEFEFE;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  font-family: inherit;
+}
+.primary-btn:hover:not(:disabled) { background: #A05E69; }
+.primary-btn:active:not(:disabled) { transform: scale(0.99); }
+.primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Separador */
+.divider {
+  height: 1px;
+  background: #E5D5D0;
+  margin: 24px 0 18px 0;
+}
+
+.footer-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7A6F6F;
+  margin: 0;
+}
+
+/* === Responsive: en mobile las cards se apilan === */
+@media (max-width: 760px) {
+  .auth-wrapper {
+    flex-direction: column;
+    max-width: 440px;
+  }
+  .brand-card { padding: 36px 24px; }
+  .brand-icon { width: 64px; height: 64px; margin-bottom: 14px; }
+  .brand-icon svg { width: 30px; height: 30px; }
+  .brand-name { font-size: 1.9rem; }
+  .form-card { padding: 36px 26px; }
+}

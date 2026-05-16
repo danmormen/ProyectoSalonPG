@@ -1,0 +1,67 @@
+<!-- Pantalla de recuperar contraseña: mismo sistema visual -->
+<div class="auth-page">
+
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <div class="auth-wrapper">
+
+    <aside class="brand-card">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2Z"
+                fill="currentColor" opacity="0.95"/>
+          <path d="M19 14l.9 2.7L22 18l-2.1.6L19 21l-.9-2.4L16 18l2.1-1.3L19 14Z"
+                fill="currentColor" opacity="0.7"/>
+        </svg>
+      </div>
+      <h1 class="brand-name">PonteGuapa</h1>
+      <p class="brand-tagline">
+        Recupera el acceso<br>a tu cuenta
+      </p>
+    </aside>
+
+    <section class="form-card">
+
+      <!-- Vista 1: formulario para pedir el correo -->
+      <ng-container *ngIf="!successMsg">
+        <h2 class="form-title">Recupera tu acceso</h2>
+        <p class="form-subtitle">
+          Ingresa tu correo y te enviaremos una contraseña temporal para que puedas ingresar.
+        </p>
+
+        <div class="error-box" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+        <div class="input-field">
+          <label for="email">Correo Electrónico</label>
+          <input id="email" type="email" [(ngModel)]="email" placeholder="ejemplo@correo.com">
+        </div>
+
+        <button class="primary-btn" (click)="enviarPasswordTemporal()" [disabled]="cargando">
+          {{ cargando ? 'Enviando...' : 'Enviar contraseña temporal' }}
+        </button>
+
+        <button class="secondary-btn" (click)="cancelar()">
+          Cancelar y volver al login
+        </button>
+      </ng-container>
+
+      <!-- Vista 2: mensaje de exito con countdown -->
+      <ng-container *ngIf="successMsg">
+        <h2 class="form-title">¡Listo!</h2>
+        <p class="form-subtitle">Revisa tu correo para continuar.</p>
+
+        <div class="success-box">{{ successMsg }}</div>
+
+        <p class="countdown-text">
+          Redirigiendo al login en <strong>{{ contador }}</strong> segundos...
+        </p>
+
+        <button class="primary-btn" (click)="cancelar()">Ir al login ahora</button>
+      </ng-container>
+
+    </section>
+
+  </div>
+</div>

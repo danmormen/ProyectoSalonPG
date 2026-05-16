@@ -1,0 +1,68 @@
+<div class="main-wrapper">
+    <nav class="nav-header">
+      <div class="nav-content">
+        <h2 class="logo-text" (click)="regresar()">PonteGuapa</h2>
+        <div class="nav-actions">
+          <button class="nav-btn" (click)="regresar()">Volver al Panel</button>
+          <button class="nav-btn logout" (click)="cerrarSesion()">Cerrar Sesión</button>
+        </div>
+      </div>
+    </nav>
+  
+    <div class="content-container">
+      <section class="header-section">
+        <h1 class="page-title">Blog de Belleza</h1>
+        <p class="page-subtitle">Consejos y tendencias para tus manos y pies.</p>
+      </section>
+  
+      <div class="blog-grid">
+        <article class="post-card" *ngFor="let post of posts">
+          <div class="post-image">
+            <img [src]="post.img" alt="Imagen de belleza">
+            <span class="post-tag">{{ post.tag }}</span>
+          </div>
+          <div class="post-body">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <div class="post-meta">
+              <span>👤 {{ post.author }}</span>
+              <span>📅 {{ post.date }}</span>
+            </div>
+            <p class="post-desc">{{ post.content }}</p>
+            <span class="read-more" (click)="abrirArticulo(post)">Leer artículo completo →</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  
+    <div class="modal-overlay" *ngIf="selectedPost" (click)="cerrarModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        
+        <button class="btn-close" (click)="cerrarModal()">&times;</button>
+        
+        <div class="modal-image">
+          <img [src]="selectedPost.img" alt="Imagen post">
+        </div>
+        
+        <div class="modal-body">
+          <span class="post-tag">{{ selectedPost.tag }}</span>
+          <h2 class="modal-title">{{ selectedPost.title }}</h2>
+          
+          <div class="post-meta">
+            <span>👤 Autor: {{ selectedPost.author }}</span>
+            <span>📅 Fecha: {{ selectedPost.date }}</span>
+          </div>
+          
+          <div class="modal-text">
+            <p>{{ selectedPost.content }}</p>
+            <br>
+            <p>
+              En <b>PonteGuapa</b> nos importa que luzcas increíble siempre. Recuerda que la salud de tus uñas 
+              comienza con una buena hidratación y el uso de productos profesionales como los que 
+              utilizamos en nuestras sucursales. ¡Te esperamos para consentirte!
+            </p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>

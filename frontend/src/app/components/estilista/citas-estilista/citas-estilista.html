@@ -1,0 +1,245 @@
+<div class="estilista-container">
+  <app-estilista-navbar
+    [active]="'agenda'"
+    (navigate)="onNavigate($event)"
+    (logout)="onLogout()">
+  </app-estilista-navbar>
+
+  <main class="main-layout">
+    <header class="page-info">
+      <h1>Agenda Semanal</h1>
+    </header>
+
+    <!-- Navegador de semana -->
+    <div class="week-navigator">
+      <button class="nav-btn" (click)="semanAnterior()">‹</button>
+      <div class="week-info">
+        <span class="week-label">Semana</span>
+        <h3 class="week-title">{{ tituloSemana }}</h3>
+        <button class="week-today-btn" *ngIf="!esSemanActual" (click)="volverSemana()">Volver a esta semana</button>
+      </div>
+      <button class="nav-btn" (click)="semanaSiguiente()">›</button>
+    </div>
+
+    <!-- Cargando -->
+    <div class="loading-msg" *ngIf="cargando">
+      <svg style="width:20px;height:20px;animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+      Cargando agenda...
+    </div>
+
+    <ng-container *ngIf="!cargando">
+
+      <!-- Tarjetas de días -->
+      <div class="dias-row">
+        <div class="dia-card"
+             *ngFor="let dia of diasSemana"
+             [class.dia-activo]="diaExpandido === dia.fecha"
+             [class.dia-hoy]="esHoy(dia.fecha)"
+             [class.dia-libre]="dia.citas.length === 0"
+             (click)="toggleDia(dia.fecha)">
+          <span class="dc-nombre">{{ dia.nombreDia.slice(0,3) }}</span>
+          <span class="dc-numero" [class.dc-hoy-badge]="esHoy(dia.fecha)">{{ dia.numeroDia }}</span>
+          <span class="dc-count" *ngIf="dia.citas.length > 0">{{ dia.citas.length }} cita{{ dia.citas.length !== 1 ? 's' : '' }}</span>
+          <span class="dc-libre" *ngIf="dia.citas.length === 0">–</span>
+        </div>
+      </div>
+
+      <!-- Resumen del día seleccionado + botón walk-in -->
+      <div class="dia-seleccionado-label" *ngIf="diaExpandido">
+        <ng-container *ngFor="let dia of diasSemana">
+          <ng-container *ngIf="dia.fecha === diaExpandido">
+            <span class="ds-nombre">{{ dia.nombreDia }} {{ dia.numeroDia }}</span>
+            <span class="ds-count">{{ dia.citas.length }} cita{{ dia.citas.length !== 1 ? 's' : '' }}</span>
+          </ng-container>
+        </ng-container>
+
+        <!-- Botón para agregar cita walk-in -->
+        <button class="btn-walkin" (click)="abrirModalWalkIn(diaExpandido!)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Cliente sin cuenta
+        </button>
+      </div>
+
+      <!-- Citas del día seleccionado -->
+      <div class="citas-panel" *ngIf="diaExpandido">
+        <ng-container *ngFor="let dia of diasSemana">
+          <ng-container *ngIf="dia.fecha === diaExpandido">
+
+            <div class="empty-dia" *ngIf="dia.citas.length === 0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="32" height="32">
+                <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+              </svg>
+              <p>Día libre sin citas agendadas</p>
+            </div>
+
+            <article class="appt-card" *ngFor="let cita of dia.citas"
+                     [class.is-completada]="cita.estado === 'completada'"
+                     [class.is-cancelada]="cita.estado === 'cancelada'">
+
+              <!-- Franja de hora -->
+              <div class="appt-time-stripe">
+                <span class="appt-time-val">{{ formatearHora(cita.hora) }}</span>
+                <span class="appt-time-lbl">hora</span>
+              </div>
+
+              <!-- Cuerpo -->
+              <div class="appt-body-panel">
+                <div class="appt-row-top">
+                  <span class="appt-srv">{{ cita.servicios }}</span>
+                  <span class="appt-pill" [ngClass]="estadoClass(cita.estado)">{{ cita.estado }}</span>
+                </div>
+
+                <div class="appt-row-meta">
+                  <span class="appt-price">Q{{ cita.precio_total | number:'1.2-2' }}</span>
+                  <!-- Badge walk-in -->
+                  <span class="walkin-badge" *ngIf="cita.es_walk_in">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11">
+                      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                    </svg>
+                    Presencial
+                  </span>
+                </div>
+
+                <div class="appt-divider-ln"></div>
+
+                <div class="appt-row-client">
+                  <div class="appt-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <div class="appt-client-info">
+                    <span class="appt-client-name">{{ cita.cliente_nombre }}</span>
+                    <span class="appt-client-phone" *ngIf="cita.cliente_telefono">{{ cita.cliente_telefono }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </article>
+
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <!-- Placeholder si no hay día seleccionado -->
+      <div class="no-seleccion" *ngIf="!diaExpandido">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="36" height="36">
+          <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>
+        </svg>
+        <p>Selecciona un día para ver sus citas</p>
+      </div>
+
+    </ng-container>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL: Registrar cita walk-in
+     ══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="modalVisible" (click)="cerrarModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        <h2 class="modal-title">Cliente sin cuenta</h2>
+      </div>
+      <button class="modal-close-btn" (click)="cerrarModal()" [disabled]="guardandoWalkIn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Fecha seleccionada (read-only) -->
+    <div class="modal-fecha-pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+      </svg>
+      {{ walkIn.fecha }}
+    </div>
+
+    <!-- Formulario -->
+    <div class="modal-form">
+
+      <!-- Nombre -->
+      <div class="mf-group">
+        <label class="mf-label">Nombre del cliente *</label>
+        <input class="mf-input" type="text" [(ngModel)]="walkIn.nombre"
+               placeholder="Nombre y apellido" maxlength="100" [disabled]="guardandoWalkIn">
+      </div>
+
+      <!-- Teléfono -->
+      <div class="mf-group">
+        <label class="mf-label">Teléfono <span class="mf-optional">(opcional)</span></label>
+        <input class="mf-input" type="tel" [(ngModel)]="walkIn.telefono"
+               placeholder="5555-1234" maxlength="20" [disabled]="guardandoWalkIn">
+      </div>
+
+      <!-- Hora -->
+      <div class="mf-group">
+        <label class="mf-label">Hora *</label>
+        <input class="mf-input" type="time" [(ngModel)]="walkIn.hora" [disabled]="guardandoWalkIn">
+      </div>
+
+      <!-- Servicios -->
+      <div class="mf-group">
+        <label class="mf-label">Servicios *</label>
+        <div class="mf-servicios-list">
+          <label class="mf-srv-item" *ngFor="let srv of serviciosDisponibles"
+                 [class.mf-srv-selected]="isServicioSelected(srv.id)">
+            <input type="checkbox"
+                   [checked]="isServicioSelected(srv.id)"
+                   (change)="toggleServicio(srv.id)"
+                   [disabled]="guardandoWalkIn">
+            <span class="mf-srv-name">{{ srv.nombre }}</span>
+            <span class="mf-srv-price">Q{{ srv.precio | number:'1.2-2' }}</span>
+          </label>
+        </div>
+
+        <!-- Precio estimado -->
+        <div class="mf-precio-estimado" *ngIf="walkIn.servicios.length > 0">
+          Total estimado: <strong>Q{{ precioEstimado | number:'1.2-2' }}</strong>
+        </div>
+      </div>
+
+      <!-- Notas -->
+      <div class="mf-group">
+        <label class="mf-label">Notas <span class="mf-optional">(opcional)</span></label>
+        <textarea class="mf-input mf-textarea" [(ngModel)]="walkIn.notas"
+                  placeholder="Indicaciones especiales, alergias, preferencias..."
+                  rows="2" maxlength="300" [disabled]="guardandoWalkIn"></textarea>
+      </div>
+
+      <!-- Error -->
+      <div class="mf-error" *ngIf="errorWalkIn">{{ errorWalkIn }}</div>
+
+    </div>
+
+    <!-- Acciones -->
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" (click)="cerrarModal()" [disabled]="guardandoWalkIn">
+        Cancelar
+      </button>
+      <button class="btn-modal-save" (click)="guardarWalkIn()" [disabled]="guardandoWalkIn">
+        <svg *ngIf="guardandoWalkIn" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        <svg *ngIf="!guardandoWalkIn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="15" height="15">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+        {{ guardandoWalkIn ? 'Guardando...' : 'Registrar cita' }}
+      </button>
+    </div>
+
+  </div>
+</div>

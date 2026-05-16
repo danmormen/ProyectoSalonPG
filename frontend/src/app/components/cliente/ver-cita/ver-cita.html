@@ -1,0 +1,125 @@
+<div class="ver-cita-page">
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
+
+  <app-client-navbar
+    [active]="'ver'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-client-navbar>
+
+  <div class="content-container">
+    <div class="top-header">
+      <h1 class="page-title">Mis Citas</h1>
+      <p class="page-subtitle">Gestiona tus reservas</p>
+    </div>
+
+    <!-- Cargando -->
+    <div class="loading-state" *ngIf="cargando">
+      <p>Cargando tus citas...</p>
+    </div>
+
+    <!-- Error -->
+    <div class="alert-error glass-card" *ngIf="error && !cargando">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      {{ error }}
+    </div>
+
+    <!-- Lista de citas -->
+    <div class="citas-wrapper" *ngIf="!cargando && !error">
+
+      <div class="cita-card glass-card" *ngFor="let cita of listaCitas"
+           [class.cancelada]="cita.estado === 'cancelada'"
+           [class.completada]="cita.estado === 'completada'">
+
+        <div class="cita-left">
+          <div class="status-tag" [ngClass]="estadoClass(cita.estado)">
+            {{ cita.estado | titlecase }}
+          </div>
+          <h3 class="cita-servicio">{{ cita.servicios }}</h3>
+          <div class="cita-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>{{ formatearFecha(cita.fecha) }}</span>
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>{{ formatearHora(cita.hora) }}</span>
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>{{ cita.estilista_nombre }}</span>
+            </div>
+            <div class="meta-item" *ngIf="cita.precio_total">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span>Q{{ cita.precio_total | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-section" *ngIf="cita.estado !== 'cancelada' && cita.estado !== 'completada'">
+          <!-- Confirmar: visible solo cuando la cita está pendiente -->
+          <button class="btn-action btn-confirmar" *ngIf="puedeConfirmar(cita)"
+                  (click)="onConfirmar(cita)">
+            Confirmar
+          </button>
+
+          <!-- Modificar: solo si faltan más de 24 h -->
+          <button class="btn-action btn-outline" *ngIf="puedeModificar(cita)"
+                  (click)="onModificar(cita)">
+            Modificar
+          </button>
+
+          <!-- Cancelar: siempre disponible para citas activas -->
+          <button class="btn-action btn-outline-red" *ngIf="puedeCancelar(cita)"
+                  (click)="onCancelar(cita)">
+            Cancelar
+          </button>
+        </div>
+
+        <div class="estado-final" *ngIf="cita.estado === 'cancelada'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          <span>Cancelada</span>
+        </div>
+
+        <div class="estado-final completada-badge" *ngIf="cita.estado === 'completada'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Completada</span>
+        </div>
+
+      </div>
+
+      <!-- Sin citas -->
+      <div class="empty-state glass-card" *ngIf="listaCitas.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <p>No tienes citas aún</p>
+        <button class="btn-reservar-empty" (click)="onNavigate('reservar')">Agendar mi primera cita</button>
+      </div>
+    </div>
+  </div>
+</div>

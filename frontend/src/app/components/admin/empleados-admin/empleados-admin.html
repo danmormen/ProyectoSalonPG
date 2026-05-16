@@ -1,0 +1,200 @@
+<div class="admin-page-layout">
+  <app-admin-navbar
+    [active]="'empleados'"
+    (navigate)="onNavigate($event)"
+    (logout)="cerrarSesion()">
+  </app-admin-navbar>
+
+  <div class="main-content">
+    <header class="page-header">
+      <h1 class="page-title">Gestión de Empleados</h1>
+      <div class="header-buttons">
+        <button class="add-btn" (click)="abrirModalNuevo()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="15" height="15">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Agregar Empleado
+        </button>
+        <button class="btn-toggle-inactivos" (click)="toggleInactivos()">
+          {{ mostrarInactivos ? 'Ver activos' : 'Ver inactivos' }}
+        </button>
+      </div>
+    </header>
+
+    <div class="employee-grid">
+      <div *ngIf="empleadosVisibles.length === 0" class="no-data">
+        <p>{{ mostrarInactivos ? 'No hay empleados inactivos.' : 'No hay empleados registrados.' }}</p>
+      </div>
+
+      <div class="employee-card" *ngFor="let emp of empleadosVisibles">
+        <div class="card-top">
+          <div class="info">
+            <h3>{{ emp.nombre }}</h3>
+            <p class="role-badge">{{ emp.rol | titlecase }}</p>
+          </div>
+          <span class="status-tag" [ngClass]="emp.activo ? 'activo' : 'inactivo'">
+            {{ emp.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+
+        <div class="card-details">
+          <!-- Especialidades como pills -->
+          <div class="esp-pills-display" *ngIf="emp.especialidades_nombres && emp.especialidades_nombres.length > 0">
+            <span class="esp-pill-card" *ngFor="let n of emp.especialidades_nombres">{{ n }}</span>
+          </div>
+          <p class="sin-esp" *ngIf="!emp.especialidades_nombres || emp.especialidades_nombres.length === 0">
+            Sin especialidades asignadas
+          </p>
+          <p><strong>Teléfono:</strong> {{ emp.telefono || 'Sin teléfono' }}</p>
+          <p><strong>Email:</strong> {{ emp.email }}</p>
+          <p><strong>Nacimiento:</strong> {{ emp.fecha_nacimiento | date:'dd/MM/yyyy':'UTC' }}</p>
+        </div>
+
+        <div class="card-footer">
+          <button class="action-btn password" (click)="abrirModalPassword(emp)" title="Cambiar Contraseña" *ngIf="emp.activo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Contraseña
+          </button>
+          <button class="action-btn edit" (click)="abrirModalEditar(emp)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/>
+            </svg>
+            Editar
+          </button>
+          <button class="action-btn delete" (click)="eliminarEmpleado(emp.id)" *ngIf="emp.activo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            Eliminar
+          </button>
+          <button class="action-btn reactivate" (click)="reactivarEmpleado(emp)" *ngIf="!emp.activo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/>
+            </svg>
+            Reactivar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAL — EMPLEADO
+  ══════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" *ngIf="mostrarModal" (click)="mostrarModal = false">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ editando ? 'Editar Empleado' : 'Nuevo Empleado' }}</h2>
+
+      <div class="form-container">
+        <div class="input-row">
+          <div class="input-field">
+            <label>Nombre *</label>
+            <input type="text" [(ngModel)]="empleadoForm.nombre" placeholder="Ej. Ana">
+          </div>
+          <div class="input-field">
+            <label>Apellido</label>
+            <input type="text" [(ngModel)]="empleadoForm.apellido" placeholder="Ej. Martínez">
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-field">
+            <label>Rol de Sistema</label>
+            <select [(ngModel)]="empleadoForm.rol">
+              <option value="estilista">Estilista</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label>Teléfono</label>
+            <div class="phone-wrapper">
+              <span class="phone-prefix">+502</span>
+              <input type="text"
+                     [ngModel]="empleadoForm.telefono.replace('+502 ', '')"
+                     (input)="onTelefonoInput($event)"
+                     placeholder="0000-0000"
+                     maxlength="9">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-field">
+            <label>Correo Electrónico *</label>
+            <input type="email" [(ngModel)]="empleadoForm.email" placeholder="correo@ponteguapa.com">
+          </div>
+          <div class="input-field">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" [(ngModel)]="empleadoForm.fecha_nacimiento" min="1940-01-01" max="2026-12-31">
+          </div>
+        </div>
+
+        <!-- Especialidades como pill-buttons -->
+        <div class="input-field full-width" *ngIf="empleadoForm.rol === 'estilista'">
+          <label>Especialidades <span class="obligatorio">*</span></label>
+          <div class="esp-selector">
+            <button type="button" class="esp-pill-btn"
+                    *ngFor="let esp of especialidades"
+                    [class.selected]="estaSeleccionada(esp.id)"
+                    (click)="toggleEspecialidad(esp.id)">
+              <svg *ngIf="estaSeleccionada(esp.id)" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" width="12" height="12">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              {{ esp.nombre }}
+            </button>
+          </div>
+          <p class="esp-hint" *ngIf="especialidadesSeleccionadas.length === 0">
+            Selecciona al menos una especialidad.
+          </p>
+        </div>
+
+        <div class="input-field full-width" *ngIf="!editando">
+          <label>Contraseña *</label>
+          <input type="password" [(ngModel)]="empleadoForm.password" placeholder="Mínimo 6 caracteres">
+        </div>
+
+        <!-- Toggle de acceso activo -->
+        <div class="activo-toggle-row" *ngIf="editando">
+          <span class="activo-label">Acceso al sistema</span>
+          <button type="button" class="activo-toggle" [class.on]="empleadoForm.activo"
+                  (click)="empleadoForm.activo = empleadoForm.activo ? 0 : 1">
+            <span class="toggle-knob"></span>
+          </button>
+          <span class="activo-value">{{ empleadoForm.activo ? 'Activo' : 'Inactivo' }}</span>
+        </div>
+      </div>
+
+      <div class="modal-btns">
+        <button class="cancel-btn" (click)="mostrarModal = false">Cancelar</button>
+        <button class="save-btn" (click)="guardarEmpleado()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAL — CONTRASEÑA
+  ══════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" *ngIf="mostrarModalPassword" (click)="cerrarModalPassword()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">Cambiar Contraseña</h2>
+      <p class="modal-subtitle">
+        Estableciendo nueva contraseña para: <strong>{{ empleadoPasswordActual }}</strong>
+      </p>
+      <div class="form-container">
+        <div class="input-field full-width">
+          <label>Nueva Contraseña</label>
+          <input type="password" [(ngModel)]="nuevaPassword" placeholder="Mínimo 6 caracteres">
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button class="cancel-btn" (click)="cerrarModalPassword()">Cancelar</button>
+        <button class="save-btn" (click)="guardarPassword()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+
+</div>
