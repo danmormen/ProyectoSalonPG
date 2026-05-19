@@ -116,71 +116,8 @@ app.use((err, req, res, next) => {
 // se crean automáticamente con ALTER TABLE para que el servidor no
 // necesite scripts manuales.
 // ══════════════════════════════════════════════════════════════════
-const db = require('./src/config/DBconfig');
-
-function autoMigrar(callback) {
-  const migraciones = [
-    // ── Walk-in: cliente_id nullable + columnas externas ──────────
-    {
-      check: `SELECT COUNT(*) AS cnt FROM INFORMATION_SCHEMA.COLUMNS
-              WHERE TABLE_SCHEMA = DATABASE()
-                AND TABLE_NAME   = 'citas'
-                AND COLUMN_NAME  = 'cliente_externo_nombre'`,
-      run: [
-        `ALTER TABLE citas MODIFY COLUMN cliente_id INT NULL`,
-        `ALTER TABLE citas ADD COLUMN cliente_externo_nombre   VARCHAR(150) NULL AFTER cliente_id`,
-        `ALTER TABLE citas ADD COLUMN cliente_externo_telefono VARCHAR(20)  NULL AFTER cliente_externo_nombre`
-      ],
-      nombre: 'walk-in (cliente_externo_nombre/telefono + cliente_id nullable)'
-    }
-    // Agrega aquí futuras migraciones con el mismo formato { check, run[], nombre }
-  ];
-
-  let pendientes = migraciones.length;
-  if (pendientes === 0) return callback();
-
-  migraciones.forEach(m => {
-    db.query(m.check, [], (err, rows) => {
-      if (err || (rows && rows[0].cnt > 0)) {
-        // Error al verificar o ya aplicada → omitir
-        if (!err) console.log(`✅ Migración ya aplicada: ${m.nombre}`);
-        if (--pendientes === 0) callback();
-        return;
-      }
-
-      // Ejecutar cada ALTER TABLE en secuencia
-      let idx = 0;
-      const siguiente = () => {
-        if (idx >= m.run.length) {
-          console.log(`✅ Migración aplicada: ${m.nombre}`);
-          if (--pendientes === 0) callback();
-          return;
-        }
-        db.query(m.run[idx++], [], (errAlter) => {
-          if (errAlter) {
-            // errno 1060 = columna ya existe → ignorar, es idempotente
-            if (errAlter.errno !== 1060) {
-              console.error(`❌ Error en migración "${m.nombre}":`, errAlter.message);
-            }
-          }
-          siguiente();
-        });
-      };
-      siguiente();
-    });
-  });
-}
-
-// ══════════════════════════════════════════════════════════════════
 // 7. Arranque del servidor
-// Se ejecuta autoMigrar() primero y solo al terminar se levanta
-// el servidor HTTP, garantizando que la BD esté lista para las rutas.
 // ══════════════════════════════════════════════════════════════════
-autoMigrar(() => {
-  app.listen(port, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
-    console.log(`📅 Rutas de horarios listas en http://localhost:${port}/api/horarios`);
-    console.log(`🎉 Rutas de promociones listas en http://localhost:${port}/api/promociones`);
-    console.log(`🏆 Rutas de recompensas listas en http://localhost:${port}/api/recompensas`);
-  });
+app.listen(port, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
 });
