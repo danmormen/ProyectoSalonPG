@@ -30,8 +30,8 @@ npm-debug.log*
 *.docx
 *.pdf
 *.svg
-# Schema duplicado en la raíz (el real está en backend/)
-PonteGuapa_schema.sql
+# Archivos SQL (esquema y migraciones — solo uso local)
+*.sql
 # package.json raíz (no pertenece al back ni al front)
 /package.json
 /package-lock.json
