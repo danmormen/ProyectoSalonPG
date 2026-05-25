@@ -143,8 +143,19 @@
       <!-- ── Gráfica de citas por día ───────────────────────── -->
       <div class="chart-card" *ngIf="citasPorDia.length > 0">
         <div class="chart-header">
-          <h3>Distribución por Día</h3>
-          <p class="chart-sub">Citas en el período · {{ labelPeriodo }}</p>
+          <div class="chart-header-top">
+            <div>
+              <h3>Distribución por Día</h3>
+              <p class="chart-sub">Citas en el período · {{ labelPeriodo }}</p>
+            </div>
+            <div class="dia-pico-badge" *ngIf="diaPico">
+              <svg viewBox="0 0 24 24" width="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              <span>Los <strong>{{ diaPico.diaCompleto }}</strong> son el día más activo</span>
+              <span class="pico-num">{{ diaPico.total }} citas</span>
+            </div>
+          </div>
         </div>
 
         <div class="bar-chart" *ngIf="getMaxDia() > 0; else sinDatos">
@@ -170,34 +181,58 @@
         </div>
       </div>
 
-      <!-- ── Servicios y Estilistas ─────────────────────────── -->
-      <div class="bottom-grid">
-
-        <!-- Servicios top -->
-        <div class="section-card">
-          <h3>Servicios Más Solicitados</h3>
-          <p class="chart-sub">Basado en citas completadas del período</p>
-
-          <div *ngIf="serviciosTop.length === 0" class="section-empty">
-            Sin datos en este período
+      <!-- ── Servicios más solicitados (sección completa) ─── -->
+      <div class="section-card servicios-full" *ngIf="serviciosTop.length > 0">
+        <div class="servicios-header">
+          <div>
+            <h3>Servicios Más Solicitados</h3>
+            <p class="chart-sub">{{ totalServicios }} citas totales · {{ labelPeriodo }}</p>
           </div>
+        </div>
 
-          <div class="servicio-row" *ngFor="let s of serviciosTop; let i = index">
-            <span class="servicio-num">{{ i + 1 }}</span>
-            <div class="servicio-info">
-              <div class="servicio-top-row">
-                <span class="servicio-nombre">{{ s.nombre }}</span>
-                <span class="servicio-total">{{ s.total }}</span>
+        <!-- Servicio #1 destacado -->
+        <div class="servicio-top1" *ngIf="serviciosTop[0]">
+          <div class="top1-crown">
+            <svg viewBox="0 0 24 24" width="16" fill="currentColor">
+              <path d="M2 19h20v2H2v-2zm18-9l-4 4-4-8-4 8-4-4-2 8h20l-2-8z"/>
+            </svg>
+            #1
+          </div>
+          <div class="top1-info">
+            <span class="top1-nombre">{{ serviciosTop[0].nombre }}</span>
+            <div class="top1-barra-wrap">
+              <div class="top1-barra">
+                <div class="top1-fill" style="width:100%"></div>
               </div>
-              <div class="progreso-bar">
-                <div class="progreso-fill" [style.width.%]="getAnchoServicio(s.total)"></div>
-              </div>
+              <span class="top1-stats">{{ serviciosTop[0].total }} citas · {{ getPctServicio(serviciosTop[0].total) }}%</span>
             </div>
           </div>
         </div>
 
+        <!-- Resto de servicios -->
+        <div class="servicio-row" *ngFor="let s of serviciosTop.slice(1); let i = index">
+          <span class="servicio-num">{{ i + 2 }}</span>
+          <div class="servicio-info">
+            <div class="servicio-top-row">
+              <span class="servicio-nombre">{{ s.nombre }}</span>
+              <span class="servicio-total">{{ s.total }} &nbsp;<span class="servicio-pct">{{ getPctServicio(s.total) }}%</span></span>
+            </div>
+            <div class="progreso-bar">
+              <div class="progreso-fill" [style.width.%]="getAnchoServicio(s.total)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-empty-card" *ngIf="serviciosTop.length === 0">
+        Sin datos de servicios en este período
+      </div>
+
+      <!-- ── Estilistas ──────────────────────────────────────── -->
+      <div class="bottom-grid">
+
         <!-- Estilistas top -->
-        <div class="section-card">
+        <div class="section-card" style="grid-column: 1 / -1">
           <h3>Estilistas Más Activos</h3>
           <p class="chart-sub">Basado en citas completadas del período</p>
 

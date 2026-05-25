@@ -115,6 +115,29 @@ export class ReportesAdminComponent implements OnInit {
     return Math.round((total / max) * 100);
   }
 
+  // Devuelve el total de todas las citas en serviciosTop para calcular %.
+  get totalServicios(): number {
+    return this.serviciosTop.reduce((s, x) => s + x.total, 0);
+  }
+
+  getPctServicio(total: number): number {
+    if (!this.totalServicios) return 0;
+    return Math.round((total / this.totalServicios) * 100);
+  }
+
+  // Retorna el día de la semana con más citas en el período, con su nombre completo.
+  get diaPico(): { dia: string; diaCompleto: string; total: number } | null {
+    const max = this.getMaxDia();
+    if (max === 0 || !this.citasPorDia.length) return null;
+    const pico = this.citasPorDia.find(d => d.total === max);
+    if (!pico) return null;
+    const nombres: Record<string, string> = {
+      'Lun': 'lunes', 'Mar': 'martes', 'Mié': 'miércoles',
+      'Jue': 'jueves', 'Vie': 'viernes', 'Sáb': 'sábados', 'Dom': 'domingos'
+    };
+    return { ...pico, diaCompleto: nombres[pico.dia] ?? pico.dia };
+  }
+
   // ── Labels de período ─────────────────────────────────────────────
   get labelPeriodo(): string {
     const map: Record<string, string> = {

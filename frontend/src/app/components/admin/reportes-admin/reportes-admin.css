@@ -485,3 +485,135 @@
 .sin-calificacion { color: #C0AFA4; font-style: italic; }
 
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* === Día pico badge en la gráfica === */
+.chart-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dia-pico-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, rgba(139,115,85,0.14), rgba(206,181,158,0.22));
+  border: 1px solid rgba(139,115,85,0.28);
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-size: 0.82rem;
+  color: #4A3822;
+  flex-shrink: 0;
+}
+
+.dia-pico-badge svg { color: #8B7355; flex-shrink: 0; }
+.dia-pico-badge strong { color: #2F2A2A; font-weight: 700; }
+
+.pico-num {
+  background: #8B7355;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-left: 2px;
+  white-space: nowrap;
+}
+
+/* === Servicios — sección completa === */
+.servicios-full {
+  margin-bottom: 16px;
+}
+
+.servicios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Servicio #1 destacado */
+.servicio-top1 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(139,115,85,0.12), rgba(206,181,158,0.20));
+  border: 1px solid rgba(139,115,85,0.25);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.top1-crown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #8B7355;
+  font-size: 0.7rem;
+  font-weight: 800;
+  min-width: 32px;
+  text-align: center;
+}
+
+.top1-info { flex: 1; }
+
+.top1-nombre {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2F2A2A;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.top1-barra-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.top1-barra {
+  flex: 1;
+  height: 10px;
+  background: rgba(206,181,158,0.25);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.top1-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #CEB59E, #8B7355);
+  border-radius: 99px;
+}
+
+.top1-stats {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #5A4430;
+  white-space: nowrap;
+}
+
+/* Resto de servicios — barras más gruesas */
+.progreso-bar {
+  height: 8px !important;
+}
+
+.servicio-pct {
+  font-size: 0.75rem;
+  color: #A09585;
+  font-weight: 500;
+}
+
+/* Card vacía de servicios */
+.section-empty-card {
+  background: rgba(255,255,255,0.45);
+  border: 1px dashed rgba(206,181,158,0.55);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  color: #B0A499;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+}
