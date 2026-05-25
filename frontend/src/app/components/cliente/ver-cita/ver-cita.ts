@@ -32,7 +32,7 @@ export class VerCitaComponent implements OnInit {
   }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token

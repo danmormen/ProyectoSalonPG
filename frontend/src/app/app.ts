@@ -183,9 +183,9 @@ export class App {
   onLogout(): void {
     // Eliminar el token y los datos del usuario del navegador.
     // El token sigue siendo válido en el servidor hasta que expire (7 días),
-    // pero sin él en localStorage el frontend no puede adjuntarlo a peticiones.
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
+    // pero sin él en sessionStorage el frontend no puede adjuntarlo a peticiones.
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('usuario');
     this.vistaActual = 'login';
     this.resetReserva();
   }
@@ -198,10 +198,10 @@ export class App {
   }
 
   // Se llama cuando cambio-contrasena.ts confirma que el PATCH fue exitoso.
-  // Lee el rol del localStorage para saber a qué panel llevar al usuario,
+  // Lee el rol del sessionStorage para saber a qué panel llevar al usuario,
   // porque en este punto ya no tenemos acceso directo a la respuesta del login.
   completarCambioPassword(): void {
-    const userStr = localStorage.getItem('usuario');
+    const userStr = sessionStorage.getItem('usuario');
     if (userStr) {
       const user = JSON.parse(userStr);
       const rol  = user.rol;
@@ -214,7 +214,7 @@ export class App {
         this.vistaActual = 'home';
       }
     } else {
-      // Si por alguna razón el localStorage quedó vacío, mandamos al login
+      // Si por alguna razón el sessionStorage quedó vacío, mandamos al login
       this.vistaActual = 'login';
     }
   }

@@ -58,7 +58,7 @@ export class GestionCitasAdminComponent implements OnInit {
   }
 
   private getHeaders(): HttpHeaders {
-    return new HttpHeaders({ Authorization: 'Bearer ' + localStorage.getItem('token') });
+    return new HttpHeaders({ Authorization: 'Bearer ' + sessionStorage.getItem('token') });
   }
 
   // ── Navegador de semana ──────────────────────────────────────

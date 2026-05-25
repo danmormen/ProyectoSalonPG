@@ -74,7 +74,7 @@ export class AgendarWalkinComponent implements OnInit {
   }
 
   ngOnInit() {
-    const u = localStorage.getItem('usuario');
+    const u = sessionStorage.getItem('usuario');
     if (u) {
       try {
         const parsed     = JSON.parse(u);
@@ -87,7 +87,7 @@ export class AgendarWalkinComponent implements OnInit {
   }
 
   private getHeaders(): HttpHeaders {
-    return new HttpHeaders({ Authorization: 'Bearer ' + localStorage.getItem('token') });
+    return new HttpHeaders({ Authorization: 'Bearer ' + sessionStorage.getItem('token') });
   }
 
   // ── Estilistas filtrados por especialidad + día ───────────────────

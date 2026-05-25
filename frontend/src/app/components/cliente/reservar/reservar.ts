@@ -98,7 +98,7 @@ export class ReservarComponent implements OnInit {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
   }
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({ 'Content-Type':'application/json', 'Authorization':'Bearer ' + token });
   }
 

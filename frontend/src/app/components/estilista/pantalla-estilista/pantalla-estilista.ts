@@ -76,7 +76,7 @@ export class PantallaEstilistaComponent implements OnInit {
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const usuarioStr = localStorage.getItem('usuario');
+    const usuarioStr = sessionStorage.getItem('usuario');
     if (usuarioStr) {
       try { this.nombreEstilista = JSON.parse(usuarioStr).nombre || ''; } catch {}
     }
@@ -86,7 +86,7 @@ export class PantallaEstilistaComponent implements OnInit {
   }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
@@ -148,7 +148,7 @@ export class PantallaEstilistaComponent implements OnInit {
   // Carga en paralelo el horario del estilista y los días especiales
   // del admin para la semana actual, y los fusiona en horarioSemanal.
   cargarHorario(): void {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return;
     this.cargandoHorario = true;
 

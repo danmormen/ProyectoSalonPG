@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const userStr = localStorage.getItem('usuario');
+    const userStr = sessionStorage.getItem('usuario');
     if (userStr) {
       try {
         const user = JSON.parse(userStr);
@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({ 'Authorization': 'Bearer ' + token });
   }
 

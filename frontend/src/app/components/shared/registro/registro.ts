@@ -113,7 +113,7 @@ export class RegistroComponent {
           next: (respuesta: any) => {
             this.cargando = false;
             if (respuesta.token) {
-              localStorage.setItem('token', respuesta.token);
+              sessionStorage.setItem('token', respuesta.token);
             }
             alert('¡Cuenta creada con éxito!');
             this.onNavigate.emit('login');

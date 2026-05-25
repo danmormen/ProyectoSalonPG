@@ -44,7 +44,7 @@ export class PerfilComponent implements OnInit {
   }
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -53,7 +53,7 @@ export class PerfilComponent implements OnInit {
 
   // ── Carga los datos del usuario desde el backend ──────────────────
   cargarPerfil() {
-    const userStr = localStorage.getItem('usuario');
+    const userStr = sessionStorage.getItem('usuario');
     if (!userStr) {
       this.cargando = false;
       return;
@@ -158,12 +158,12 @@ export class PerfilComponent implements OnInit {
         this.usuario.telefono = telefonoCompleto;
         this.actualizarIniciales();
 
-        // Actualiza el nombre en localStorage
-        const userStr = localStorage.getItem('usuario');
+        // Actualiza el nombre en sessionStorage
+        const userStr = sessionStorage.getItem('usuario');
         if (userStr) {
           const user  = JSON.parse(userStr);
           user.nombre = payload.nombre;
-          localStorage.setItem('usuario', JSON.stringify(user));
+          sessionStorage.setItem('usuario', JSON.stringify(user));
         }
 
         this.mostrarMensaje('¡Cambios guardados correctamente!', 'exito');

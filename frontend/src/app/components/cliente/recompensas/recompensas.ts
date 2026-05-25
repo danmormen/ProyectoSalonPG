@@ -29,8 +29,8 @@ export class RecompensasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Recupera el ID del usuario del localStorage
-    const userStr = localStorage.getItem('usuario');
+    // Recupera el ID del usuario del sessionStorage
+    const userStr = sessionStorage.getItem('usuario');
     if (userStr) {
       const user    = JSON.parse(userStr);
       this.usuarioId = user.id;
@@ -41,7 +41,7 @@ export class RecompensasComponent implements OnInit {
 
   // ── Headers con token JWT ─────────────────────────────────────────
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`

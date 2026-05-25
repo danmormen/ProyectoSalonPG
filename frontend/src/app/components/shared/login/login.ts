@@ -16,7 +16,7 @@ export class LoginComponent {
   // ══════════════════════════════════════════════════════════════════
   // Eventos de salida — cada rol tiene su propio @Output porque app.html
   // necesita reaccionar diferente según quién entró. Si hubiera un solo
-  // evento genérico 'loginExitoso', app.ts tendría que leer localStorage
+  // evento genérico 'loginExitoso', app.ts tendría que leer sessionStorage
   // para saber a dónde navegar, lo cual es más frágil.
   //
   // onAdminLogin          → va directo al panel de administrador
@@ -53,15 +53,15 @@ export class LoginComponent {
       next: (respuesta: any) => {
         this.cargando = false;
 
-        // El token se guarda en localStorage para adjuntarlo a todas
+        // El token se guarda en sessionStorage para adjuntarlo a todas
         // las peticiones protegidas que haga el usuario durante su sesión.
-        localStorage.setItem('token', respuesta.token);
+        sessionStorage.setItem('token', respuesta.token);
 
         // Se guarda el objeto usuario con los datos mínimos necesarios:
         // id (para rutas como /api/usuarios/:id), nombre (para el navbar),
         // rol (para redireccionar después del cambio de contraseña)
         // y requiere_cambio (para forzar el cambio si es necesario).
-        localStorage.setItem('usuario', JSON.stringify({
+        sessionStorage.setItem('usuario', JSON.stringify({
           id:              respuesta.id,
           nombre:          respuesta.nombre,
           rol:             respuesta.rol,

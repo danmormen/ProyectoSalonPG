@@ -48,7 +48,7 @@ export class ReportesAdminComponent implements OnInit {
   ngOnInit() { this.cargarReporte(); }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({ Authorization: 'Bearer ' + token });
   }
 

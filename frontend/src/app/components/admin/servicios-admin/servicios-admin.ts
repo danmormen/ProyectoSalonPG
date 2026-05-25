@@ -60,7 +60,7 @@ export class ServiciosAdminComponent implements OnInit {
   }
 
   getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
@@ -213,8 +213,8 @@ export class ServiciosAdminComponent implements OnInit {
   onNavigate(dest: string) { this.navigate.emit(dest); }
 
   cerrarSesion() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('usuario');
     this.logout.emit();
   }
 }

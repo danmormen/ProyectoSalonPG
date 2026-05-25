@@ -49,7 +49,7 @@ export class EstilistaNavbarComponent implements OnInit {
   // Así el badge siempre refleja el estado actual sin necesidad de WebSockets.
   // Si la petición falla (token expirado, servidor caído) simplemente no se muestra el badge.
   cargarConteo() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return;
     const headers = new HttpHeaders({ Authorization: 'Bearer ' + token });
     this.http.get<{ total: number }>(`${environment.apiUrl}/api/notif-estilista/sin-leer`, { headers })

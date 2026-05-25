@@ -14,7 +14,7 @@ import { environment } from '../../../../environments/environment';
 export class CambioContrasenaComponent implements OnInit {
 
   // onPasswordChanged avisa a app.ts que el cambio fue exitoso.
-  // app.ts lee el rol del localStorage para saber a dónde navegar.
+  // app.ts lee el rol del sessionStorage para saber a dónde navegar.
   // onCancel lleva de vuelta al login si el usuario no quiere continuar.
   @Output() onPasswordChanged = new EventEmitter<void>();
   @Output() onCancel          = new EventEmitter<void>();
@@ -35,16 +35,16 @@ export class CambioContrasenaComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   // ══════════════════════════════════════════════════════════════════
-  // ngOnInit — lee el id y el rol del usuario desde localStorage.
+  // ngOnInit — lee el id y el rol del usuario desde sessionStorage.
   // Necesitamos el id para construir la URL del PATCH, y el rol
   // para mostrar el mensaje de instrucción correcto según quién es.
   //
-  // Si por alguna razón no hay datos en localStorage (sesión corrupta,
+  // Si por alguna razón no hay datos en sessionStorage (sesión corrupta,
   // alguien llegó aquí sin pasar por el login), se muestra un error
   // en lugar de llamar al backend con un id null.
   // ══════════════════════════════════════════════════════════════════
   ngOnInit() {
-    const userStr = localStorage.getItem('usuario');
+    const userStr = sessionStorage.getItem('usuario');
     if (userStr) {
       try {
         const user     = JSON.parse(userStr);
@@ -96,7 +96,7 @@ export class CambioContrasenaComponent implements OnInit {
   // Construye los headers con el JWT. Si no hay token devuelve null
   // y el método que lo llama corta la ejecución antes de hacer el PATCH.
   private getHeaders(): HttpHeaders | null {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       this.errorMsg = 'Error de autenticación. Intenta iniciar sesión nuevamente.';
       return null;
@@ -108,7 +108,7 @@ export class CambioContrasenaComponent implements OnInit {
   // guardarPassword — valida localmente y hace el PATCH al backend.
   //
   // Al recibir respuesta exitosa se actualiza requiere_cambio en
-  // localStorage para que si el usuario navega hacia atrás o recarga
+  // sessionStorage para que si el usuario navega hacia atrás o recarga
   // no vuelva a caer en este flujo en la misma sesión.
   //
   // El setTimeout de 1200ms da tiempo a que el usuario vea el mensaje
@@ -144,13 +144,13 @@ export class CambioContrasenaComponent implements OnInit {
         this.guardando = false;
         this.exito     = true;
 
-        // Sincronizar localStorage para que requiere_cambio refleje el nuevo estado.
+        // Sincronizar sessionStorage para que requiere_cambio refleje el nuevo estado.
         // Esto importa porque completarCambioPassword() en app.ts lee el rol de aquí.
-        const userStr = localStorage.getItem('usuario');
+        const userStr = sessionStorage.getItem('usuario');
         if (userStr) {
           const user       = JSON.parse(userStr);
           user.requiere_cambio = 0;
-          localStorage.setItem('usuario', JSON.stringify(user));
+          sessionStorage.setItem('usuario', JSON.stringify(user));
         }
 
         setTimeout(() => this.onPasswordChanged.emit(), 1200);
